@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
+import { Close, DeleteOutlineSharp } from '@material-ui/icons';
 
+// Objekt med låtsasdata från databasen
 const cartDataFromDB = [
     {
         'name': 'Apple Watch SE',
@@ -178,11 +180,11 @@ function Cart() {
             <TopBar>
                 <DivLR>
                     <p>Din varukorg</p>
-                    <p onClick={handleXButton}>X</p>
+                    <Close onClick={handleXButton} />
                 </DivLR>
             </TopBar>
-            {/* map out cart items */}
             <ProductsContainer className="rowMargin">
+                {/* map out cart items */}
                 {productsInCart.map((product, index) => (
                     <div key={product.id}>
                         <ProductDiv>
@@ -191,7 +193,7 @@ function Cart() {
                             </span>
                             <ProductInfo>
                                 <ProductRow1>
-                                    <p className="boldText">{shortenText(product.name, 16)}</p>
+                                    <p className="boldText">{shortenText(product.name, 20)}</p>
                                     <p className="boldText">{itemPrice(product)} SEK</p>
                                 </ProductRow1>
                                 <ProductRow2>
@@ -207,7 +209,7 @@ function Cart() {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <span><p onClick={() => { handleTrashcanButton(product) }}>trashcan</p></span>
+                                    <span><DeleteOutlineSharp fontSize="small" onClick={() => { handleTrashcanButton(product) }} /></span>
                                 </ProductRow3>
                             </ProductInfo>
                         </ProductDiv>
@@ -224,7 +226,7 @@ function Cart() {
                     <p>Fraktavgift</p>
                     <p className="boldText">{displayCost(costs.shippingCost)} SEK</p>
                 </DivLR>
-                <DivLR>
+                <DivLR className="biggerText">
                     <p className="boldText">Totalt inkl. moms</p>
                     <p className="boldText">{displayCost(costs.totalCost)} SEK</p>
                 </DivLR>
@@ -243,6 +245,8 @@ function Cart() {
 export default Cart
 
 const ReturnDiv = styled.div`
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 14px;
     --padding: 20px;
     height: 100vh;
     max-width: 500px;
@@ -254,6 +258,9 @@ const ReturnDiv = styled.div`
     }
     .boldText {
         font-weight: bold;
+    }
+    .biggerText {
+        font-size: 16px;
     }
     .rowMargin {
         margin-bottom: 20px;
@@ -316,12 +323,17 @@ const ProductRow3 = styled.div`
 const CostBreakdown = styled.div`
     padding: 0 var(--padding);
     > * {
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+    }
+    div:nth-of-type(3) {
+        margin-top: 20px;
+    }
+    div:nth-of-type(4) {
+        font-size: 12px;
     }
 `
 const OrderButtonContainer = styled.div`
-    padding: 0 var(--padding) var(--padding) var(--padding);
-    margin-top: 10px;
+    padding: var(--padding);
     button {
         width: 100%;
         height: 40px;
