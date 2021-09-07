@@ -90,10 +90,8 @@ function Home() {
                     <TextLondon>London Classic</TextLondon>
                     <London>
                         {watchesImg.filter(obj => obj.cat === 'London').map((watch) => (
-                            <div key={watch.id}>
-                                <span>
+                            <div key={watch.id} className="card">
                                     <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                </span>
                             </div>
                         ))}
                     </London>
@@ -102,10 +100,8 @@ function Home() {
                     <TextDubai>Dubai Luxury</TextDubai>
                     <Dubai>
                         {watchesImg.filter(obj => obj.cat === 'Dubai').map((watch) => (
-                            <div key={watch.id}>
-                                <span>
+                            <div key={watch.id} className="card">
                                     <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                </span>
                             </div>
                         ))}
                     </Dubai>
@@ -114,10 +110,8 @@ function Home() {
                     <TextSt>St Moritz Sport</TextSt>
                     <Moritz>
                         {watchesImg.filter(obj => obj.cat === 'Moritz').map((watch) => (
-                            <div key={watch.id}>
-                                <span>
+                            <div key={watch.id} className="card">
                                     <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                </span>
                             </div>
                         ))}
                     </Moritz>
@@ -130,18 +124,23 @@ function Home() {
 const London = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-wrap: wrap;
+
     img {
         height: 180px;
         width: auto;
+        
     }
 `
 const Dubai = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-wrap: wrap;
+    width: 100%;
+
+
     img {
         height: 180px;
         width: auto;
@@ -151,7 +150,11 @@ const Dubai = styled.div`
 const Moritz = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
     flex-wrap: wrap;
+    width: 100%;
+
+
     img {
         height: 180px;
         width: auto;
@@ -170,6 +173,7 @@ const TextSt = styled.div`
    font-size: 22px;
 `
 const Hero = styled.div`
+margin-top: 4rem;
     background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller-83DnGfaWV24-unsplash.jpg'}');
     height: 30.8vh;
     width: 100%;

@@ -42,7 +42,6 @@ align-items: center;
 
 img{
     width: 100px;
-
 }
 
 `

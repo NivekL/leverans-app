@@ -33,7 +33,7 @@ const Ul = styled.ul`
     display: flex;
     flex-flow: row nowrap;
     flex-flow: column nowrap;
-    background-color: #e6e6e6;
+    background-color: whitesmoke;
     color: #292929;
     position: fixed;
     font-family: Arial, Helvetica, sans-serif;

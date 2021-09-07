@@ -1,9 +1,9 @@
 import './App.css';
 import NavBar from './components/NavBar';
-// import Home from './pages/Home';
+import Home from './pages/Home';
 
 import { DubaiLuxury } from './pages/DubaiLuxury';
-import Home from './pages/Home';
+
 
 
 function App() {
@@ -12,9 +12,9 @@ function App() {
 
      <NavBar/>
 
-      {/* <Home /> */}
+      <Home />
 
-      <DubaiLuxury />
+   
     </div>
   );
 }
