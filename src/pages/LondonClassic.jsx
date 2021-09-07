@@ -3,19 +3,21 @@ import { Card } from '../components/Card'
 import styled from 'styled-components'
 
 const Lux = styled.div`
-margin-left: 20px;
+margin-top: 10rem;
 font-style: normal;
 font-weight: 400;
-font-size: 15px;
-line-height: 18px;
-max-width: 40px;
+font-size: 4rem;
 `
 
-export const LondonClassic = () => {
-    return (
-        <div>
-            <Lux>Time for Classics</Lux>
-            <Card />
-        </div>
+function LondonClassic() {
+    return ( 
+        <Lux>Time for Classics - LONDON</Lux>
+          
     )
 }
+
+export default LondonClassic
+
+
+
+
