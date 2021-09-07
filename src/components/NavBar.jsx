@@ -2,16 +2,18 @@ import React from 'react'
 import logo from '../logo.png'
 import styled from 'styled-components'
 import Burger from './Burger'
+import { Link } from "react-router-dom";
+
+
+
 
 function NavBar() {
     return (
         <Nav>
             <Burger/>
-        <LogoContainer>
-            <a href="/"><img src={logo} alt="Store logo"  /></a>
-          
-          </LogoContainer>
-       
+            <LogoContainer>
+                <Link to="/"><img src={logo} alt="Store logo"  /></Link>
+            </LogoContainer>
       </Nav>
     )
 }
