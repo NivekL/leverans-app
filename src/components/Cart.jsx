@@ -10,12 +10,13 @@ const cartDataFromDB = [
         'category': 'St Moritz Sport',
         'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
         'price': 3195,
-        'quantity': 1,
+        'quantity': 2,
     }
 ]
 
 function Cart() {
     const [productsInCart, setProductsInCart] = useState([]);
+    const [costs, setCosts] = useState({});
 
     useEffect(() => {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
@@ -23,14 +24,63 @@ function Cart() {
         setProductsInCart(cartDataFromDB);
     }, []);
 
+    // Räkna ut totaler
+    useEffect(() => {
+            let subTotalCost = 0;
+            let shippingCost = 0;
+            let totalCost = 0;
+            let percentageVAT = 25;
+            let calcVAT = 0;
+            for (let product of productsInCart) {
+                subTotalCost += product.quantity * product.price;
+            }
+            totalCost = subTotalCost + shippingCost;
+            calcVAT = totalCost * (percentageVAT / 100);
+            setCosts({
+                'subTotalCost': subTotalCost,
+                'shippingCost': shippingCost,
+                'totalCost': totalCost,
+                'calcVAT': calcVAT
+            })
+    }, [productsInCart])
+
+    const displayCost = (cost) => {
+        if (cost === undefined) {
+            return;
+        }
+        let costStr = cost.toString();
+        let dotPos = costStr.indexOf('.');
+        if (dotPos < 0) {
+            return costStr + '.00';
+        } else {
+            return costStr.split('.').map((v, i) => {
+                if (i === 1) {
+                    return v.padEnd(2, '0');
+                } else {
+                    return v;
+                }
+            }).join('.');
+        }
+    }
+
+    const itemPrice = (item) => {
+        if (item.quantity > 1) {
+            return `${item.quantity} x ${displayCost(item.price)}`;
+        } else if (item.quantity === 0) {
+            return '0';
+        } else {
+            return item.price;
+        }
+    }
+
     return (
         <ReturnDiv>
-            <DivLR>
+            <DivLR className="rowMargin">
                 <p>Din varukorg</p>
                 <p>X</p>
             </DivLR>
             {/* map out cart items */}
-            <ProductsContainer>
+            <ProductsContainer className="rowMargin">
                 {productsInCart.map((product) => (
                     <ProductDiv key={product.id}>
                         <span>
@@ -39,7 +89,7 @@ function Cart() {
                         <ProductInfo>
                             <ProductRow1>
                                 <p className="boldText">{product.name}</p>
-                                <p className="boldText">{product.price} SEK</p>
+                                <p className="boldText">{itemPrice(product)} SEK</p>
                             </ProductRow1>
                             <p>
                                 {product.shortDesc}
@@ -55,19 +105,19 @@ function Cart() {
             <CostBreakdown>
                 <DivLR>
                     <p>Summa artiklar</p>
-                    <p className="boldText">3000.00 SEK</p>
+                    <p className="boldText">{displayCost(costs.subTotalCost)} SEK</p>
                 </DivLR>
                 <DivLR>
                     <p>Fraktavgift</p>
-                    <p className="boldText">0.00 SEK</p>
+                    <p className="boldText">{displayCost(costs.shippingCost)} SEK</p>
                 </DivLR>
                 <DivLR>
                     <p className="boldText">Totalt inkl. moms</p>
-                    <p className="boldText">3000.00 SEK</p>
+                    <p className="boldText">{displayCost(costs.totalCost)} SEK</p>
                 </DivLR>
                 <DivLR>
                     <p>Varav 25% moms</p>
-                    <p className="boldText">750.00 SEK</p>
+                    <p className="boldText">{displayCost(costs.calcVAT)} SEK</p>
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
@@ -91,6 +141,9 @@ const ReturnDiv = styled.div`
     }
     .boldText {
         font-weight: bold;
+    }
+    .rowMargin {
+        margin-bottom: 20px;
     }
 `
 const DivLR = styled.div`
@@ -124,9 +177,12 @@ const ProductRow3 = styled.div`
     justify-content: space-between;
 `
 const CostBreakdown = styled.div`
-
+    > * {
+        margin-bottom: 10px;
+    }
 `
 const OrderButtonContainer = styled.div`
+    margin: 10px 0px;
     button {
         width: 100%;
         height: 40px;
