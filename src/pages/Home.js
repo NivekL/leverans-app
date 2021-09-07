@@ -26,12 +26,12 @@ const watchesImg = [
     },
     {
         'id': 5,
-        'image': 'Dubai_Luxury/Audemars_Piguet-Royal_Oak_Concept.jpg',
+        'image': 'Dubai_Luxury/omega-de-ville-tresor-43553402109001-l.jpg',
         'cat': 'Dubai'
     },
     {
         'id': 6,
-        'image': 'Dubai_Luxury/jaeger-lecoultre-4122520.jpeg',
+        'image': 'Dubai_Luxury/omega-de-ville-tresor-43553402109001-l.jpg',
         'cat': 'Dubai'
     },
     {
@@ -83,7 +83,6 @@ function Home() {
                     <p>Best Watches</p>
                     <h1>Nice Watch</h1>
                 </div>
-                <Button>Explore</Button>
             </Hero>
             <div>
                 <div>
@@ -121,16 +120,18 @@ function Home() {
     )
 }
 
+
+
 const London = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     flex-wrap: wrap;
 
+
+
     img {
-        height: 180px;
-        width: auto;
-        
+        height: 180px;   
     }
 `
 const Dubai = styled.div`
@@ -140,10 +141,12 @@ const Dubai = styled.div`
     flex-wrap: wrap;
     width: 100%;
 
+    .card{
+        min-width: 180px;
+    }
 
     img {
         height: 180px;
-        width: auto;
     }
 `
 
@@ -157,27 +160,32 @@ const Moritz = styled.div`
 
     img {
         height: 180px;
-        width: auto;
     }
 `
 const TextLondon = styled.div`
    margin: 10px 0 10px 10px;
    font-size: 22px;
+   font-family: 'Libre Franklin', sans-serif;
 `
 const TextDubai = styled.div`
    margin: 10px 0 10px 10px;
    font-size: 22px;
+   font-family: 'Libre Franklin', sans-serif;
 `
 const TextSt = styled.div`
    margin: 10px 0 10px 10px;
    font-size: 22px;
+   font-family: 'Libre Franklin', sans-serif;
 `
 const Hero = styled.div`
-margin-top: 4rem;
+    font-family: 'Libre Franklin', sans-serif;
+    margin-top: 4rem;
+    padding-top: 1rem;
     background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller-83DnGfaWV24-unsplash.jpg'}');
     height: 30.8vh;
     width: 100%;
-    background-size: contain;
+    background-size: cover;
+    
 
     h1,p{
         margin: 0;
@@ -185,7 +193,6 @@ margin-top: 4rem;
     }
 
     div:first-of-type {
-        width: 40%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -197,10 +204,5 @@ margin-top: 4rem;
     }
 `
 
-const Button = styled.div`
-    width: 100px;
-    height: 50px;
-    border: 1px solid white;
-`
 
 export default Home

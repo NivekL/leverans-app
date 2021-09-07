@@ -36,11 +36,11 @@ const Ul = styled.ul`
     background-color: whitesmoke;
     color: #292929;
     position: fixed;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Libre Franklin', sans-serif;
     transform: ${({ open }) => open ? 'translatex(0)' : 'translateY(-140%)'};
     top: 4rem;
     left: 0;
-    height: 33vh;
+    height: 35vh;
     width: 100%;
     padding-top: 2rem;
     padding-left: 1rem;
