@@ -8,7 +8,8 @@ function NavBar() {
         <Nav>
             <Burger/>
         <LogoContainer>
-          <img src={logo} alt="Store logo"  />
+            <a href="/"><img src={logo} alt="Store logo"  /></a>
+          
           </LogoContainer>
        
       </Nav>
@@ -18,7 +19,7 @@ function NavBar() {
 export default NavBar
 
 
-// Styled
+// Styled ----------------------------------------------------------------------
 
 const Nav = styled.nav`
   width: 100%;

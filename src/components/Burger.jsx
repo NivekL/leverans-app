@@ -20,12 +20,12 @@ const [open, setOpen] = useState(false)
 export default Burger
 
 
-// Style
+// Style ----------------------------------------------------------------------
 const StyledBurger = styled.div`
-  width: 2rem;
-  height: 2rem;
+  width: 1.2rem;
+  height: 1.5rem;
   position: fixed;
-  top: 15px;
+  top: 20px;
   left: 20px;
   z-index: 20;
   display: flex;
@@ -33,9 +33,9 @@ const StyledBurger = styled.div`
   flex-flow: column nowrap;
   
   div {
-    width: 2rem;
-    height: 0.25rem;
-    background-color: ${({ open }) => open ? '#ccc' : '#333'};
+    width: 1.5rem;
+    height: 0.20rem;
+    background-color: ${({ open }) => open ? '#afafaf' : '#504f4f'};
     border-radius: 10px;
     transform-origin: 1px;
     transition: all 0.3s linear;
@@ -50,4 +50,6 @@ const StyledBurger = styled.div`
       transform: ${({ open }) => open ? 'rotate(-45deg)' : 'rotate(0)'};
     }
   }
+
+
 `;
