@@ -245,6 +245,12 @@ function Cart() {
 export default Cart
 
 const ReturnDiv = styled.div`
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10000;
+    background-color: #FFF;
     font-family: 'Libre Franklin', sans-serif;
     font-size: 14px;
     --padding: 20px;
