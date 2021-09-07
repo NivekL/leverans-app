@@ -3,16 +3,13 @@ import { Card } from '../components/Card'
 import styled from 'styled-components'
 
 const Lux = styled.div`
-margin-left: 20px;
+margin-top: 5rem;
 font-style: normal;
 font-weight: 400;
-font-size: 15px;
-line-height: 18px;
-max-width: 40px;
-display: flex;
-justify-content: space-between;
+font-size: 4rem;
 `
 const Flex = styled.div`
+
 display: flex;
 justify-content: space-between;
 h4 {
@@ -20,8 +17,7 @@ h4 {
 }
 `
 
-
-export const DubaiLuxury = () => {
+function DubaiLuxury() {
     return (
         <div>
             <Flex>
@@ -32,3 +28,6 @@ export const DubaiLuxury = () => {
         </div>
     )
 }
+
+
+export default DubaiLuxury

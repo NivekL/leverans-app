@@ -1,21 +1,52 @@
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
+import DubaiLuxury from './pages/DubaiLuxury';
+import LondonClassic from './pages/LondonClassic';
+import StMoritzSport from './pages/StMoritzSport';
 
-import { DubaiLuxury } from './pages/DubaiLuxury';
+
 
 
 
 function App() {
   return (
-    <div className="App">
+    <Router>
+      <div className="App">
+       <NavBar/>
+     
+     
+      
+       
+          <div className="content">
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
 
-     <NavBar/>
+              <Route path="/LondonClassic">
+                <LondonClassic />
+              </Route>
 
-      <Home />
+              <Route path="/StMoritzSport">
+                <StMoritzSport />
+              </Route>
 
-   
-    </div>
+              <Route path="/DubaiLuxury">
+                <DubaiLuxury />
+              </Route>
+      
+
+      
+            </Switch>
+          </div>
+       </div>
+    </Router>
   );
 }
 

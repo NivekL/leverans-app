@@ -1,26 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
-import {
-    BrowserRouter as Router,
-    Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 
 
-function DownNav({ open }) {
+function DownNav({ open, setOpen }) {
+
+
     return ( 
-    <Router>
         <Ul open={open}>
         <h3>ALLA KATEGORIER</h3>
-            <li><MenuLink href="/LondonClassic"> London - Classic</MenuLink></li>
-            <li><MenuLink href="/StMoritzSport">St. Moritz - Sport</MenuLink> </li>
-            <li><MenuLink href="/DubaiLuxury">Dubai - Luxury</MenuLink></li>
-            <a href="#" className="showAllLink">Visa alla</a>
+            <li><MenuLink to="/LondonClassic" onClick={() => setOpen(!open)}> London - Classic</MenuLink></li>
+            <li><MenuLink to="/StMoritzSport" onClick={() => setOpen(!open)}>St. Moritz - Sport</MenuLink> </li>
+            <li><MenuLink to="/DubaiLuxury" onClick={() => setOpen(!open)}>Dubai - Luxury</MenuLink></li>
+            <Link to="/" className="showAllLink" onClick={() => setOpen(!open)}>Visa alla</Link>
         </Ul>
-
-    
-     </Router>
     )
 }
 
@@ -48,7 +43,6 @@ const Ul = styled.ul`
  
     li { 
         padding-bottom: 1rem;
-       
     }
 
     h3{
@@ -69,16 +63,9 @@ const Ul = styled.ul`
 
         &:hover{
         border-bottom: 2px solid #292929;
-    }
-    }
-
-    Link{
-        text-decoration: none;
-        font-size: 1.5rem;
-        color: #292929;
-    }
-  
-`;
+        }
+}
+`
 
     const MenuLink = styled(Link)`
         text-decoration: none;

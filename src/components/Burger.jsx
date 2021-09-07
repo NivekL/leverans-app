@@ -12,7 +12,7 @@ const [open, setOpen] = useState(false)
                 <div/>
                 <div/>
             </StyledBurger>
-            <DownNav open={open}/>
+            <DownNav open={open} setOpen={setOpen}/>
         </React.Fragment>
     )
 }
