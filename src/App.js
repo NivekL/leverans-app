@@ -1,10 +1,20 @@
 import './App.css';
-import Cart from './components/Cart';
+import NavBar from './components/NavBar';
+import Home from './pages/Home';
+
+import { DubaiLuxury } from './pages/DubaiLuxury';
+
+
 
 function App() {
   return (
     <div className="App">
-      <Cart />
+
+     <NavBar/>
+
+      <Home />
+
+   
     </div>
   );
 }
