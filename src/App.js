@@ -1,12 +1,20 @@
 import './App.css';
-import { DubaiLuxury } from './pages/DubaiLuxury';
+import NavBar from './components/NavBar';
 import Home from './pages/Home';
+
+import { DubaiLuxury } from './pages/DubaiLuxury';
+
 
 
 function App() {
   return (
     <div className="App">
-      <DubaiLuxury />
+
+     <NavBar/>
+
+      <Home />
+
+   
     </div>
   );
 }
