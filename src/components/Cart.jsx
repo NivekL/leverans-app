@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
-import { Close, DeleteOutlineSharp } from '@material-ui/icons';
+import { Close } from '@material-ui/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 
 // Objekt med låtsasdata från databasen
 const cartDataFromDB = [
@@ -10,7 +12,7 @@ const cartDataFromDB = [
         'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
         'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
         'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
+        'image': 'St_Moritz_Sport/black-w.png',
         'price': 3195,
         'quantity': 2,
     },
@@ -20,7 +22,7 @@ const cartDataFromDB = [
         'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
         'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
         'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
+        'image': 'St_Moritz_Sport/black-w.png',
         'price': 149,
         'quantity': 1,
     },
@@ -30,7 +32,7 @@ const cartDataFromDB = [
         'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
         'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
         'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
+        'image': 'St_Moritz_Sport/black-w.png',
         'price': 3195,
         'quantity': 3,
     },
@@ -40,7 +42,7 @@ const cartDataFromDB = [
         'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
         'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
         'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
+        'image': 'St_Moritz_Sport/black-w.png',
         'price': 3195,
         'quantity': 1,
     },
@@ -50,7 +52,7 @@ const cartDataFromDB = [
         'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
         'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
         'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
+        'image': 'St_Moritz_Sport/black-w.png',
         'price': 3195,
         'quantity': 1,
     },
@@ -60,7 +62,7 @@ const cartDataFromDB = [
         'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
         'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
         'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
+        'image': 'St_Moritz_Sport/black-w.png',
         'price': 1195,
         'quantity': 4,
     },
@@ -209,7 +211,7 @@ function Cart() {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <span><DeleteOutlineSharp fontSize="small" onClick={() => { handleTrashcanButton(product) }} /></span>
+                                    <span><FontAwesomeIcon icon={faTrashAlt} onClick={() => { handleTrashcanButton(product) }} /></span>
                                 </ProductRow3>
                             </ProductInfo>
                         </ProductDiv>
@@ -324,6 +326,7 @@ const ProductRow3 = styled.div`
     td {
         width: 1.5em;
         height: 1.5em;
+        text-align: center;
     }
 `
 const CostBreakdown = styled.div`
