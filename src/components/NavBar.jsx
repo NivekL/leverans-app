@@ -22,12 +22,17 @@ export default NavBar
 // Styled ----------------------------------------------------------------------
 
 const Nav = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 19;
   width: 100%;
   height: 4rem;
   border-bottom: 2px solid #f1f1f1;
   padding: 0 20px;
   display: flex;
   justify-content: center;
+  background-color: #ffffff;
 `
 
 const LogoContainer =  styled.div`
