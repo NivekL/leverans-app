@@ -5,66 +5,90 @@ const watchesImg = [
     {
         'id': 1,
         'image': 'London_Classic/2371_85dae26011-fast119-me021212-1.png',
-        'cat': 'London'
+        'cat': 'London',
+        'name': 'Space Walker',
+        'price': '2295.00'
     },
     {
         'id': 2,
         'image': 'London_Classic/3067_17f2e62f2f.png',
-        'cat': 'London'
+        'cat': 'London',
+        'name': 'Smokey Nevil',
+        'price': '2295.00'
 
     },
     {
         'id': 3,
         'image': 'London_Classic/3074_98030549cb-nes.png',
-        'cat': 'London'
+        'cat': 'London',
+        'name': 'Night Nevil',
+        'price': '2295.00'
     },
 
     {
         'id': 4,
         'image': 'London_Classic/3082_1f48525a62-fast.png',
-        'cat': 'London'
+        'cat': 'London',
+        'name': 'Midnight Falken',
+        'price': '1695.00'
     },
     {
         'id': 5,
-        'image': 'Dubai_Luxury/omega-de-ville-tresor-43553402109001-l.jpg',
-        'cat': 'Dubai'
+        'image': 'Dubai_Luxury/grren-lyx.png',
+        'cat': 'Dubai',
+        'name': 'Chrono',
+        'price': '9995.00'
     },
     {
         'id': 6,
-        'image': 'Dubai_Luxury/omega-de-ville-tresor-43553402109001-l.jpg',
-        'cat': 'Dubai'
+        'image': 'Dubai_Luxury/lyx-emer.png',
+        'cat': 'Dubai',
+        'name': 'Emerald Nevil',
+        'price': '7295.00'
     },
     {
         'id': 7,
-        'image': 'Dubai_Luxury/omega-de-ville-tresor-43553402109001-l.jpg',
-        'cat': 'Dubai'
+        'image': 'Dubai_Luxury/lyx-brown.png',
+        'cat': 'Dubai',
+        'name': 'Blue Ray Falken',
+        'price': '6425.00'
     },
 
     {
         'id': 8,
-        'image': 'Dubai_Luxury/omega-de-ville-tresor-43553402109001-l.jpg',
-        'cat': 'Dubai'
+        'image': 'Dubai_Luxury/lyx-brownblue.png',
+        'cat': 'Dubai',
+        'name': 'Loch Falken',
+        'price': '8295.00'
     },
     {
         'id': 9,
-        'image': 'St_Moritz_Sport/42apple_watch_series_3_gps_42mm_space_gray_aluminum_black_sport_band_pure_front_vertical_us-en_screen.jpg',
-        'cat': 'Moritz'
+        'image': 'St_Moritz_Sport/black-w.png',
+        'cat': 'Moritz',
+        'name': 'Octopus',
+        'price': '1395.00'
     },
     {
         'id': 10,
-        'image': 'St_Moritz_Sport/apple_watch_se_gps_40mm_gold_aluminum_pink_sand_sport_band_pure_front_screen__usen.jpg',
-        'cat': 'Moritz'
+        'image': 'St_Moritz_Sport/blue-w.png',
+        'cat': 'Moritz',
+        'name': 'Deep Blue',
+        'price': '1295.00'
     },
     {
         'id': 11,
-        'image': 'St_Moritz_Sport/citizen_satellite.jpg',
-        'cat': 'Moritz'
+        'image': 'St_Moritz_Sport/orange-w.png',
+        'cat': 'Moritz',
+        'name': 'Neemo',
+        'price': '1295.00'
     },
 
     {
         'id': 12,
-        'image': 'St_Moritz_Sport/garmin_vivoactive_010-02172-22_2.jpg',
-        'cat': 'Moritz'
+        'image': 'St_Moritz_Sport/ocean-plastic.png',
+        'cat': 'Moritz',
+        'name': 'Sand',
+        'price': '1395.00'
     }
 ]
 
@@ -73,11 +97,11 @@ function Home() {
     const [watches, setWatches] = useState([]);
 
     useEffect(() => {
-        setWatches(watchesImg)
+        setWatches(watchesImg);
     }, [])
 
     return (
-        <div>
+        <PageCon>
             <Hero>
                 <div>
                     <p>Best Watches</p>
@@ -86,97 +110,89 @@ function Home() {
             </Hero>
             <div>
                 <div>
-                    <TextLondon>London Classic</TextLondon>
-                    <London>
+                    <h3>London Classic</h3>
+                    <Watchcon>
                         {watchesImg.filter(obj => obj.cat === 'London').map((watch) => (
                             <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                <p>{watch.name}</p>
+                                <p>{watch.price} SEK</p>
                             </div>
                         ))}
-                    </London>
+                    </Watchcon>
                 </div>
                 <div>
-                    <TextDubai>Dubai Luxury</TextDubai>
-                    <Dubai>
+                    <h3>Dubai Luxury</h3>
+                    <Watchcon>
                         {watchesImg.filter(obj => obj.cat === 'Dubai').map((watch) => (
                             <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                <p>{watch.name}</p>
+                                <p>{watch.price} SEK</p>
                             </div>
                         ))}
-                    </Dubai>
+                    </Watchcon>
                 </div>
                 <div>
-                    <TextSt>St Moritz Sport</TextSt>
-                    <Moritz>
+                    <h3>St Moritz Sport</h3>
+                    <Watchcon>
                         {watchesImg.filter(obj => obj.cat === 'Moritz').map((watch) => (
                             <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                <p>{watch.name}</p>
+                                <p>{watch.price} SEK</p>
                             </div>
                         ))}
-                    </Moritz>
+                    </Watchcon>
                 </div>
             </div>
-        </div>
+        </PageCon>
     )
 }
 
-
-
-const London = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-
-
-
-    img {
-        height: 180px;   
-    }
-`
-const Dubai = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    width: 100%;
-
-    .card{
-        min-width: 180px;
-    }
-
-    img {
-        height: 180px;
+const PageCon = styled.div`
+    font-family: 'Libre Franklin', sans-serif;
+    h3 {
+        margin: 10px 0 10px 10px;
+        font-size: 22px;
     }
 `
 
-const Moritz = styled.div`
+const Watchcon = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    width: 100%;
 
+    div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        background-color: whitesmoke;
+        margin-bottom: 5px;
+        padding-bottom: 10px;
+        font-family: 'Libre Franklin', sans-serif;
+    }
+
+    p:last-of-type {
+        font-size: 12px;
+        padding-top: 5px;
+        font-weight: bold;
+    }
 
     img {
         height: 180px;
+        @media screen and (min-width: 1024px) {
+            height: 500px;
+        } 
+        height: 180px;
+        @media screen and (min-width: 1200px) {
+            height: 360px;
+        }   
     }
 `
-const TextLondon = styled.div`
-   margin: 10px 0 10px 10px;
-   font-size: 22px;
-   font-family: 'Libre Franklin', sans-serif;
-`
-const TextDubai = styled.div`
-   margin: 10px 0 10px 10px;
-   font-size: 22px;
-   font-family: 'Libre Franklin', sans-serif;
-`
-const TextSt = styled.div`
-   margin: 10px 0 10px 10px;
-   font-size: 22px;
-   font-family: 'Libre Franklin', sans-serif;
-`
+
 const Hero = styled.div`
     font-family: 'Libre Franklin', sans-serif;
     margin-top: 4rem;
@@ -196,12 +212,13 @@ const Hero = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
+        
 
         p,h1{
             margin: 0 auto;
             text-align: center;
         }
-    }
+   font-family: 'Libre Franklin', sans-serif;
 `
 
 
