@@ -7,25 +7,34 @@ margin-top: 5rem;
 font-style: normal;
 font-weight: 400;
 font-size: 4rem;
+@media screen and (max-width: 481px) {
+          font-size: 24px;
+         }   
 `
 const Flex = styled.div`
 
 display: flex;
-justify-content: space-between;
-h4 {
-    margin: 20px;
-}
+`
+const CardContainer = styled.div`
+
+display: flex;
+flex-direction: row;
+align-items: center;
+`
+const Font = styled.div`
+font-family: 'Libre Franklin', sans-serif;
 `
 
 function DubaiLuxury() {
     return (
-        <div>
+        <Font>
             <Flex>
             <Lux>Time for Luxury</Lux>
-            <h4>Sort</h4>
             </Flex>
+            <CardContainer>
             <Card />
-        </div>
+            </CardContainer>
+        </Font>
     )
 }
 
