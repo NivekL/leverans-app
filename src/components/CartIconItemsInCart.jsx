@@ -34,6 +34,7 @@ const ItemsInCart = styled.div`
     background-color: white;
     text-align: center;
     font-size: 12px;
+    font-family: 'Montserrat'; 
     div {
         position: relative;
         top: 50%;

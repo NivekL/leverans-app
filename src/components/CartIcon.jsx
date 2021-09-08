@@ -1,6 +1,6 @@
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import React,  { useState } from 'react';
-import Cart from './Cart';
+import Cart from './cart/Cart';
 import styled from 'styled-components';
 import CartIconItemsInCart from './CartIconItemsInCart';
 

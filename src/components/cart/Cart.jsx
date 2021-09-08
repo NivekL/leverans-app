@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import CartProductRow from './CartProductRow';
 
 // Objekt med låtsasdata från databasen
-const cartDataFromDB = [
+let cartDataFromDB = [
     {
         'name': 'Apple Watch SE',
         'id': 1,
@@ -75,6 +74,9 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
     //Function to get total quantity
     const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
         let quantity = 0;
+        if (!dataArr.length) {
+            return;
+        }
         quantity = dataArr.map(v => parseInt(v[pathToQuantityProperty])).reduce((prev, curr) => prev + curr);
 
         return quantity < 100 ? quantity : '>C';
@@ -84,9 +86,12 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
         // Ersätt "cartDataFromDB" nedan mot fetch-resultatet.
         setProductsInCart(cartDataFromDB);
-        // Send the quantity-total to the Cart icon
-        setItemsInCartQuantity(getItemsInCartQuantity(cartDataFromDB, 'quantity'));
     }, []);
+
+    useEffect(() => {
+        // Send the quantity-total to the Cart icon
+        setItemsInCartQuantity(getItemsInCartQuantity(productsInCart, 'quantity'));
+    }, [productsInCart]);
 
     // Räkna ut totaler
     useEffect(() => {
@@ -126,31 +131,6 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
             }).join('.');
         }
     }
-
-    const itemPrice = (item) => {
-        if (item.quantity > 1) {
-            return `${item.quantity} x ${displayCost(item.price)}`;
-        } else if (item.quantity === 0) {
-            return displayCost(0);
-        } else {
-            return displayCost(item.price);
-        }
-    }
-
-    const insertLine = (items, index) => {
-        if (items.length > 1) {
-            if (index === items.length - 1) {
-                return;
-            }
-            return <Line></Line>;
-        }
-    }
-
-    const shortenText = (text, maxlength) => {
-        if (text.length < maxlength) return text;
-        return text.substring(0,maxlength).concat('...');
-    }
-
   
     const handleQuantityButton = (item, addOrSub) => {
         switch (addOrSub) {
@@ -179,7 +159,12 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
         }
     }
     const handleTrashcanButton = (item) => {
-        alert('pressed trashcanbutton for product with id: ' + item.id);
+        console.log('pressed trashcanbutton for product with id: ' + item.id);
+
+        //fake fetch request to delete from Cart
+        cartDataFromDB = cartDataFromDB.filter(v => item.id !== v.id);
+
+        setProductsInCart([...cartDataFromDB]);
     }
     const handleOrderButton = () => {
         alert('orderbutton pressed');
@@ -196,35 +181,15 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
             <ProductsContainer className="rowMargin">
                 {/* map out cart items */}
                 {productsInCart.map((product, index) => (
-                    <div key={product.id}>
-                        <ProductDiv>
-                            <span>
-                                <img src={process.env.PUBLIC_URL + '/images/' + product.image} alt={product.name} />
-                            </span>
-                            <ProductInfo>
-                                <ProductRow1>
-                                    <p className="boldText">{shortenText(product.name, 20)}</p>
-                                    <p className="boldText">{itemPrice(product)} SEK</p>
-                                </ProductRow1>
-                                <ProductRow2>
-                                    <p>{shortenText(product.shortDesc, 40)}</p>
-                                </ProductRow2>
-                                <ProductRow3>
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td onClick={() => { handleQuantityButton(product, 'subtract') }}>-</td>
-                                                <td>{product.quantity}</td>
-                                                <td onClick={() => { handleQuantityButton(product, 'add') }}>+</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <span><FontAwesomeIcon icon={faTrashAlt} onClick={() => { handleTrashcanButton(product) }} /></span>
-                                </ProductRow3>
-                            </ProductInfo>
-                        </ProductDiv>
-                        {insertLine(productsInCart, index)}
-                    </div>
+                    <CartProductRow 
+                        key={product.id}
+                        product={product} 
+                        index={index} 
+                        productsInCart={productsInCart}
+                        displayCost={displayCost}
+                        handleQuantityButton={handleQuantityButton}
+                        handleTrashcanButton={handleTrashcanButton}
+                    />
                 ))}
             </ProductsContainer>
             <CostBreakdown>
@@ -246,7 +211,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
-                    <button onClick={handleOrderButton}>BESTÄLL</button>
+                    <button onClick={handleOrderButton}>CHECK OUT</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
@@ -302,47 +267,6 @@ const ProductsContainer = styled.div`
     padding: 0 var(--padding);
     overflow-y: scroll;
 `
-const ProductDiv = styled.div`
-    display: flex;
-    flex-direction: row;
-    height: 80px;
-    img {
-        height: 100%;
-        width: auto;
-    }
-
-`
-const ProductInfo = styled.div`
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-`
-const ProductRow1 = styled.div`
-    display: flex;
-    justify-content: space-between;
-`
-const ProductRow2 = styled.div`
-    flex-grow: 1;
-`
-const ProductRow3 = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    table {
-        border-collapse: collapse;
-    }
-    table, tr, td {
-        border: 1px solid #EFEFEF;
-    }
-    tr > td:first-of-type, tr > td:last-of-type {
-        cursor: pointer;
-    }
-    td {
-        width: 1.5em;
-        height: 1.5em;
-        text-align: center;
-    }
-`
 const CostBreakdown = styled.div`
     padding: 0 var(--padding);
     > * {
@@ -364,8 +288,4 @@ const OrderButtonContainer = styled.div`
         background-color: #000;
         border: 0;
     }
-`
-const Line = styled.div`
-    border-bottom: 1px solid #EFEFEF;
-    margin: 20px 0;
 `
