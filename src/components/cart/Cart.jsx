@@ -182,6 +182,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
                 {/* map out cart items */}
                 {productsInCart.map((product, index) => (
                     <CartProductRow 
+                        key={product.id}
                         product={product} 
                         index={index} 
                         productsInCart={productsInCart}
