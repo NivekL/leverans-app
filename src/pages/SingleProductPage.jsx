@@ -1,34 +1,62 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import watch from '../images/London_Classic/2371_85dae26011-fast119-me021212-1.png'
+import {motion} from 'framer-motion'
 
-function SingleProductPage() {
+function SingleProductPage({match}) {
+    const [info, setInfo] = useState({});
+
+    useEffect(() => {
+        fetchInfo();
+    }, []);
+
+    const fetchInfo = async () => {
+        try {
+            const response = await fetch(`/api/watches/` + match.params.id);
+            if (!response.ok) {
+                throw new Error('HTTP Error! status: ' + response.status);
+            }
+            const data = await response.json();
+            console.log(data);
+            setInfo(data[0]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <MainWrapper className="mainWrapper">
+        <MainWrapper className="mainWrapper" 
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            transition={{delay: 0.3}}
+        >
             <ImageContainer>
-                <img className="watchImage" src={watch} alt="Watch" />
+                <motion.img className="watchImage" src={process.env.PUBLIC_URL + '/images/' + info.image} alt="Watch" 
+                    initial={{y: 20, opacity: 0}}
+                    animate={{y: 0, opacity: 1}}
+                    transition={{ease: "easeInOut", duration: 0.8}}
+                />
             </ImageContainer>
             <InfoMainContainer>
                 <InfoContainer>
                     <InnerInfo>
-                        <h2 className="watchName">Golden Dusk</h2>
-                        <p className="watchType">Steel mesh</p>
+                        <h2 className="watchName">{info.name}</h2>
                     </InnerInfo>
                     <PriceContainer>
-                        <p className="price">1 695 kr</p>
+                        <p className="price">{info.price} kr</p>
                     </PriceContainer>
                 </InfoContainer>
 
                 <DescriptionContainer>
                     <h2 className="descriptionTitle">Beskrivning</h2>
-                    <p className="descriptionText">
-                        En ikon i all sin enkelhet. Falken är en tidlös klocka, med sin enkla design och 
-                        den karaktäristiska lilla sekund-urtavlan, som en symbol för tidens rörelse. 
-                    </p>
+                    <p className="descriptionText">{info.description}</p>
                 </DescriptionContainer>
 
 
-                <AddToCart>
+                <AddToCart
+                    initial={{y: 20, opacity: 0}}
+                    animate={{y: 0, opacity: 1}}
+                    transition={{ease: "easeInOut", duration: 0.5, delay: 0.3}}
+                >
                     Lägg till i varukorg
                 </AddToCart>
             </InfoMainContainer>
@@ -36,16 +64,17 @@ function SingleProductPage() {
     )
 }
 
-const MainWrapper = styled.div `
+const MainWrapper = styled(motion.div) `
     display: flex;
     flex-direction: column;
+    margin: 64px auto 0;
 
-    @media screen and (min-width: 1025px) {
+    @media screen and (min-width: 1024px) {
          {
             flex-direction: row;
             width: 100%;
             max-width: 1640px;
-            margin: 60px auto 0;
+            margin: 64px auto 0;
         }
     }
 `
@@ -57,12 +86,25 @@ const ImageContainer = styled.div `
         height: auto;
         display: block;
     }
+
+    @media screen and (min-width: 1024px) {
+        {
+            flex-basis: 50%;
+       }
+   }
 `
 
 const InfoMainContainer = styled.div `
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    @media screen and (min-width: 1024px) {
+        {
+            flex-basis: 50%;
+       }
+   }
+    
 `
 
 const InfoContainer = styled.div `
@@ -72,23 +114,14 @@ const InfoContainer = styled.div `
 `
 
 const InnerInfo = styled.div `
-
-    .watchName, .watchType {
-        font-family: 'Montserrat', sans-serif;
-    }
     .watchName {
+        font-family: 'Montserrat', sans-serif;
         font-size: 14px;
-    }
-    .watchType {
-        font-size: 12px;
     }
 
     @media screen and (min-width: 768px) {
         .watchName {
             font-size: 18px;
-        }
-        .watchType {
-            font-size: 14px;
         }
    }
 `
@@ -120,7 +153,7 @@ const DescriptionContainer = styled.div `
     }    
 `
 
-const AddToCart = styled.button `
+const AddToCart = styled(motion.button) `
     height: 50px;
     font-family: 'Libre Franklin', sans-serif;
     border: none;

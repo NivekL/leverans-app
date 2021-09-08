@@ -39,6 +39,17 @@ app.get('/api/watches/dubai', (req, res) => {
     res.json(result);
 })
 
+// Get watches by id
+app.get('/api/watches/:id', (req, res) => {;
+    let stmt = dbWatches.prepare(`
+      SELECT *
+      FROM products
+      WHERE id = :id
+    `);
+    let result = stmt.all({id: req.params.id});
+    res.json(result);
+  });
+
 
 const port = 4000;
 app.listen(port, () => console.log('Listening on port ' + port));
