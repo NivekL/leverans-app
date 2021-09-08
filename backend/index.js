@@ -30,6 +30,14 @@ app.get('/api/watches', (req, res) => {
 
 //-----------
 
+// GET watches by category
+app.get('/api/watches/dubai', (req, res) => {
+    let statement = dbWatches.prepare(`
+        SELECT * FROM products WHERE category = 'Dubai'
+    `);
+    let result = statement.all();
+    res.json(result);
+})
 
 
 const port = 4000;
