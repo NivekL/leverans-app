@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import CartProductRow from './CartProductRow';
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 // Objekt med låtsasdata från databasen
 let cartDataFromDB = [
@@ -180,17 +181,27 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
             </TopBar>
             <ProductsContainer className="rowMargin">
                 {/* map out cart items */}
-                {productsInCart.map((product, index) => (
-                    <CartProductRow 
-                        key={product.id}
-                        product={product} 
-                        index={index} 
-                        productsInCart={productsInCart}
-                        displayCost={displayCost}
-                        handleQuantityButton={handleQuantityButton}
-                        handleTrashcanButton={handleTrashcanButton}
-                    />
-                ))}
+                <AnimateSharedLayout>
+                    <AnimatePresence>
+                        {productsInCart.map((product, index) => (
+                                <motion.div
+                                    key={product.id}
+                                    layoutId={product.id}
+                                    initial={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <CartProductRow
+                                        product={product}
+                                        index={index}
+                                        productsInCart={productsInCart}
+                                        displayCost={displayCost}
+                                        handleQuantityButton={handleQuantityButton}
+                                        handleTrashcanButton={handleTrashcanButton}
+                                    />
+                                </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </AnimateSharedLayout>
             </ProductsContainer>
             <CostBreakdown>
                 <DivLR>

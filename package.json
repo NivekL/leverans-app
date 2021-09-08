@@ -17,6 +17,7 @@
     "better-sqlite3": "^7.4.3",
     "concurrently": "^6.2.1",
     "express": "^4.17.1",
+    "framer-motion": "^4.1.17",
     "nodemon": "^2.0.12",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
