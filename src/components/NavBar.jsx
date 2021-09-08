@@ -3,6 +3,8 @@ import logo from '../logo.png'
 import styled from 'styled-components'
 import Burger from './Burger'
 import { Link } from "react-router-dom";
+import CartIcon from './CartIcon';
+import WishListIcon from './WishListIcon';
 
 
 
@@ -13,6 +15,12 @@ function NavBar() {
             <Burger/>
             <LogoContainer>
                 <Link to="/"><img src={logo} alt="Store logo"  /></Link>
+            </LogoContainer>
+            <LogoContainer>
+                <WishListIcon />
+            </LogoContainer>
+            <LogoContainer>
+              <CartIcon />
             </LogoContainer>
       </Nav>
     )

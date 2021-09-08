@@ -7,7 +7,7 @@ const [open, setOpen] = useState(false)
 
     return (
         <React.Fragment>
-            <StyledBurger open={open} onClick={() => setOpen(!open)}>
+            <StyledBurger open={open} onClick={() => setOpen(!open)} style={{cursor: "pointer"}}>
                 <div/>
                 <div/>
                 <div/>
@@ -26,7 +26,7 @@ const StyledBurger = styled.div`
   height: 1.5rem;
   position: fixed;
   top: 20px;
-  left: 20px;
+  left: 30px;
   z-index: 20;
   display: flex;
   justify-content: space-around;

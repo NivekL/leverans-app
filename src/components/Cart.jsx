@@ -68,7 +68,7 @@ const cartDataFromDB = [
     },
 ]
 
-function Cart() {
+function Cart({ open, setOpen }) {
     const [productsInCart, setProductsInCart] = useState([]);
     const [costs, setCosts] = useState({});
 
@@ -141,9 +141,7 @@ function Cart() {
         return text.substring(0,maxlength).concat('...');
     }
 
-    const handleXButton = () => {
-        alert('X-button pressed');
-    }
+  
     const handleQuantityButton = (item, addOrSub) => {
         switch (addOrSub) {
             case 'add':
@@ -178,11 +176,11 @@ function Cart() {
     }
 
     return (
-        <ReturnDiv>
+        <ReturnDiv open={open}>
             <TopBar>
                 <DivLR>
                     <p>Din varukorg</p>
-                    <Close onClick={handleXButton} />
+                    <Close  onClick={() => setOpen(!open)} style={{cursor: "pointer"}}/>
                 </DivLR>
             </TopBar>
             <ProductsContainer className="rowMargin">
@@ -252,7 +250,7 @@ const ReturnDiv = styled.div`
     top: 0;
     bottom: 0;
     z-index: 10000;
-    background-color: #FFF;
+    background-color: whitesmoke;
     font-family: 'Libre Franklin', sans-serif;
     font-size: 14px;
     --padding: 20px;
@@ -260,6 +258,8 @@ const ReturnDiv = styled.div`
     max-width: 500px;
     display: flex;
     flex-direction: column;
+    transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
+    transition: transform 0.3s ease-in-out;
     p {
         margin: 2px 0;
         text-align: left;
