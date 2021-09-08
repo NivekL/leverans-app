@@ -92,7 +92,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
     useEffect(() => {
         // Send the quantity-total to the Cart icon
         setItemsInCartQuantity(getItemsInCartQuantity(productsInCart, 'quantity'));
-    }, [productsInCart]);
+    }, [productsInCart, setItemsInCartQuantity]);
 
     // Räkna ut totaler
     useEffect(() => {
