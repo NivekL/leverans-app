@@ -1,6 +1,6 @@
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import React,  { useState } from 'react';
-import Cart from './Cart';
+import Cart from './cart/Cart';
 import styled from 'styled-components';
 import CartIconItemsInCart from './CartIconItemsInCart';
 
@@ -28,6 +28,6 @@ export default CartIcon
 const IconContainer = styled.div`
       position: fixed;
   top: 15px;
-  right: 30px;
+  right: 20px;
   z-index: 20;
 `

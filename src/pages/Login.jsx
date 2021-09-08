@@ -3,89 +3,112 @@ import styled from 'styled-components'
 
 function Login() {
     return (
-        <div>
             <FormContainer>
                 <Form>
                     <FormInputContainer>
-                        <label htmlFor="username">Användarnamn</label>
-                        <input type="text" name="username" id="" placeholder="Username"/>
+                        <InputCont>
+                        <input type="text" name="username" id="" placeholder="användarnamn"/>
+                        </InputCont>
+                        <InputCont>
+                        <input type="password" name="password" id="" placeholder="lösenord"/>
+                        </InputCont>
                     </FormInputContainer>
-                    <FormInputContainer>
-                        <label htmlFor="password">Lösenord</label>
-                        <input type="password" name="password" id="" placeholder="Password"/>
-                    </FormInputContainer>
-
-                    <LoginButton type="submit">Logga in</LoginButton>
                 </Form>
 
                 <RegisterContainer>
-                    <p>Eller registrera dig</p>
-
-                    <RegisterButton type="submit">Registrera</RegisterButton>
+                    <div>
+                    <p>Inte medlem?</p>
+                    <a href="#">Registrera</a>
+                    </div>
+                    <LoginButton type="submit">logga in</LoginButton>
                 </RegisterContainer>
+
             </FormContainer>
-        </div>
     )
 }
 
 export default Login
 
+
+
+// Styleing -----------------------------------
+
 const FormContainer = styled.div `
-    display: flex;
+    display: flex; 
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    margin-left: 2rem;
+    max-width: 19rem;
+    
 `
 
 const Form = styled.form `
-    label, input {
-        display: block;
-        font-family: 'Montserrat', sans-serif;
-    }
+    position: relative;
+    display: flex; 
+    flex-direction: row;
 
     input {
         padding: 5px;
-        border-radius: 0;
         border: 1px solid #000;
+        margin-right: 7px;
     }
 `
 
 const FormInputContainer = styled.div `
-    margin: 30px 0;
+    display: flex;
+    margin-bottom: 10px;
+
+
+`
+
+const InputCont = styled.div`
+display: flex;
+flex-direction: column;
 `
 
 const LoginButton = styled.button `
     height: 45px;
-    width: 130px;
+    width: 150px;
     font-family: 'Libre Franklin', sans-serif;
-    border: none;
+    border: 2px solid #292929;
     text-align: center;
-    text-decoration: none;
-    background-color: #000;
-    color: #fff;
+    background-color: transparent;
+    color: #292929;
     font-weight: 400;
-    margin: 10px auto;
     font-size: 16px;
-    line-height: 21px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     text-transform: uppercase;
-    position: relative;
+    cursor: pointer;
+
+    &:hover{
+        background-color: #292929;
+        color: whitesmoke;
+    }
 `
 
 const RegisterContainer = styled.div `
-    margin-top: 20px;
-    padding-top: 10px;
-    width: 300px;
-    border-top: solid 1px #7b7b7b;
+    display: flex;
+    flex-direction: column;
 
-    p {
-        color: #121212;
-        font-family: 'Montserrat'; 
-        sans-serif; text-align: center;
+    p{
+        font-family: 'Libre Franklin', sans-serif;
+        font-size: .8rem;
+        margin-right: 6px;
     }
+
+    a {
+        font-size: .8rem;
+        color: #4e5da3;
+        font-family: 'Montserrat'; 
+        text-decoration: none;
+        letter-spacing: 1px;
+        margin-bottom: 13px;
+
+        &:hover{
+            border-bottom: 1px solid #4e5da3;
+    }
+    }
+   div{
+       display: flex;
+   }
 `
 
 const RegisterButton = styled(LoginButton)``

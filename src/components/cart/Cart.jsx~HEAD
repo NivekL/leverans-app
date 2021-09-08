@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
-import CartProductRow from '../components/cart/CartProductRow';
+import CartProductRow from './CartProductRow';
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 // Objekt med låtsasdata från databasen
 let cartDataFromDB = [
@@ -67,12 +68,20 @@ let cartDataFromDB = [
     },
 ]
 
-
-function WishList({ open, setOpen }) {
+function Cart({ open, setOpen, setItemsInCartQuantity }) {
     const [productsInCart, setProductsInCart] = useState([]);
     const [costs, setCosts] = useState({});
 
-  
+    //Function to get total quantity
+    const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
+        let quantity = 0;
+        if (!dataArr.length) {
+            return;
+        }
+        quantity = dataArr.map(v => parseInt(v[pathToQuantityProperty])).reduce((prev, curr) => prev + curr);
+
+        return quantity < 100 ? quantity : '>C';
+    }
 
     useEffect(() => {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
@@ -80,7 +89,10 @@ function WishList({ open, setOpen }) {
         setProductsInCart(cartDataFromDB);
     }, []);
 
- 
+    useEffect(() => {
+        // Send the quantity-total to the Cart icon
+        setItemsInCartQuantity(getItemsInCartQuantity(productsInCart, 'quantity'));
+    }, [productsInCart, setItemsInCartQuantity]);
 
     // Räkna ut totaler
     useEffect(() => {
@@ -155,34 +167,50 @@ function WishList({ open, setOpen }) {
 
         setProductsInCart([...cartDataFromDB]);
     }
-    const handleAddButton = () => {
+    const handleOrderButton = () => {
         alert('orderbutton pressed');
     }
+
     return (
         <ReturnDiv open={open}>
-             <TopBar>
+            <TopBar>
                 <DivLR>
-                    <p>Din inköpslista</p>
+                    <p>Din varukorg</p>
                     <Close  onClick={() => setOpen(!open)} style={{cursor: "pointer"}}/>
                 </DivLR>
             </TopBar>
             <ProductsContainer className="rowMargin">
                 {/* map out cart items */}
-                {productsInCart.map((product, index) => (
-                    <CartProductRow 
-                        product={product} 
-                        index={index} 
-                        productsInCart={productsInCart}
-                        displayCost={displayCost}
-                        handleQuantityButton={handleQuantityButton}
-                        handleTrashcanButton={handleTrashcanButton}
-                    />
-                ))}
+                <AnimateSharedLayout>
+                    <AnimatePresence>
+                        {productsInCart.map((product, index) => (
+                                <motion.div
+                                    key={product.id}
+                                    layoutId={product.id}
+                                    initial={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <CartProductRow
+                                        product={product}
+                                        index={index}
+                                        productsInCart={productsInCart}
+                                        displayCost={displayCost}
+                                        handleQuantityButton={handleQuantityButton}
+                                        handleTrashcanButton={handleTrashcanButton}
+                                    />
+                                </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </AnimateSharedLayout>
             </ProductsContainer>
             <CostBreakdown>
                 <DivLR>
                     <p>Summa artiklar</p>
                     <p className="boldText">{displayCost(costs.subTotalCost)} SEK</p>
+                </DivLR>
+                <DivLR>
+                    <p>Fraktavgift</p>
+                    <p className="boldText">{displayCost(costs.shippingCost)} SEK</p>
                 </DivLR>
                 <DivLR className="biggerText">
                     <p className="boldText">Totalt inkl. moms</p>
@@ -194,18 +222,16 @@ function WishList({ open, setOpen }) {
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
-                    <button onClick={handleAddButton}>lägg till i varukorg</button>
+                    <button onClick={handleOrderButton}>checka ut</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
 }
 
-export default WishList
+export default Cart
 
-
-//Style ----------------------------
 const ReturnDiv = styled.div`
-        position: fixed;
+    position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
@@ -224,16 +250,27 @@ const ReturnDiv = styled.div`
     @media screen and (max-width: 600px) {
         width: 100%
     } 
+    p {
+        margin: 2px 0;
+        text-align: left;
+    }
+    .boldText {
+        font-weight: bold;
+    }
+    .biggerText {
+        font-size: 16px;
+    }
+    .rowMargin {
+        margin-bottom: 20px;
+    }
 `
-const TopBar = styled.div`
-    padding: var(--padding);
-`
-
 const DivLR = styled.div`
     display: flex;
     justify-content: space-between;
 `
-
+const TopBar = styled.div`
+    padding: var(--padding);
+`
 const ProductsContainer = styled.div`
     flex-grow: 1;
     display: flex;
