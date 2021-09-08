@@ -99,7 +99,7 @@ const UserContainer = styled.div`
 
 @media screen and (max-width: 768px) {
         display: none;
-        } 
+    } 
 
 
 h3{
