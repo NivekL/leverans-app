@@ -121,6 +121,9 @@ function Home() {
                         ))}
                     </Watchcon>
                 </div>
+                <Hero1>
+                
+                </Hero1>
                 <div>
                     <h3>Dubai Luxury</h3>
                     <Watchcon>
@@ -156,8 +159,11 @@ function Home() {
 const PageCon = styled.div`
     font-family: 'Libre Franklin', sans-serif;
     h3 {
-        margin: 10px 10px 10px 10px;
+        margin: 30px 10px 10px 10px;
         font-size: 22px;
+        @media screen and (min-width: 1024px) {
+            margin-left: 18px;
+        }
     }
 `
 
@@ -177,6 +183,9 @@ const Watchcon = styled.div`
         padding-bottom: 10px;
         font-family: 'Libre Franklin', sans-serif;
     }
+    div:hover {
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    }
 
     p:last-of-type {
         font-size: 12px;
@@ -189,7 +198,6 @@ const Watchcon = styled.div`
         @media screen and (min-width: 1024px) {
             height: 500px;
         } 
-        height: 180px;
         @media screen and (min-width: 1200px) {
             height: 360px;
         }   
@@ -205,6 +213,13 @@ const Hero = styled.div`
     width: 100%;
     background-size: cover;
     background-repeat: no-repeat;
+
+    p {
+        color: #504f4f; 
+    }
+    h1 {
+        color: #504f4f;
+    }
     
     @media screen and (min-width: 1200px) {
         height: 100vh;
@@ -242,6 +257,24 @@ const Hero = styled.div`
         }
 
    font-family: 'Libre Franklin', sans-serif;
+`
+const Hero1 = styled.div`
+    margin-top: 2rem;
+    padding-top: 1rem;
+    background-image: url('${process.env.PUBLIC_URL + '/images/triwa-melted-guns-watch-02.jpg'}');
+    height: 30.8vh;
+    width: 100%;
+    background-size: cover;
+
+    @media screen and (min-width: 768px) {
+        height: 40vh;
+    }
+    @media screen and (min-width: 1200px) {
+        height: 100vh;
+    }
+    @media screen and (min-width: 1900px) {
+        height: 100vh;
+    }
 `
 
 const Ocean = styled.div`
