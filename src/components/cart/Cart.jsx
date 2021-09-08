@@ -222,7 +222,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
-                    <button onClick={handleOrderButton}>BESTÄLL</button>
+                    <button onClick={handleOrderButton}>checka ut</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
@@ -298,5 +298,6 @@ const OrderButtonContainer = styled.div`
         color: #FFF;
         background-color: #000;
         border: 0;
+        text-transform: uppercase;
     }
 `
