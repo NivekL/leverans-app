@@ -133,6 +133,9 @@ function Home() {
                         ))}
                     </Watchcon>
                 </div>
+                <Ocean>
+                   
+                </Ocean>
                 <div>
                     <h3>St Moritz Sport</h3>
                     <Watchcon>
@@ -153,7 +156,7 @@ function Home() {
 const PageCon = styled.div`
     font-family: 'Libre Franklin', sans-serif;
     h3 {
-        margin: 10px 0 10px 10px;
+        margin: 10px 10px 10px 10px;
         font-size: 22px;
     }
 `
@@ -201,6 +204,12 @@ const Hero = styled.div`
     height: 30.8vh;
     width: 100%;
     background-size: cover;
+    @media screen and (min-width: 768px) {
+        height: 50vh;
+    }
+    @media screen and (min-width: 1200px) {
+        height: 100vh;
+    }
     
 
     h1,p{
@@ -219,6 +228,24 @@ const Hero = styled.div`
             text-align: center;
         }
    font-family: 'Libre Franklin', sans-serif;
+`
+
+const Ocean = styled.div`
+    margin-top: 2rem;
+    padding-top: 1rem;
+    background-image: url('${process.env.PUBLIC_URL + '/images/dive.jfif'}');
+    height: 30.8vh;
+    width: 100%;
+    background-size: cover;
+    @media screen and (min-width: 768px) {
+        height: 40vh;
+    }
+    @media screen and (min-width: 1200px) {
+        height: 100vh;
+    }
+    @media screen and (min-width: 1900px) {
+        height: 100vh;
+    }
 `
 
 
