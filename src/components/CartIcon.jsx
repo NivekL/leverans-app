@@ -2,6 +2,7 @@ import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import React,  { useState } from 'react';
 import Cart from './Cart';
 import styled from 'styled-components';
+import CartIconItemsInCart from './CartIconItemsInCart';
 
 function CartIcon() {
     const [open, setOpen] = useState(false)
@@ -9,8 +10,9 @@ function CartIcon() {
 
     return (
         <React.Fragment>
-            <IconContainer>
-                 <ShoppingCartOutlinedIcon open={open} onClick={() => setOpen(!open)} fontSize="large" style={{fill: "#504f4f", cursor: "pointer"}} />
+            <IconContainer open={open} onClick={() => setOpen(!open)} style={{cursor: "pointer"}}>
+                 <ShoppingCartOutlinedIcon fontSize="large" style={{fill: "#504f4f"}} />
+                 <CartIconItemsInCart />
             </IconContainer>
 
             <Cart open={open} setOpen={setOpen} />
