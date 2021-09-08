@@ -43,6 +43,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: center;
   background-color: #ffffff;
+
 `
 
 const LogoContainer =  styled.div`

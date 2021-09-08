@@ -29,6 +29,9 @@ export default WishListIcon
 const IconContainer = styled.div`
       position: fixed;
   top: 15px;
-  right: 85px;
+  right: 65px;
   z-index: 20;
+
+
+  
 `
