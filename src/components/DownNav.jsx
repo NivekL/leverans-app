@@ -12,14 +12,14 @@ function DownNav({ open, setOpen }) {
     return ( 
         <MenuWrapper open={open}>
             <Ul >
-            <h3>ALLA KATEGORIER</h3>
-                <li><MenuLink to="/LondonClassic" onClick={() => setOpen(!open)}> London - Classic</MenuLink></li>
-                <li><MenuLink to="/StMoritzSport" onClick={() => setOpen(!open)}>St. Moritz - Sport</MenuLink> </li>
-                <li><MenuLink to="/DubaiLuxury" onClick={() => setOpen(!open)}>Dubai - Luxury</MenuLink></li>
-                <Link to="/" className="showAllLink" onClick={() => setOpen(!open)}>Visa alla</Link>
+            <h3>Kategorier</h3>
+                <li><MenuLink to="/LondonClassic" onClick={() => setOpen(!open)}>Classic</MenuLink></li>
+                <li><MenuLink to="/StMoritzSport" onClick={() => setOpen(!open)}>Sport</MenuLink> </li>
+                <li><MenuLink to="/DubaiLuxury" onClick={() => setOpen(!open)}>Luxury</MenuLink></li>
+                <Link to="/" className="showAllLink" onClick={() => setOpen(!open)}>visa alla </Link>
             </Ul>
             <UserContainer>
-            <h3>ANVÄNDARSIDA</h3>    
+            <h3>hej, logga in</h3>    
             <Login />
             </UserContainer>
         </MenuWrapper>
@@ -51,6 +51,7 @@ transition: transform 0.3s ease-in-out;
     font-size: .8rem;
     font-weight: 200;
     letter-spacing: 2px;
+    text-transform: uppercase;
     }
 `
 
@@ -84,8 +85,9 @@ const Ul = styled.ul`
         margin-top: 1.4rem;
         color: #292929;
         letter-spacing: 1px;
-        width: 3.7rem;
+        width: 5rem;
         line-height: -20px;
+        text-transform: uppercase;
 
         &:hover{
         border-bottom: 2px solid #292929;
