@@ -1,104 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
-
-const watchesImg = [
-    {
-        'id': 1,
-        'image': 'London_Classic/2371_85dae26011-fast119-me021212-1.png',
-        'cat': 'London',
-        'name': 'Space Walker',
-        'price': '2295.00'
-    },
-    {
-        'id': 2,
-        'image': 'London_Classic/3067_17f2e62f2f.png',
-        'cat': 'London',
-        'name': 'Smokey Nevil',
-        'price': '2295.00'
-
-    },
-    {
-        'id': 3,
-        'image': 'London_Classic/3074_98030549cb-nes.png',
-        'cat': 'London',
-        'name': 'Night Nevil',
-        'price': '2295.00'
-    },
-
-    {
-        'id': 4,
-        'image': 'London_Classic/3082_1f48525a62-fast.png',
-        'cat': 'London',
-        'name': 'Midnight Falken',
-        'price': '1695.00'
-    },
-    {
-        'id': 5,
-        'image': 'Dubai_Luxury/grren-lyx.png',
-        'cat': 'Dubai',
-        'name': 'Chrono',
-        'price': '9995.00'
-    },
-    {
-        'id': 6,
-        'image': 'Dubai_Luxury/lyx-emer.png',
-        'cat': 'Dubai',
-        'name': 'Emerald Nevil',
-        'price': '7295.00'
-    },
-    {
-        'id': 7,
-        'image': 'Dubai_Luxury/lyx-brown.png',
-        'cat': 'Dubai',
-        'name': 'Blue Ray Falken',
-        'price': '6425.00'
-    },
-
-    {
-        'id': 8,
-        'image': 'Dubai_Luxury/lyx-brownblue.png',
-        'cat': 'Dubai',
-        'name': 'Loch Falken',
-        'price': '8295.00'
-    },
-    {
-        'id': 9,
-        'image': 'St_Moritz_Sport/black-w.png',
-        'cat': 'Moritz',
-        'name': 'Octopus',
-        'price': '1395.00'
-    },
-    {
-        'id': 10,
-        'image': 'St_Moritz_Sport/blue-w.png',
-        'cat': 'Moritz',
-        'name': 'Deep Blue',
-        'price': '1295.00'
-    },
-    {
-        'id': 11,
-        'image': 'St_Moritz_Sport/orange-w.png',
-        'cat': 'Moritz',
-        'name': 'Neemo',
-        'price': '1295.00'
-    },
-
-    {
-        'id': 12,
-        'image': 'St_Moritz_Sport/ocean-plastic.png',
-        'cat': 'Moritz',
-        'name': 'Sand',
-        'price': '1395.00'
-    }
-]
+import { Link } from "react-router-dom";
 
 function Home() {
 
     const [watches, setWatches] = useState([]);
 
     useEffect(() => {
-        setWatches(watchesImg);
+        fetchWatches();
     }, [])
+
+    const fetchWatches = async () => {
+        try {
+            const response = await fetch('/api/watches/');
+            if (!response.ok) {
+                throw new Error('HTTP Error! status: ' + response.status);
+            }
+            const data = await response.json();
+            console.log(data);
+            setWatches(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <PageCon>
@@ -112,12 +36,14 @@ function Home() {
                 <div>
                     <h3>London Classic</h3>
                     <Watchcon>
-                        {watchesImg.filter(obj => obj.cat === 'London').map((watch) => (
-                            <div key={watch.id} className="card">
-                                <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                <p>{watch.name}</p>
-                                <p>{watch.price} SEK</p>
-                            </div>
+                        {watches.filter(obj => obj.category === 'London').map((watch) => (
+                            <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
+                                <div key={watch.id} className="card">
+                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                    <p>{watch.name}</p>
+                                    <p>{watch.price} SEK</p>
+                                </div>
+                            </StyledLink>
                         ))}
                     </Watchcon>
                 </div>
@@ -127,12 +53,14 @@ function Home() {
                 <div>
                     <h3>Dubai Luxury</h3>
                     <Watchcon>
-                        {watchesImg.filter(obj => obj.cat === 'Dubai').map((watch) => (
-                            <div key={watch.id} className="card">
-                                <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                <p>{watch.name}</p>
-                                <p>{watch.price} SEK</p>
-                            </div>
+                        {watches.filter(obj => obj.category === 'Dubai').map((watch) => (
+                            <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
+                                <div key={watch.id} className="card">
+                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                    <p>{watch.name}</p>
+                                    <p>{watch.price} SEK</p>
+                                </div>
+                            </StyledLink>
                         ))}
                     </Watchcon>
                 </div>
@@ -142,12 +70,14 @@ function Home() {
                 <div>
                     <h3>St Moritz Sport</h3>
                     <Watchcon>
-                        {watchesImg.filter(obj => obj.cat === 'Moritz').map((watch) => (
-                            <div key={watch.id} className="card">
-                                <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                <p>{watch.name}</p>
-                                <p>{watch.price} SEK</p>
-                            </div>
+                        {watches.filter(obj => obj.category === 'Moritz').map((watch) => (
+                            <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
+                                <div key={watch.id} className="card">
+                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                    <p>{watch.name}</p>
+                                    <p>{watch.price} SEK</p>
+                                </div>
+                            </StyledLink>
                         ))}
                     </Watchcon>
                 </div>
@@ -202,6 +132,11 @@ const Watchcon = styled.div`
             height: 360px;
         }   
     }
+`
+
+const StyledLink = styled(Link) `
+    text-decoration: none;
+    color: #000;
 `
 
 const Hero = styled.div`

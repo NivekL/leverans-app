@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import DubaiLuxury from './pages/DubaiLuxury';
 import LondonClassic from './pages/LondonClassic';
 import StMoritzSport from './pages/StMoritzSport';
+import SingleProductPage from './pages/SingleProductPage';
 import Footer from './components/Footer';
 
 
@@ -36,6 +37,9 @@ function App() {
 
               <Route path="/DubaiLuxury">
                 <DubaiLuxury />
+              </Route>
+
+              <Route path="/:category/:id/:name" component={SingleProductPage}>
               </Route>
             </Switch>
           </div>
