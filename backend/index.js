@@ -9,7 +9,7 @@ const buildDir = path.join(__dirname, '../build');
 if (!fs.existsSync(buildDir)) {
     console.error("Can't serve an empty folder. No build folder exists. Remember to run the build script =)");
 }
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(buildDir));
 
 const port = 4000;
 
