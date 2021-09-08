@@ -211,7 +211,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
-                    <button onClick={handleOrderButton}>BESTÄLL</button>
+                    <button onClick={handleOrderButton}>CHECK OUT</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
