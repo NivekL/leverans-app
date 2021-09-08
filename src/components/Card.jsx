@@ -16,6 +16,7 @@ const Watchcon = styled.div`
     margin-bottom: 5px;
     padding-bottom: 10px;
     font-family: "Libre Franklin", sans-serif;
+    cursor: pointer;
   }
 
   p:last-of-type {
@@ -37,7 +38,7 @@ const Watchcon = styled.div`
       height: 500px;
     }
   }
-`;
+`
 
 export const Card = () => {
   const [data] = useState([
