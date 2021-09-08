@@ -229,11 +229,15 @@ const ReturnDiv = styled.div`
     font-size: 14px;
     --padding: 20px;
     height: 100vh;
-    max-width: 500px;
+    width: 400px;
     display: flex;
     flex-direction: column;
     transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
     transition: transform 0.3s ease-in-out;
+
+    @media screen and (max-width: 600px) {
+        width: 100%
+    } 
     p {
         margin: 2px 0;
         text-align: left;
