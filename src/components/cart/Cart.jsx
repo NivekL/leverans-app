@@ -4,7 +4,7 @@ import { Close } from '@material-ui/icons';
 import CartProductRow from './CartProductRow';
 
 // Objekt med låtsasdata från databasen
-const cartDataFromDB = [
+let cartDataFromDB = [
     {
         'name': 'Apple Watch SE',
         'id': 1,
@@ -74,6 +74,9 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
     //Function to get total quantity
     const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
         let quantity = 0;
+        if (!dataArr.length) {
+            return;
+        }
         quantity = dataArr.map(v => parseInt(v[pathToQuantityProperty])).reduce((prev, curr) => prev + curr);
 
         return quantity < 100 ? quantity : '>C';
@@ -83,9 +86,12 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
         // Ersätt "cartDataFromDB" nedan mot fetch-resultatet.
         setProductsInCart(cartDataFromDB);
-        // Send the quantity-total to the Cart icon
-        setItemsInCartQuantity(getItemsInCartQuantity(cartDataFromDB, 'quantity'));
     }, []);
+
+    useEffect(() => {
+        // Send the quantity-total to the Cart icon
+        setItemsInCartQuantity(getItemsInCartQuantity(productsInCart, 'quantity'));
+    }, [productsInCart]);
 
     // Räkna ut totaler
     useEffect(() => {
@@ -153,7 +159,12 @@ function Cart({ open, setOpen, setItemsInCartQuantity }) {
         }
     }
     const handleTrashcanButton = (item) => {
-        alert('pressed trashcanbutton for product with id: ' + item.id);
+        console.log('pressed trashcanbutton for product with id: ' + item.id);
+
+        //fake fetch request to delete from Cart
+        cartDataFromDB = cartDataFromDB.filter(v => item.id !== v.id);
+
+        setProductsInCart([...cartDataFromDB]);
     }
     const handleOrderButton = () => {
         alert('orderbutton pressed');
