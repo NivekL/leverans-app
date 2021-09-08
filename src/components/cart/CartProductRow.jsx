@@ -31,7 +31,7 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
 
 
     return (
-        <div key={product.id}>
+        <div>
             <ProductDiv>
                 <span>
                     <img src={process.env.PUBLIC_URL + '/images/' + product.image} alt={product.name} />
