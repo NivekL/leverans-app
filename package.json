@@ -25,11 +25,14 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "app": "concurrently npm:start npm:backend",
+    "backend": "npx nodemon backend/index",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:4000",
   "eslintConfig": {
     "extends": [
       "react-app",
