@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-function Login({ toggleLogIn ,setToggleLogIn }) {
+function SignUp({ toggleLogIn ,setToggleLogIn }) {
+
 
 
     return (
@@ -19,17 +20,17 @@ function Login({ toggleLogIn ,setToggleLogIn }) {
 
                 <RegisterContainer>
                     <div>
-                    <p>Inte medlem?</p>
-                    <a href="#" onClick={() => setToggleLogIn(!toggleLogIn)}>Registrera</a>
+                    <p>Redan medlem?</p>
+                    <a href="#" onClick={() => setToggleLogIn(!toggleLogIn)}>Logga in</a>
                     </div>
-                    <LoginButton type="submit">logga in</LoginButton>
+                    <LoginButton type="submit">registrera</LoginButton>
                 </RegisterContainer>
 
             </FormContainer>
     )
 }
 
-export default Login
+export default SignUp
 
 
 

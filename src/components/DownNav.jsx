@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
 import Login from '../pages/Login'
+import SignUp from '../pages/SignUp'
 
 
 
 
 function DownNav({ open, setOpen }) {
+
+    const [toggleLogIn, setToggleLogIn] = useState(false)
 
 
     return ( 
@@ -19,8 +22,19 @@ function DownNav({ open, setOpen }) {
                 <Link to="/" className="showAllLink" onClick={() => setOpen(!open)}>visa alla </Link>
             </Ul>
             <UserContainer>
-            <h3>hej, logga in</h3>    
-            <Login />
+                {toggleLogIn ?  
+            <div>   
+                <h3>hej, logga in</h3>    
+                <Login toggleLogIn={toggleLogIn} setToggleLogIn={setToggleLogIn}/>
+            </div>
+                :
+            <div>
+                <h3>hej, registrera dig</h3> 
+                <SignUp toggleLogIn={toggleLogIn} setToggleLogIn={setToggleLogIn}/>
+            </div> 
+            }
+           
+            
             </UserContainer>
         </MenuWrapper>
     )
@@ -97,7 +111,8 @@ const Ul = styled.ul`
 
 const UserContainer = styled.div`
    width: 55%;
-   border-left: 1px solid white;
+   height: 13rem;
+   border-left: 1px solid #c9c9c9;
 
 @media screen and (max-width: 768px) {
         display: none;
