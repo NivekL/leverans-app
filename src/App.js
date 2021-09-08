@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import DubaiLuxury from './pages/DubaiLuxury';
 import LondonClassic from './pages/LondonClassic';
 import StMoritzSport from './pages/StMoritzSport';
+import Footer from './components/Footer';
 
 
 
@@ -45,6 +46,8 @@ function App() {
       
             </Switch>
           </div>
+
+          <Footer />
        </div>
     </Router>
   );

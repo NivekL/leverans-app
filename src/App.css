@@ -6,6 +6,10 @@
     box-sizing: border-box;
 }
 
+.content {
+    min-height: calc(100vh - 64px - 81.2px);
+}
+
 body {
     font-family: 'Libre Franklin', sans-serif;
 }
