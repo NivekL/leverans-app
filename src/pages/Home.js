@@ -201,25 +201,45 @@ const Hero = styled.div`
     height: 30.8vh;
     width: 100%;
     background-size: cover;
+    background-repeat: no-repeat;
     
+    @media screen and (min-width: 1200px) {
+        height: 100vh;
 
+        div:first-of-type{
+            width: 40%;
+            position: relative;
+            top: 40%;
+            left: 5%;
+
+            p{
+                font-size: 20px;
+            }
+
+            h1{
+                font-size: 80px;
+            }
+        }
+    }  
+    
     h1,p{
         margin: 0;
         padding: 0;
     }
-
+    
     div:first-of-type {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        text-transform: uppercase;
         
-
         p,h1{
             margin: 0 auto;
             text-align: center;
         }
-   font-family: 'Libre Franklin', sans-serif;
-`
-
-
+        
+        font-family: 'Libre Franklin', sans-serif;
+        `
+        
+        
 export default Home
