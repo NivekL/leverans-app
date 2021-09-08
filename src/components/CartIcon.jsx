@@ -5,17 +5,17 @@ import styled from 'styled-components';
 import CartIconItemsInCart from './CartIconItemsInCart';
 
 function CartIcon() {
-    const [open, setOpen] = useState(false)
-
+    const [open, setOpen] = useState(false);
+    const [itemsInCartQuantity, setItemsInCartQuantity] = useState(0);
 
     return (
         <React.Fragment>
             <IconContainer open={open} onClick={() => setOpen(!open)} style={{cursor: "pointer"}}>
                  <ShoppingCartOutlinedIcon fontSize="large" style={{fill: "#504f4f"}} />
-                 <CartIconItemsInCart />
+                 <CartIconItemsInCart itemsInCartQuantity={itemsInCartQuantity} />
             </IconContainer>
 
-            <Cart open={open} setOpen={setOpen} />
+            <Cart open={open} setOpen={setOpen} setItemsInCartQuantity={setItemsInCartQuantity} />
         </React.Fragment>
     )
 }

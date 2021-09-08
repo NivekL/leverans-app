@@ -68,14 +68,24 @@ const cartDataFromDB = [
     },
 ]
 
-function Cart({ open, setOpen }) {
+function Cart({ open, setOpen, setItemsInCartQuantity }) {
     const [productsInCart, setProductsInCart] = useState([]);
     const [costs, setCosts] = useState({});
+
+    //Function to get total quantity
+    const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
+        let quantity = 0;
+        quantity = dataArr.map(v => parseInt(v[pathToQuantityProperty])).reduce((prev, curr) => prev + curr);
+
+        return quantity < 100 ? quantity : '>C';
+    }
 
     useEffect(() => {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
         // Ersätt "cartDataFromDB" nedan mot fetch-resultatet.
         setProductsInCart(cartDataFromDB);
+        // Send the quantity-total to the Cart icon
+        setItemsInCartQuantity(getItemsInCartQuantity(cartDataFromDB, 'quantity'));
     }, []);
 
     // Räkna ut totaler
