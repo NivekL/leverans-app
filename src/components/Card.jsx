@@ -37,121 +37,55 @@ const Watchcon = styled.div`
     @media screen and (max-width: 481px) {
       height: auto;
       width: 100%;
-
     }
   }
-`
+`;
 
 export const Card = () => {
-  const [data] = useState([
-    {
-      id: 1,
-      name: "Audemars Piguet",
-      description: "Rooyal Oak Concept",
-      price: "1395",
-      category: "Dubai",
-      image: "Dubai_Luxury/grren-lyx.png",
-      zoom: "Dubai_Luxury/zoom/grren-lyx-zoom.webp",
-    },
-    {
-      id: 2,
-      name: "Peace",
-      description: "Lorem ipsum dolor sit amet.",
-      price: "2495",
-      category: "Dubai",
-      image: "Dubai_Luxury/peace.webp",
-      zoom: "Dubai_Luxury/zoom/peace-zoom.webp",
-    },
-    {
-      id: 3,
-      name: "Patek Philippe",
-      description: "Lorem ipsum dont sit",
-      price: "2000",
-      category: "Dubai",
-      image: "Dubai_Luxury/lyx-emer.png",
-      zoom: "Dubai_Luxury/zoom/lyx-emer-zoom.webp",
-    },
-    {
-      id: 4,
-      name: "Jaeger Lecoultre",
-      description: "Lorem ipsum dolor sit amet.",
-      price: "2000",
-      category: "Dubai",
-      image: "Dubai_Luxury/lyx-brown.png",
-      zoom: "Dubai_Luxury/zoom/falken-zoom.webp",
-    },
-    {
-      id: 5,
-      name: "Omega",
-      description: "Lorem ipsum dolor sit amet.",
-      price: "5959",
-      category: "Dubai",
-      image: "Dubai_Luxury/lyx-emer.png",
-      zoom: "Dubai_Luxury/zoom/lyx-emer-zoom.webp",
-    },
-    {
-      id: 6,
-      name: "Richard Mille",
-      description: "Lorem ipsum dolor sit amet.",
-      price: "5350",
-      category: "Dubai",
-      image: "Dubai_Luxury/lyx-brownblue.png",
-      zoom: "Dubai_Luxury/zoom/falken2-zoom.webp",
-    },
-    {
-      id: 7,
-      name: "Parmigiani",
-      description: "Lorem ipsum dolor sit amet.",
-      price: "8928",
-      category: "Dubai",
-      image: "Dubai_Luxury/lyx-grey.png",
-      zoom: "Dubai_Luxury/zoom/humanium-zoom.webp"
-    },
-    {
-      id: 8,
-      name: "Peace",
-      description: "Lorem ipsum dolor sit amet.",
-      price: "2495",
-      category: "Dubai",
-      image: "Dubai_Luxury/peace.webp",
-      zoom: "Dubai_Luxury/zoom/peace-zoom.webp"
-    },
-    {
-      id: 9,
-      name: "Patek Philippe",
-      description: "Lorem ipsum dont sit",
-      price: "2000",
-      category: "Dubai",
-      image: "Dubai_Luxury/lyx-emer.png",
-      zoom: "Dubai_Luxury/zoom/lyx-emer-zoom.webp"
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // fetchData();
-    //Fetcha alla klockor från db, mappa genom, skriv ut.
-  }, []);
+    fetchWatches();
+  }, [fetchWatches]);
 
-  return (
-    <Watchcon>
-      {data.map((i) => (
-        <div onClick={(e) => console.log(e)} key={i.id} className="card">
-          <img
-            src={process.env.PUBLIC_URL + "/images/" + i.image}
-            alt={i.name}
-            onMouseOver={(e) =>
-              (e.currentTarget.src =
-                process.env.PUBLIC_URL + "/images/" + i.zoom)
-            }
-            onMouseOut={(e) =>
-              (e.currentTarget.src =
-                process.env.PUBLIC_URL + "/images/" + i.image)
-            }
-          />
-          <p>{i.name}</p>
-          <p>{i.price} SEK</p>
-        </div>
-      ))}
-    </Watchcon>
-  );
+  async function fetchWatches() {
+    try {
+      let data = await (await fetch("/api/watches")).json();
+      setIsLoaded(true);
+      setData(data);
+    } catch (error) {
+      setError(error);
+    }
+  }
+
+  if (error !== null) {
+    return <div>Error. Can't retrieve the data, please try again!</div>;
+  } else if (!isLoaded) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <Watchcon>
+        {data.map((i) => (
+          <div onClick={(e) => console.log(e)} key={i.id} className="card">
+            <img
+              src={process.env.PUBLIC_URL + "/images/" + i.image}
+              alt={i.name}
+              onMouseOver={(e) =>
+                (e.currentTarget.src =
+                  process.env.PUBLIC_URL + "/images/" + i.zoom)
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.src =
+                  process.env.PUBLIC_URL + "/images/" + i.image)
+              }
+            />
+            <p>{i.name}</p>
+            <p>{i.price} SEK</p>
+          </div>
+        ))}
+      </Watchcon>
+    );
+  }
 };
