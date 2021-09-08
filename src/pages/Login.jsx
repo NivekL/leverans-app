@@ -7,19 +7,20 @@ function Login() {
                 <Form>
                     <FormInputContainer>
                         <InputCont>
-                        <label htmlFor="username">Användarnamn</label>
-                        <input type="text" name="username" id="" placeholder="Username"/>
+                        <input type="text" name="username" id="" placeholder="användarnamn"/>
                         </InputCont>
                         <InputCont>
-                        <label htmlFor="password">Lösenord</label>
-                        <input type="password" name="password" id="" placeholder="Password"/>
+                        <input type="password" name="password" id="" placeholder="lösenord"/>
                         </InputCont>
                     </FormInputContainer>
                 </Form>
 
                 <RegisterContainer>
-                    <a href="#">Registrera dig här</a>
-                    <LoginButton type="submit">Logga in</LoginButton>
+                    <div>
+                    <p>Inte medlem?</p>
+                    <a href="#">Registrera</a>
+                    </div>
+                    <LoginButton type="submit">logga in</LoginButton>
                 </RegisterContainer>
 
             </FormContainer>
@@ -45,15 +46,10 @@ const Form = styled.form `
     display: flex; 
     flex-direction: row;
 
-   label {
-       margin-bottom: 5px;
-   }
-
     input {
         padding: 5px;
         border: 1px solid #000;
         margin-right: 7px;
-        
     }
 `
 
@@ -92,20 +88,27 @@ const RegisterContainer = styled.div `
     display: flex;
     flex-direction: column;
 
+    p{
+        font-family: 'Libre Franklin', sans-serif;
+        font-size: .8rem;
+        margin-right: 6px;
+    }
+
     a {
-        font-size: 14px;
-        color: #121212;
+        font-size: .8rem;
+        color: #4e5da3;
         font-family: 'Montserrat'; 
         text-decoration: none;
         letter-spacing: 1px;
         margin-bottom: 13px;
 
         &:hover{
-        border-bottom: 1px solid #121212;
-        width: 150px;
+            border-bottom: 1px solid #4e5da3;
     }
     }
-   
+   div{
+       display: flex;
+   }
 `
 
 const RegisterButton = styled(LoginButton)``

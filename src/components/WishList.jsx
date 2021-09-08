@@ -162,7 +162,7 @@ function WishList({ open, setOpen }) {
         <ReturnDiv open={open}>
              <TopBar>
                 <DivLR>
-                    <p>Your wishlist</p>
+                    <p>Din inköpslista</p>
                     <Close  onClick={() => setOpen(!open)} style={{cursor: "pointer"}}/>
                 </DivLR>
             </TopBar>
@@ -184,10 +184,6 @@ function WishList({ open, setOpen }) {
                     <p>Summa artiklar</p>
                     <p className="boldText">{displayCost(costs.subTotalCost)} SEK</p>
                 </DivLR>
-                <DivLR>
-                    <p>Fraktavgift</p>
-                    <p className="boldText">{displayCost(costs.shippingCost)} SEK</p>
-                </DivLR>
                 <DivLR className="biggerText">
                     <p className="boldText">Totalt inkl. moms</p>
                     <p className="boldText">{displayCost(costs.totalCost)} SEK</p>
@@ -198,7 +194,7 @@ function WishList({ open, setOpen }) {
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
-                    <button onClick={handleAddButton}>ADD PRODUCTS TO CART</button>
+                    <button onClick={handleAddButton}>lägg till i varukorg</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
@@ -265,5 +261,6 @@ const OrderButtonContainer = styled.div`
         color: #FFF;
         background-color: #000;
         border: 0;
+        text-transform: uppercase;
     }
 `
