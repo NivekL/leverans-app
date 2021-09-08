@@ -35,7 +35,9 @@ const Watchcon = styled.div`
       height: 500px;
     }
     @media screen and (max-width: 481px) {
-      height: 500px;
+      height: auto;
+      width: 100%;
+
     }
   }
 `
