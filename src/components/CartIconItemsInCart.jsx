@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-function CartIconItemsInCart() {
+function CartIconItemsInCart({ itemsInCartQuantity }) {
     const [nbOfItemsInCart, setNbOfItemsInCart] = useState();
 
     useEffect(() => {
-        let quantity = 0;
-        // Byt ut mot en fetch
-        // Helst att den filtrerar ut quantityvariabeln på backend
-        // Annars gör det efter fetch
-        let data = [
-            {'itemID': '1', 'quantity': '1'},
-            {'itemID': '2', 'quantity': '1'},
-            {'itemID': '3', 'quantity': '3'}
-        ];
-        quantity = data.map(v => parseInt(v.quantity)).reduce((prev, curr) => prev + curr);
-        quantity < 100 ?
-        setNbOfItemsInCart(quantity):
-        setNbOfItemsInCart('>C');
-    }, [])
+        setNbOfItemsInCart(itemsInCartQuantity);
+    }, [itemsInCartQuantity])
 
     return (
         <div>
