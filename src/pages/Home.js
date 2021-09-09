@@ -143,23 +143,58 @@ const Hero = styled.div`
     font-family: 'Libre Franklin', sans-serif;
     margin-top: 4rem;
     padding-top: 1rem;
-    background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller-83DnGfaWV24-unsplash.jpg'}');
-    height: 30.8vh;
+    background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller_tabblet_mobile.jpg'}');
+    height: 60vh;
     width: 100%;
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
+    font-family: 'Libre Franklin', sans-serif;
 
-    p {
-        color: #504f4f; 
+    div:first-of-type {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-transform: uppercase;
+        position: relative;
+     
+        
+        p, h1{
+            color: #504f4f; 
+            margin: 0 auto;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+   
     }
-    h1 {
-        color: #504f4f;
-    }
-    
+
+
+    @media screen and (min-width: 730px) {
+        div:first-of-type{
+            width: 40%;
+            position: relative;
+            top: 40%;
+            left: 5%;
+
+            p{
+                font-size: 20px;
+            }
+
+            h1{
+                font-size: 40px;
+            }
+        }
+    } 
+
+
+
+
     @media screen and (min-width: 1200px) {
         height: 100vh;
+    background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller-83DnGfaWV24-unsplash.jpg'}');
+
 
         div:first-of-type{
             width: 40%;
@@ -172,28 +207,12 @@ const Hero = styled.div`
             }
 
             h1{
-                font-size: 80px;
+                font-size: 75px;
             }
         }
     }  
-    
-    h1,p{
-        margin: 0;
-        padding: 0;
-    }
-    
-    div:first-of-type {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-transform: uppercase;
-        
-        p,h1{
-            margin: 0 auto;
-            text-align: center;
-        }
 
-   font-family: 'Libre Franklin', sans-serif;
+    
 `
 const Hero1 = styled.div`
     margin-top: 2rem;
