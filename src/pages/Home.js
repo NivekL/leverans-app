@@ -37,7 +37,7 @@ function Home() {
                     <SectionLink to="/LondonClassic">London Classic</SectionLink>
                     
                     <Watchcon>
-                        {watches.filter(obj => obj.category === 'London').map((watch) => (
+                        {watches.filter(obj => obj.category === 'Classic').slice(0, 4).map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
                                 <div key={watch.id} className="card">
                                     <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
@@ -55,7 +55,7 @@ function Home() {
                     <SectionLink to="/DubaiLuxury">Dubai Luxury</SectionLink>
                     
                     <Watchcon>
-                        {watches.filter(obj => obj.category === 'Dubai').map((watch) => (
+                        {watches.filter(obj => obj.category === 'Luxury').slice(0, 4).map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
                                 <div key={watch.id} className="card">
                                     <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
@@ -73,7 +73,7 @@ function Home() {
                     <SectionLink to="/StMoritzSport">St Moritz Sport</SectionLink>
                     
                     <Watchcon>
-                        {watches.filter(obj => obj.category === 'Moritz').map((watch) => (
+                        {watches.filter(obj => obj.category === 'Sport').slice(0, 4).map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
                                 <div key={watch.id} className="card">
                                     <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />

@@ -179,7 +179,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
         <ReturnDiv open={open}>
             <TopBar>
                 <DivLR>
-                    <p>Din varukorg</p>
+                    <p>Varukorg</p>
                     <Close  onClick={() => setOpen(!open)} style={{cursor: "pointer"}}/>
                 </DivLR>
             </TopBar>
@@ -226,7 +226,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
-                    <button onClick={handleOrderButton}>checka ut</button>
+                    <button onClick={handleOrderButton}>till kassan</button>
             </OrderButtonContainer>
             {/* { 
                 showThankYouForYourPurchase ?
@@ -305,9 +305,13 @@ const OrderButtonContainer = styled.div`
         width: 100%;
         height: 40px;
         color: #FFF;
-        background-color: #000;
+        background-color: #161616;
         border: 0;
         text-transform: uppercase;
         cursor: pointer;
+
+        &:hover{
+            background-color: #272727;
+        }
     }
 `

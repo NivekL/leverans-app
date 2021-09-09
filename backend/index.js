@@ -31,9 +31,9 @@ app.get('/api/watches', (req, res) => {
 //-----------
 
 // GET watches by category
-app.get('/api/watches/dubai', (req, res) => {
+app.get('/api/watches/luxury', (req, res) => {
     let statement = dbWatches.prepare(`
-        SELECT * FROM products WHERE category = 'Dubai'
+        SELECT * FROM products WHERE category = 'Luxury'
     `);
     let result = statement.all();
     res.json(result);
