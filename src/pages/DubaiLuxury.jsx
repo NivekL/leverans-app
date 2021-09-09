@@ -7,6 +7,7 @@ margin-top: 5rem;
 font-style: normal;
 font-weight: 400;
 font-size: 4rem;
+padding:  0 0 20px 40px;
 @media screen and (max-width: 481px) {
           font-size: 24px;
          }   
@@ -29,7 +30,7 @@ function DubaiLuxury() {
     return (
         <Font>
             <Flex>
-            <Lux>Time for Luxury</Lux>
+            <Lux>Dubai Luxury</Lux>
             </Flex>
             <CardContainer>
             <Card />

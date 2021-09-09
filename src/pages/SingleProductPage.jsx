@@ -59,10 +59,13 @@ function SingleProductPage({match}) {
                 >
                     Lägg till i varukorg
                 </AddToCart>
+                <AddSave>Spara Artikel</AddSave>
             </InfoMainContainer>
         </MainWrapper>
     )
 }
+
+
 
 const MainWrapper = styled(motion.div) `
     display: flex;
@@ -111,6 +114,12 @@ const InfoContainer = styled.div `
     display: flex;
     justify-content: space-between;
     padding: 16px 20px;
+    
+    @media screen and (min-width: 1024px) {
+        {
+            flex-direction: column;
+       }
+   }
 `
 
 const InnerInfo = styled.div `
@@ -135,7 +144,8 @@ const PriceContainer = styled.div `
 
     @media screen and (min-width: 768px) {
         .price {
-            font-size: 18px;
+            font-size: 16px;
+            margin-top: 15px;
         }
    }
 `
@@ -171,6 +181,13 @@ const AddToCart = styled(motion.button) `
     align-items: center;
     text-transform: uppercase;
     position: relative;
+`
+
+const AddSave = styled(AddToCart) `
+    width: 200px;
+    background: transparent;
+    border: 1px solid #000;
+    color: #000;
 `
 
 export default SingleProductPage

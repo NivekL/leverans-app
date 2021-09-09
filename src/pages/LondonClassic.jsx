@@ -11,7 +11,7 @@ font-size: 4rem;
 
 function LondonClassic() {
     return ( 
-        <Lux>Time for Classics - LONDON</Lux>
+        <Lux>London Classic</Lux>
           
     )
 }

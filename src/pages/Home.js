@@ -28,8 +28,8 @@ function Home() {
         <PageCon>
             <Hero>
                 <div>
-                    <p>Best Watches</p>
-                    <h1>Nice Watch</h1>
+                    <p>Refined watches</p>
+                    <h1>MVMT 2021</h1>
                 </div>
             </Hero>
             <div>
@@ -40,7 +40,18 @@ function Home() {
                         {watches.filter(obj => obj.category === 'Classic').slice(0, 4).map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
                                 <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                    <img 
+                                    src={process.env.PUBLIC_URL + '/images/' + watch.image} 
+                                    alt="" 
+                                    onMouseEnter={
+                                        (e) => (e.currentTarget.src =
+                                             process.env.PUBLIC_URL + "/images/" + watch.zoom)
+                                    }
+                                    onMouseOut={
+                                        (e) => (e.currentTarget.src = 
+                                        process.env.PUBLIC_URL + "/images/" + watch.image)
+                                    }
+                                    />
                                     <p>{watch.name}</p>
                                     <p>{watch.price} SEK</p>
                                 </div>
@@ -58,7 +69,17 @@ function Home() {
                         {watches.filter(obj => obj.category === 'Luxury').slice(0, 4).map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
                                 <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} 
+                                    alt="" 
+                                    onMouseEnter={
+                                        (e) => (e.currentTarget.src =
+                                             process.env.PUBLIC_URL + "/images/" + watch.zoom)
+                                    }
+                                    onMouseOut={
+                                        (e) => (e.currentTarget.src = 
+                                        process.env.PUBLIC_URL + "/images/" + watch.image)
+                                    }
+                                    />
                                     <p>{watch.name}</p>
                                     <p>{watch.price} SEK</p>
                                 </div>
@@ -76,7 +97,17 @@ function Home() {
                         {watches.filter(obj => obj.category === 'Sport').slice(0, 4).map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
                                 <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
+                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} 
+                                    alt=""
+                                    onMouseEnter={
+                                        (e) => (e.currentTarget.src =
+                                             process.env.PUBLIC_URL + "/images/" + watch.zoom)
+                                    }
+                                    onMouseOut={
+                                        (e) => (e.currentTarget.src = 
+                                        process.env.PUBLIC_URL + "/images/" + watch.image)
+                                    }
+                                    />
                                     <p>{watch.name}</p>
                                     <p>{watch.price} SEK</p>
                                 </div>
@@ -99,19 +130,16 @@ const Watchcon = styled.div`
     justify-content: space-evenly;
     flex-wrap: wrap;
     margin-top: 2rem;
+    gap: 5px;
 
     div {
-        display: flex;
         flex-direction: column;
         justify-content: center;
         text-align: center;
         background-color: whitesmoke;
-        margin-bottom: 5px;
+        margin-bottom 5px;
         padding-bottom: 10px;
         font-family: 'Libre Franklin', sans-serif;
-    }
-    div:hover {
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     }
 
     p:last-of-type {

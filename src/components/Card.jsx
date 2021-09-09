@@ -69,7 +69,7 @@ const Watchcon = styled.div`
     justify-content: center;
     text-align: center;
     background-color: whitesmoke;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     padding-bottom: 10px;
     font-family: "Libre Franklin", sans-serif;
     cursor: pointer;
@@ -88,9 +88,8 @@ const Watchcon = styled.div`
     @media screen and (min-width: 1024px) {
       height: 500px;
     }
-    height: 180px;
     @media screen and (min-width: 1200px) {
-      height: 500px;
+      height: 480px;
     }
     @media screen and (max-width: 481px) {
       height: auto;

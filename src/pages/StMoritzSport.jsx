@@ -14,7 +14,7 @@ font-size: 4rem;
 
 function StMortizSport() {
     return ( 
-        <Lux>Time for Sport - ST MORITZ</Lux>
+        <Lux>St Mortiz Sport</Lux>
           
     )
 }
