@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import CartIconItemsInCart from './CartIconItemsInCart';
 
 function CartIcon({ setShowWhichPopup, open, setOpen }) {
-    // const [open, setOpen] = useState(false);
     const [itemsInCartQuantity, setItemsInCartQuantity] = useState(0);
 
     return (
