@@ -54,7 +54,7 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
                                 </tr>
                             </tbody>
                         </table>
-                        <span><FontAwesomeIcon icon={faTrashAlt} onClick={() => { handleTrashcanButton(product) }} /></span>
+                        <span><FontAwesomeIcon icon={faTrashAlt} onClick={() => { handleTrashcanButton(product) }} style={{'cursor': 'pointer'}} /></span>
                     </ProductRow3>
                 </ProductInfo>
             </ProductDiv>
