@@ -168,7 +168,16 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
         setProductsInCart([...cartDataFromDB]);
     }
     const handleOrderButton = () => {
-        console.log('orderbutton pressed');
+        if (!productsInCart.length) {
+            console.log('no products in cart');
+            return;
+        }
+        //IRL you would send the order here somehow, or go to the next step
+        //We will however simply clear the Cart and then show a thank you-message
+
+        //Fake clear Cart, until DB is in place
+        cartDataFromDB = [];
+        setProductsInCart([...cartDataFromDB]);
 
         setShowWhichPopup('thankYouForYourPurchase');
     }
