@@ -147,6 +147,8 @@ const Hero = styled.div`
     height: 30.8vh;
     width: 100%;
     background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
     background-repeat: no-repeat;
 
     p {
@@ -200,6 +202,9 @@ const Hero1 = styled.div`
     height: 30.8vh;
     width: 100%;
     background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
 
     @media screen and (min-width: 768px) {
         height: 40vh;
@@ -219,6 +224,10 @@ const Ocean = styled.div`
     height: 30.8vh;
     width: 100%;
     background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+
     @media screen and (min-width: 768px) {
         height: 40vh;
     }

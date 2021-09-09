@@ -9,7 +9,7 @@ import SignUp from '../pages/SignUp'
 
 function DownNav({ open, setOpen }) {
 
-    const [toggleLogIn, setToggleLogIn] = useState(false)
+    const [toggleLogIn, setToggleLogIn] = useState(true)
 
 
     return ( 
