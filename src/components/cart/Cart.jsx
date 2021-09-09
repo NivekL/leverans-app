@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import CartProductRow from './CartProductRow';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
-import ThankYouForYourPurchase from './ThankYouForYourPurchase';
 
 // Objekt med låtsasdata från databasen
 let cartDataFromDB = [
@@ -72,7 +71,6 @@ let cartDataFromDB = [
 function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
     const [productsInCart, setProductsInCart] = useState([]);
     const [costs, setCosts] = useState({});
-    // const [showThankYouForYourPurchase, setShowThankYouForYourPurchase] = useState(false);
 
     //Function to get total quantity
     const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
@@ -171,7 +169,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
     }
     const handleOrderButton = () => {
         console.log('orderbutton pressed');
-        // setShowThankYouForYourPurchase(true);
+
         setShowWhichPopup('thankYouForYourPurchase');
     }
 
@@ -228,11 +226,6 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
             <OrderButtonContainer>
                     <button onClick={handleOrderButton}>till kassan</button>
             </OrderButtonContainer>
-            {/* { 
-                showThankYouForYourPurchase ?
-                <ThankYouForYourPurchase setShowThankYouForYourPurchase={setShowThankYouForYourPurchase} setCartOpen={setOpen} /> :
-                null
-            } */}
         </ReturnDiv>
     )
 }
