@@ -11,16 +11,26 @@ import LondonClassic from './pages/LondonClassic';
 import StMoritzSport from './pages/StMoritzSport';
 import SingleProductPage from './pages/SingleProductPage';
 import Footer from './components/Footer';
+import Popups from './components/Popups';
+import { useState } from 'react';
 
 
 
 
 
 function App() {
+  const [showWhichPopup, setShowWhichPopup] = useState('');
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   return (
     <Router>
       <div className="App">
-       <NavBar/>
+       <Popups 
+        showWhichPopup={showWhichPopup} 
+        setShowWhichPopup={setShowWhichPopup} 
+        setIsCartOpen={setIsCartOpen}
+      />
+       <NavBar setShowWhichPopup={setShowWhichPopup} isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
           <div className="content">
             <Switch>
               <Route exact path="/">
