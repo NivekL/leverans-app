@@ -1,38 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link} from "react-router-dom";
 
 
-
-
-
-export const Card = () => {
-  const [data, setData] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetchWatches();
-  }, []);
-
-  async function fetchWatches() {
-    try {
-      let data = await (await fetch("/api/watches")).json();
-      setIsLoaded(true);
-      setData(data);
-    } catch (error) {
-      setError(error);
-    }
-  }
-
-  if (error !== null) {
-    return <div>Error. Can't retrieve the data, please try again!</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
+export const Card = ({ cards }) => {
+ 
     return (
       <Watchcon>
-        {data.map((i) => (
+        {cards.map((i) => (
           <Link to={`/${i.category}/${i.id}/${i.name}`} key={i.id} className="card">
             <img 
               src={process.env.PUBLIC_URL + "/images/" + i.image}
@@ -53,9 +28,8 @@ export const Card = () => {
       </Watchcon>
     );
   }
-};
 
-
+  
 // STYLING
 const Watchcon = styled.div`
   display: flex;
