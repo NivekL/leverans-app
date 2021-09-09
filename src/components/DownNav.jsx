@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
-import Login from '../pages/Login'
-import SignUp from '../pages/SignUp'
+import Login from './Login'
+import SignUp from './SignUp'
 
 
 

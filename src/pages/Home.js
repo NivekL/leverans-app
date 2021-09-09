@@ -34,7 +34,8 @@ function Home() {
             </Hero>
             <div>
                 <div>
-                    <h3>London Classic</h3>
+                    <SectionLink to="/LondonClassic">London Classic</SectionLink>
+                    
                     <Watchcon>
                         {watches.filter(obj => obj.category === 'London').map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
@@ -51,7 +52,8 @@ function Home() {
                 
                 </Hero1>
                 <div>
-                    <h3>Dubai Luxury</h3>
+                    <SectionLink to="/DubaiLuxury">Dubai Luxury</SectionLink>
+                    
                     <Watchcon>
                         {watches.filter(obj => obj.category === 'Dubai').map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
@@ -68,7 +70,8 @@ function Home() {
                    
                 </Ocean>
                 <div>
-                    <h3>St Moritz Sport</h3>
+                    <SectionLink to="/StMoritzSport">St Moritz Sport</SectionLink>
+                    
                     <Watchcon>
                         {watches.filter(obj => obj.category === 'Moritz').map((watch) => (
                             <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
@@ -87,14 +90,7 @@ function Home() {
 }
 
 const PageCon = styled.div`
-    font-family: 'Libre Franklin', sans-serif;
-    h3 {
-        margin: 30px 10px 10px 10px;
-        font-size: 22px;
-        @media screen and (min-width: 1024px) {
-            margin-left: 18px;
-        }
-    }
+    
 `
 
 const Watchcon = styled.div`
@@ -102,6 +98,7 @@ const Watchcon = styled.div`
     flex-direction: row;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    margin-top: 2rem;
 
     div {
         display: flex;
@@ -139,11 +136,29 @@ const StyledLink = styled(Link) `
     color: #000;
 `
 
+const SectionLink = styled(Link)`
+text-decoration: none;
+color: #292929;
+font-family: 'Libre Franklin', sans-serif;
+font-size: 2rem;
+margin-left: .5rem;
+
+
+@media screen and (min-width: 730px) {
+    margin-left: 2.6rem;
+    } 
+
+
+&:hover{
+    border-bottom: 2px solid #292929;
+}
+`
+
 const Hero = styled.div`
     font-family: 'Libre Franklin', sans-serif;
     margin-top: 4rem;
     padding-top: 1rem;
-    background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller_tabblet_mobile.jpg'}');
+    background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller_mobile_.jpg'}');
     height: 60vh;
     width: 100%;
     background-size: cover;
@@ -151,6 +166,8 @@ const Hero = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     font-family: 'Libre Franklin', sans-serif;
+    margin-bottom: 2rem;
+
 
     div:first-of-type {
         display: flex;
@@ -170,26 +187,24 @@ const Hero = styled.div`
    
     }
 
-
     @media screen and (min-width: 730px) {
+    background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller_tabblet_mobile.jpg'}');
+
         div:first-of-type{
-            width: 40%;
+            width: 55%;
             position: relative;
             top: 40%;
-            left: 5%;
+            left: 0%;
 
             p{
                 font-size: 20px;
             }
 
             h1{
-                font-size: 40px;
+                font-size: 60px;
             }
         }
     } 
-
-
-
 
     @media screen and (min-width: 1200px) {
         height: 100vh;
@@ -217,6 +232,7 @@ const Hero = styled.div`
 const Hero1 = styled.div`
     margin-top: 2rem;
     padding-top: 1rem;
+    margin-bottom: 2rem;
     background-image: url('${process.env.PUBLIC_URL + '/images/triwa-melted-guns-watch-02.jpg'}');
     height: 30.8vh;
     width: 100%;
@@ -224,6 +240,7 @@ const Hero1 = styled.div`
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
+    
 
     @media screen and (min-width: 768px) {
         height: 40vh;
@@ -239,6 +256,7 @@ const Hero1 = styled.div`
 const Ocean = styled.div`
     margin-top: 2rem;
     padding-top: 1rem;
+    margin-bottom: 2rem;
     background-image: url('${process.env.PUBLIC_URL + '/images/dive.jfif'}');
     height: 30.8vh;
     width: 100%;
