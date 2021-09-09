@@ -4,8 +4,8 @@ import Cart from './cart/Cart';
 import styled from 'styled-components';
 import CartIconItemsInCart from './CartIconItemsInCart';
 
-function CartIcon() {
-    const [open, setOpen] = useState(false);
+function CartIcon({ setShowWhichPopup, open, setOpen }) {
+    // const [open, setOpen] = useState(false);
     const [itemsInCartQuantity, setItemsInCartQuantity] = useState(0);
 
     return (
@@ -15,7 +15,12 @@ function CartIcon() {
                  <CartIconItemsInCart itemsInCartQuantity={itemsInCartQuantity} />
             </IconContainer>
 
-            <Cart open={open} setOpen={setOpen} setItemsInCartQuantity={setItemsInCartQuantity} />
+            <Cart 
+                open={open} 
+                setOpen={setOpen} 
+                setItemsInCartQuantity={setItemsInCartQuantity}
+                setShowWhichPopup={setShowWhichPopup}     
+            />
         </React.Fragment>
     )
 }
