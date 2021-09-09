@@ -7,12 +7,12 @@ const [open, setOpen] = useState(false)
 
     return (
         <React.Fragment>
-            <StyledBurger open={open} onClick={() => setOpen(!open)}>
+            <StyledBurger open={open} onClick={() => setOpen(!open)} style={{cursor: "pointer"}}>
                 <div/>
                 <div/>
                 <div/>
             </StyledBurger>
-            <DownNav open={open}/>
+            <DownNav open={open} setOpen={setOpen}/>
         </React.Fragment>
     )
 }
@@ -31,6 +31,8 @@ const StyledBurger = styled.div`
   display: flex;
   justify-content: space-around;
   flex-flow: column nowrap;
+
+  
   
   div {
     width: 1.5rem;
