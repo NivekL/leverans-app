@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
-import CartProductRow from '../components/cart/CartProductRow';
+import WishListProductRow from './WishListProductRow';
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 // Objekt med låtsasdata från databasen
 let cartDataFromDB = [
@@ -67,12 +68,11 @@ let cartDataFromDB = [
     },
 ]
 
-
-function WishList({ open, setOpen }) {
-    const [productsInCart, setProductsInCart] = useState([]);
+function WishList({ open, setOpen, setItemsInCartQuantity }) {
+ const [productsInCart, setProductsInCart] = useState([]);
     const [costs, setCosts] = useState({});
 
-  
+ 
 
     useEffect(() => {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
@@ -80,7 +80,7 @@ function WishList({ open, setOpen }) {
         setProductsInCart(cartDataFromDB);
     }, []);
 
- 
+
 
     // Räkna ut totaler
     useEffect(() => {
@@ -155,46 +155,50 @@ function WishList({ open, setOpen }) {
 
         setProductsInCart([...cartDataFromDB]);
     }
-    const handleAddButton = () => {
-        alert('orderbutton pressed');
+    const handleClearArticle = () => {
+
+        setProductsInCart([]);
     }
+    const handleAddToCart = () => {
+        alert('Add to Cart button pressed');
+    }
+
     return (
         <ReturnDiv open={open}>
-             <TopBar>
+            <TopBar>
                 <DivLR>
-                    <p>Din inköpslista</p>
+                    <p>Sparade artiklar</p>
                     <Close  onClick={() => setOpen(!open)} style={{cursor: "pointer"}}/>
                 </DivLR>
             </TopBar>
             <ProductsContainer className="rowMargin">
                 {/* map out cart items */}
-                {productsInCart.map((product, index) => (
-                    <CartProductRow 
-                        product={product} 
-                        index={index} 
-                        productsInCart={productsInCart}
-                        displayCost={displayCost}
-                        handleQuantityButton={handleQuantityButton}
-                        handleTrashcanButton={handleTrashcanButton}
-                    />
-                ))}
+                <AnimateSharedLayout>
+                    <AnimatePresence>
+                        {productsInCart.map((product, index) => (
+                                <motion.div
+                                    key={product.id}
+                                    layoutId={product.id}
+                                    initial={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <WishListProductRow
+                                        product={product}
+                                        index={index}
+                                        productsInCart={productsInCart}
+                                        displayCost={displayCost}
+                                        handleQuantityButton={handleQuantityButton}
+                                        handleTrashcanButton={handleTrashcanButton}
+                                        handleAddToCart={handleAddToCart}
+                                    />
+                                </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </AnimateSharedLayout>
             </ProductsContainer>
-            <CostBreakdown>
-                <DivLR>
-                    <p>Summa artiklar</p>
-                    <p className="boldText">{displayCost(costs.subTotalCost)} SEK</p>
-                </DivLR>
-                <DivLR className="biggerText">
-                    <p className="boldText">Totalt inkl. moms</p>
-                    <p className="boldText">{displayCost(costs.totalCost)} SEK</p>
-                </DivLR>
-                <DivLR>
-                    <p>Varav 25% moms</p>
-                    <p className="boldText">{displayCost(costs.calcVAT)} SEK</p>
-                </DivLR>
-            </CostBreakdown>
+
             <OrderButtonContainer>
-                    <button onClick={handleAddButton}>lägg till i varukorg</button>
+                    <button onClick={handleClearArticle}>rensa artiklar</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
@@ -202,10 +206,8 @@ function WishList({ open, setOpen }) {
 
 export default WishList
 
-
-//Style ----------------------------
 const ReturnDiv = styled.div`
-        position: fixed;
+    position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
@@ -224,16 +226,27 @@ const ReturnDiv = styled.div`
     @media screen and (max-width: 600px) {
         width: 100%
     } 
+    p {
+        margin: 2px 0;
+        text-align: left;
+    }
+    .boldText {
+        font-weight: bold;
+    }
+    .biggerText {
+        font-size: 16px;
+    }
+    .rowMargin {
+        margin-bottom: 20px;
+    }
 `
-const TopBar = styled.div`
-    padding: var(--padding);
-`
-
 const DivLR = styled.div`
     display: flex;
     justify-content: space-between;
 `
-
+const TopBar = styled.div`
+    padding: var(--padding);
+`
 const ProductsContainer = styled.div`
     flex-grow: 1;
     display: flex;
@@ -241,26 +254,20 @@ const ProductsContainer = styled.div`
     padding: 0 var(--padding);
     overflow-y: scroll;
 `
-const CostBreakdown = styled.div`
-    padding: 0 var(--padding);
-    > * {
-        margin-bottom: 5px;
-    }
-    div:nth-of-type(3) {
-        margin-top: 20px;
-    }
-    div:nth-of-type(4) {
-        font-size: 12px;
-    }
-`
+
 const OrderButtonContainer = styled.div`
     padding: var(--padding);
     button {
         width: 100%;
         height: 40px;
         color: #FFF;
-        background-color: #000;
+        background-color: #161616;
         border: 0;
         text-transform: uppercase;
+        cursor: pointer;
+
+        &:hover{
+            background-color: #272727;
+        }
     }
 `

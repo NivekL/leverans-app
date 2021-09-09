@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
-function CartProductRow({ product, index, productsInCart, displayCost, handleQuantityButton, handleTrashcanButton }) {
+
+function WishListProductRow({ product, index, displayCost, productsInCart, handleQuantityButton, handleTrashcanButton, handleAddToCart }) {
 
     const itemPrice = (item) => {
         if (item.quantity > 1) {
@@ -55,6 +57,7 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
                             </tbody>
                         </table>
                         <span><FontAwesomeIcon icon={faTrashAlt} onClick={() => { handleTrashcanButton(product) }} /></span>
+                        <span> <AddShoppingCartIcon fontSize="small" onClick={() => { handleAddToCart(product) }}/></span>
                     </ProductRow3>
                 </ProductInfo>
             </ProductDiv>
@@ -63,7 +66,7 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
     )
 }
 
-export default CartProductRow
+export default WishListProductRow
 
 
 const ProductDiv = styled.div`
@@ -90,7 +93,7 @@ const ProductRow2 = styled.div`
 const ProductRow3 = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     table {
         border-collapse: collapse;
     }
