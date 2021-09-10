@@ -25,7 +25,7 @@ function Home() {
     }
 
     return (
-        <PageCon>
+        <div>
             <Hero>
                 <div>
                     <p>Refined watches</p>
@@ -116,13 +116,9 @@ function Home() {
                     </Watchcon>
                 </div>
             </div>
-        </PageCon>
+        </div>
     )
 }
-
-const PageCon = styled.div`
-    
-`
 
 const Watchcon = styled.div`
     display: flex;
@@ -137,9 +133,13 @@ const Watchcon = styled.div`
         justify-content: center;
         text-align: center;
         background-color: whitesmoke;
-        margin-bottom 5px;
+        margin-bottom: 5px;
         padding-bottom: 10px;
         font-family: 'Libre Franklin', sans-serif;
+
+        @media screen and (min-width: 1024px) {
+            margin-bottom: 20px;
+        }
     }
 
     p:last-of-type {
@@ -151,7 +151,7 @@ const Watchcon = styled.div`
     img {
         height: 180px;
         @media screen and (min-width: 1024px) {
-            height: 500px;
+            height: 480px;
         } 
         @media screen and (min-width: 1200px) {
             height: 360px;
@@ -169,11 +169,11 @@ text-decoration: none;
 color: #292929;
 font-family: 'Libre Franklin', sans-serif;
 font-size: 2rem;
-margin-left: .5rem;
+margin-left: 0.5rem;
 
 
-@media screen and (min-width: 730px) {
-    margin-left: 2.6rem;
+@media screen and (min-width: 768px) {
+    margin-left: 1rem;
     } 
 
 

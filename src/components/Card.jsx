@@ -60,7 +60,7 @@ const Watchcon = styled.div`
   img {
     height: 180px;
     @media screen and (min-width: 1024px) {
-      height: 500px;
+      height: 480px;
     }
     @media screen and (min-width: 1200px) {
       height: 480px;
