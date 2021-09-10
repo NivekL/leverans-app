@@ -31,9 +31,26 @@ app.get('/api/watches', (req, res) => {
 //-----------
 
 // GET watches by category
+
 app.get('/api/watches/luxury', (req, res) => {
     let statement = dbWatches.prepare(`
         SELECT * FROM products WHERE category = 'Luxury'
+    `);
+    let result = statement.all();
+    res.json(result);
+})
+
+app.get('/api/watches/sport', (req, res) => {
+    let statement = dbWatches.prepare(`
+        SELECT * FROM products WHERE category = 'Sport'
+    `);
+    let result = statement.all();
+    res.json(result);
+})
+
+app.get('/api/watches/classic', (req, res) => {
+    let statement = dbWatches.prepare(`
+        SELECT * FROM products WHERE category = 'Classic'
     `);
     let result = statement.all();
     res.json(result);
