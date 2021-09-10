@@ -8,7 +8,7 @@ const DubaiLuxury = () => {
     return (
       <Font>
             <Flex>
-            <Lux>Time for Luxury</Lux>
+            <Lux>Dubai Luxury</Lux>
             </Flex>
             <CardContainer>
         <Watchcon>
@@ -31,6 +31,7 @@ margin-top: 5rem;
 font-style: normal;
 font-weight: 400;
 font-size: 4rem;
+padding:  0 0 20px 40px;
 @media screen and (max-width: 481px) {
           font-size: 24px;
          }   
@@ -48,6 +49,7 @@ align-items: center;
 const Font = styled.div`
 font-family: 'Libre Franklin', sans-serif;
 `
+
 
 const Watchcon = styled.div`
   display: flex;

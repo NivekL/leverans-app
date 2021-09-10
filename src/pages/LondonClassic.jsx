@@ -8,7 +8,7 @@ const LondonClassic = () => {
     return (
       <Font>
             <Flex>
-            <Lux>Time for Classics</Lux>
+            <Lux>London Classic</Lux>
             </Flex>
             <CardContainer>
         <Watchcon>

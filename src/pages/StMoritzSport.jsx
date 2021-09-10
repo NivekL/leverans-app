@@ -8,7 +8,7 @@ const StMoritzSport = () => {
     return (
       <Font>
             <Flex>
-            <Lux>Time for Sport</Lux>
+            <Lux>St Mortiz Sport</Lux>
             </Flex>
             <CardContainer>
         <Watchcon>
