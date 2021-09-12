@@ -18,7 +18,7 @@ app.use(express.json());
 
 
 //----------- REST API Watches
-const dbPathWatches = path.join(__dirname, '../dbtesting/watches.db'); // change back to '../db/watches.db'
+const dbPathWatches = path.join(__dirname, '../db/watches.db');
 const dbWatches = new sqlDriver(dbPathWatches);
 
 //Get all watches
