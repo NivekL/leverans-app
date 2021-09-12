@@ -132,8 +132,8 @@ app.post('/api/cart/new', (req, res) => {
     })();
 })
 
-// Add a product to the cart
-app.post('/api/cart/addtocart/productid/:productid', (req, res) => {
+// Add a product to the cart - or - add more of the same product (quantity)
+app.post('/api/cart/add/productid/:productid', (req, res) => {
     // First get the uncrypted cartId that belongs to the users crypted one
     const cartIdFromDB = getUncryptedCartId(req.body.cartId);
 
@@ -166,7 +166,7 @@ app.get('/api/cart', (req, res) => {
     res.json(result);
 })
 
-// Delete a watch from cart
+// Delete a product from cart, no matter the quantity of that product.
 app.delete('/api/cart/removefromcart/productid/:productid', (req, res) => {
     const cartIdFromDB = getUncryptedCartId(req.body.cartId);
 
@@ -182,6 +182,46 @@ app.delete('/api/cart/removefromcart/productid/:productid', (req, res) => {
     res.json(result);
 })
 
+// Delete one, "Quantity - 1"
+app.delete('/api/cart/quantitydecrease/productid/:productid', (req, res) => {
+    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+
+    let stmt = dbWatches.prepare(`
+        DELETE FROM cartItems
+        WHERE ROWID IN (
+            SELECT MAX(ROWID)
+            FROM cartItems
+            WHERE cartId = :cartIdParam
+            AND productId = :productIdParam
+        )
+    `);
+    let result = stmt.run({
+        cartIdParam: cartIdFromDB,
+        productIdParam: req.params.productid
+    })
+    res.json(result);
+})
+
+// When purchase is done, delete cart and all products in cart from DB
+app.delete('/api/cart/removecartcompletely', (req, res) => {
+    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+
+    let stmt = dbWatches.prepare(`
+        DELETE FROM cartItems
+        WHERE cartId = :cartIdParam
+    `);
+    let result = stmt.run({
+        cartIdParam: cartIdFromDB
+    })
+    let stmt2 = dbWatches.prepare(`
+        DELETE FROM carts
+        WHERE cartId = :cartIdParam
+    `);
+    let result2 = stmt2.run({
+        cartIdParam: cartIdFromDB
+    })
+    res.json({"cartItems": result, "carts": result2});
+})
 //=================
 
 
