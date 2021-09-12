@@ -89,6 +89,18 @@ const decryptCartId = async (plainId, hash) => {
         console.error(error);
     }
 }
+const getUncryptedCartId = (cryptedId) => {
+    let getIdStmt = dbWatches.prepare(`
+        SELECT *
+        FROM carts
+        WHERE cryptId = :cryptIdParam
+    `);
+    let getIdResult = getIdStmt.all({
+        cryptIdParam: cryptedId
+    });
+    const cartIdFromDB = getIdResult[0].cartId;
+    return cartIdFromDB;
+}
 
 // Create a new cart
 app.post('/api/cart/new', (req, res) => {
@@ -123,15 +135,7 @@ app.post('/api/cart/new', (req, res) => {
 // Add a product to the cart
 app.post('/api/cart/addtocart/productid/:productid', (req, res) => {
     // First get the uncrypted cartId that belongs to the users crypted one
-    let getIdStmt = dbWatches.prepare(`
-        SELECT *
-        FROM carts
-        WHERE cryptId = :cryptIdParam
-    `);
-    let getIdResult = getIdStmt.all({
-        cryptIdParam: req.body.cartId
-    });
-    const cartIdFromDB = getIdResult[0].cartId;
+    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
 
     // Then use the uncrypted one to make changes in DB
     let stmt = dbWatches.prepare(`
@@ -144,6 +148,24 @@ app.post('/api/cart/addtocart/productid/:productid', (req, res) => {
     });
     res.json({'Additions made': info.changes})
 })
+
+// Get all items in your cart
+app.get('/api/cart', (req, res) => {
+    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+
+    let stmt = dbWatches.prepare(`
+        SELECT products.*, 
+        COUNT(productId) AS quantity FROM cartItems
+        LEFT JOIN products ON cartItems.productId = products.id
+        WHERE cartId = :cartIdParam
+        GROUP BY productId
+    `);
+    let result = stmt.all({
+        cartIdParam: cartIdFromDB
+    })
+    res.json(result);
+})
+
 //=================
 
 
