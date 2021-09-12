@@ -166,6 +166,22 @@ app.get('/api/cart', (req, res) => {
     res.json(result);
 })
 
+// Delete a watch from cart
+app.delete('/api/cart/removefromcart/productid/:productid', (req, res) => {
+    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+
+    let stmt = dbWatches.prepare(`
+        DELETE FROM cartItems
+        WHERE cartId = :cartIdParam
+        AND productId = :productIdParam
+    `);
+    let result = stmt.run({
+        cartIdParam: cartIdFromDB,
+        productIdParam: req.params.productid
+    })
+    res.json(result);
+})
+
 //=================
 
 
