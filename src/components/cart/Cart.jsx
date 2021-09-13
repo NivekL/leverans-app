@@ -12,7 +12,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
     //Function to get total quantity
     const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
         let quantity = 0;
-        if (!dataArr.length) {
+        if (!dataArr || !dataArr.length) {
             return;
         }
         quantity = dataArr.map(v => parseInt(v[pathToQuantityProperty])).reduce((prev, curr) => prev + curr);
@@ -38,8 +38,10 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
             let totalCost = 0;
             let percentageVAT = 25;
             let calcVAT = 0;
-            for (let product of productsInCart) {
-                subTotalCost += product.quantity * product.price;
+            if (productsInCart) {
+                for (let product of productsInCart) {
+                    subTotalCost += product.quantity * product.price;
+                }
             }
             totalCost = subTotalCost + shippingCost;
             calcVAT = totalCost * (percentageVAT / 100);
@@ -119,7 +121,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
                 {/* map out cart items */}
                 <AnimateSharedLayout>
                     <AnimatePresence>
-                        {productsInCart.map((product, index) => (
+                        {!productsInCart ? null : productsInCart.map((product, index) => (
                                 <motion.div
                                     key={product.id}
                                     layoutId={product.id}
