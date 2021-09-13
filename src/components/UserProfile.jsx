@@ -3,12 +3,14 @@ import styled from 'styled-components';
 
 function UserProfile({ isLoggedIn, setIsLoggedIn }) {
   return (
-    <UserContainer>
+    <>
       <h3>hej, "USER_NAME prop"</h3>
-      <h4>"Name Lastname"</h4>
-      <h4>"Orders"</h4>
-      <LogOutButton onClick={() => setIsLoggedIn(!isLoggedIn)}>Logga ut</LogOutButton>
-    </UserContainer>
+      <UserContainer>
+        <h4>"Name Lastname"</h4>
+        <h4>"Orders"</h4>
+        <LogOutButton onClick={() => setIsLoggedIn(!isLoggedIn)}>Logga ut</LogOutButton>
+      </UserContainer>
+    </>
   );
 }
 
