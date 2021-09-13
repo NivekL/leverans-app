@@ -42,7 +42,7 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
                         <p className="boldText">{itemPrice(product)} SEK</p>
                     </ProductRow1>
                     <ProductRow2>
-                        <p>{shortenText(product.shortDesc, 40)}</p>
+                        <p>{shortenText(product.description, 40)}</p>
                     </ProductRow2>
                     <ProductRow3>
                         <table>

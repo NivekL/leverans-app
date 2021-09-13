@@ -3,70 +3,7 @@ import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import CartProductRow from './CartProductRow';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
-
-// Objekt med låtsasdata från databasen
-let cartDataFromDB = [
-    {
-        'name': 'Apple Watch SE',
-        'id': 1,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 2,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 2,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 149,
-        'quantity': 1,
-    },
-    {
-        'name': 'Apple Watch SE Special Ed.',
-        'id': 3,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 3,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 4,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 1,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 5,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 1,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 6,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 1195,
-        'quantity': 4,
-    },
-]
+import { addQuantityOfProduct, getWholeCart, removeCartCompletelyFromDB, removeProductFromCart, subtractQuantityOfProduct } from '../../helperFunctions/cartDBfunctions';
 
 function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
     const [productsInCart, setProductsInCart] = useState([]);
@@ -83,10 +20,10 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
         return quantity < 100 ? quantity : '>C';
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
-        // Ersätt "cartDataFromDB" nedan mot fetch-resultatet.
-        setProductsInCart(cartDataFromDB);
+        const cartData = await getWholeCart();
+        setProductsInCart(cartData);
     }, []);
 
     useEffect(() => {
@@ -133,51 +70,39 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
         }
     }
   
-    const handleQuantityButton = (item, addOrSub) => {
+    const handleQuantityButton = async (product, addOrSub) => {
+        let cartData;
         switch (addOrSub) {
             case 'add':
-                //fake fetch request to change quantity
-                for (let inCart of cartDataFromDB) {
-                    if (inCart.id === item.id) {
-                        inCart.quantity += 1;
-                    }
-                }
-                setProductsInCart([...cartDataFromDB]);
+                await addQuantityOfProduct(product.id);
+                cartData = await getWholeCart();
+                setProductsInCart(cartData);
                 break;
             case 'subtract':
-                //fake fetch request to change quantity
-                for (let inCart of cartDataFromDB) {
-                    if (inCart.id === item.id) {
-                        if (inCart.quantity === 1) return;
-                        inCart.quantity -= 1;
-                    }
-                }
-                setProductsInCart([...cartDataFromDB]);
+                await subtractQuantityOfProduct(product.id);
+                cartData = await getWholeCart();
+                setProductsInCart(cartData);
                 break;
         
             default:
                 break;
         }
     }
-    const handleTrashcanButton = (item) => {
-        console.log('pressed trashcanbutton for product with id: ' + item.id);
-
-        //fake fetch request to delete from Cart
-        cartDataFromDB = cartDataFromDB.filter(v => item.id !== v.id);
-
-        setProductsInCart([...cartDataFromDB]);
+    const handleTrashcanButton = async (product) => {
+        await removeProductFromCart(product.id);
+        const cartData = await getWholeCart();
+        setProductsInCart(cartData);
     }
-    const handleOrderButton = () => {
+    const handleOrderButton = async () => {
         if (!productsInCart.length) {
             console.log('no products in cart');
             return;
         }
         //IRL you would send the order here somehow, or go to the next step
         //We will however simply clear the Cart and then show a thank you-message
-
-        //Fake clear Cart, until DB is in place
-        cartDataFromDB = [];
-        setProductsInCart([...cartDataFromDB]);
+        await removeCartCompletelyFromDB();
+        setProductsInCart([]);
+        window.localStorage.removeItem('cartId');
 
         setShowWhichPopup('thankYouForYourPurchase');
     }

@@ -150,8 +150,9 @@ app.post('/api/cart/add/productid/:productid', (req, res) => {
 })
 
 // Get all items in your cart
-app.get('/api/cart', (req, res) => {
-    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+app.get('/api/cart/:cartid', (req, res) => {
+    const cryptedCartId = decodeURIComponent(req.params.cartid);
+    const cartIdFromDB = getUncryptedCartId(cryptedCartId);
 
     let stmt = dbWatches.prepare(`
         SELECT products.*, 
@@ -167,8 +168,9 @@ app.get('/api/cart', (req, res) => {
 })
 
 // Delete a product from cart, no matter the quantity of that product.
-app.delete('/api/cart/removefromcart/productid/:productid', (req, res) => {
-    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+app.delete('/api/cart/:cartid/removefromcart/productid/:productid', (req, res) => {
+    const cryptedCartId = decodeURIComponent(req.params.cartid);
+    const cartIdFromDB = getUncryptedCartId(cryptedCartId);
 
     let stmt = dbWatches.prepare(`
         DELETE FROM cartItems
@@ -183,8 +185,9 @@ app.delete('/api/cart/removefromcart/productid/:productid', (req, res) => {
 })
 
 // Delete one, "Quantity - 1"
-app.delete('/api/cart/quantitydecrease/productid/:productid', (req, res) => {
-    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+app.delete('/api/cart/:cartid/quantitydecrease/productid/:productid', (req, res) => {
+    const cryptedCartId = decodeURIComponent(req.params.cartid);
+    const cartIdFromDB = getUncryptedCartId(cryptedCartId);
 
     let stmt = dbWatches.prepare(`
         DELETE FROM cartItems
@@ -203,8 +206,9 @@ app.delete('/api/cart/quantitydecrease/productid/:productid', (req, res) => {
 })
 
 // When purchase is done, delete cart and all products in cart from DB
-app.delete('/api/cart/removecartcompletely', (req, res) => {
-    const cartIdFromDB = getUncryptedCartId(req.body.cartId);
+app.delete('/api/cart/:cartid/removecartcompletely', (req, res) => {
+    const cryptedCartId = decodeURIComponent(req.params.cartid);
+    const cartIdFromDB = getUncryptedCartId(cryptedCartId);
 
     let stmt = dbWatches.prepare(`
         DELETE FROM cartItems
