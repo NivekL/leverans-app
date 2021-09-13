@@ -5,7 +5,7 @@ import CartProductRow from './CartProductRow';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { addQuantityOfProduct, getWholeCart, removeCartCompletelyFromDB, removeProductFromCart, subtractQuantityOfProduct } from '../../helperFunctions/cartDBfunctions';
 
-function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
+function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, triggerCartUpdate }) {
     const [productsInCart, setProductsInCart] = useState([]);
     const [costs, setCosts] = useState({});
 
@@ -24,7 +24,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup }) {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
         const cartData = await getWholeCart();
         setProductsInCart(cartData);
-    }, []);
+    }, [triggerCartUpdate]);
 
     useEffect(() => {
         // Send the quantity-total to the Cart icon

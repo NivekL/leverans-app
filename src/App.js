@@ -21,16 +21,22 @@ import { useState } from 'react';
 function App() {
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
 
   return (
     <Router>
       <div className="App">
-       <Popups 
-        showWhichPopup={showWhichPopup} 
-        setShowWhichPopup={setShowWhichPopup} 
-        setIsCartOpen={setIsCartOpen}
-      />
-       <NavBar setShowWhichPopup={setShowWhichPopup} isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
+        <Popups 
+          showWhichPopup={showWhichPopup} 
+          setShowWhichPopup={setShowWhichPopup} 
+          setIsCartOpen={setIsCartOpen}
+        />
+        <NavBar 
+          setShowWhichPopup={setShowWhichPopup} 
+          isCartOpen={isCartOpen} 
+          setIsCartOpen={setIsCartOpen}
+          triggerCartUpdate={triggerCartUpdate} 
+        />
           <div className="content">
             <Switch>
               <Route exact path="/">
@@ -49,8 +55,11 @@ function App() {
                 <DubaiLuxury />
               </Route>
 
-              <Route path="/:category/:id/:name" component={SingleProductPage}>
-              </Route>
+              <Route path="/:category/:id/:name" render={props => (
+                <SingleProductPage {...props} 
+                  setTriggerCartUpdate={setTriggerCartUpdate} 
+                />
+              )} />
             </Switch>
           </div>
 

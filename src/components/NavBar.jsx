@@ -9,7 +9,7 @@ import WishListIcon from './WishListIcon';
 
 
 
-function NavBar({ setShowWhichPopup, isCartOpen, setIsCartOpen }) {
+function NavBar({ setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate }) {
     return (
         <Nav>
             <Burger/>
@@ -20,7 +20,12 @@ function NavBar({ setShowWhichPopup, isCartOpen, setIsCartOpen }) {
                 <WishListIcon />
             </LogoContainer>
             <LogoContainer>
-              <CartIcon setShowWhichPopup={setShowWhichPopup} open={isCartOpen} setOpen={setIsCartOpen} />
+              <CartIcon 
+                setShowWhichPopup={setShowWhichPopup} 
+                open={isCartOpen} 
+                setOpen={setIsCartOpen} 
+                triggerCartUpdate={triggerCartUpdate} 
+              />
             </LogoContainer>
       </Nav>
     )
