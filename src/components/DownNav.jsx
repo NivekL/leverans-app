@@ -5,7 +5,7 @@ import UserProfile from './UserProfile';
 import LoginSignUp from './LoginSignUp';
 
 function DownNav({ open, setOpen }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <MenuWrapper open={open}>

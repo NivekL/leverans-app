@@ -23,7 +23,7 @@ const UserContainer = styled.div`
   max-width: 19rem;
 
   h3 {
-    margin-left: 0;
+    margin-left: 0px;
   }
   h4 {
     font-family: 'Libre Franklin', sans-serif;
