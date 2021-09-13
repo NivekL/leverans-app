@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 
-function SingleProductPage({ match }) {
+function SingleProductPage({ match, setTriggerCartUpdate }) {
   const [info, setInfo] = useState({});
 
   useEffect(() => {
@@ -23,6 +23,11 @@ function SingleProductPage({ match }) {
       console.log(error);
     }
   };
+
+  const handleAddToCart = () => {
+    addToCart(match.params.id);
+    setTriggerCartUpdate(Date.now);
+  }
 
   return (
     <MainWrapper className="mainWrapper" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
@@ -51,7 +56,11 @@ function SingleProductPage({ match }) {
           <p className="descriptionText">{info.description}</p>
         </DescriptionContainer>
 
-        <AddToCart onClick={() => { addToCart(match.params.id) }} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.3 }}>
+        <AddToCart onClick={ handleAddToCart } 
+          initial={{ y: 20, opacity: 0 }} 
+          animate={{ y: 0, opacity: 1 }} 
+          transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.3 }}
+        >
           Lägg till i varukorg
         </AddToCart>
         <AddSave>Spara Artikel</AddSave>
