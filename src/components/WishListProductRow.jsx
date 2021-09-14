@@ -44,7 +44,7 @@ function WishListProductRow({ product, index, displayCost, productsInCart, handl
                         <p className="boldText">{itemPrice(product)} SEK</p>
                     </ProductRow1>
                     <ProductRow2>
-                        <p>{shortenText(product.shortDesc, 40)}</p>
+                        <p>{shortenText(product.description, 40)}</p>
                     </ProductRow2>
                     <ProductRow3>
                         <table>
@@ -72,9 +72,9 @@ export default WishListProductRow
 const ProductDiv = styled.div`
     display: flex;
     flex-direction: row;
-    height: 80px;
+    height: auto;
     img {
-        height: 100%;
+        height: 160px;
         width: auto;
     }
 `

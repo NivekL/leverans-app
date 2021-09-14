@@ -15,10 +15,8 @@ app.use(express.static(buildDir));
 //-----------
 app.use(express.json());
 
-
-
 //----------- REST API Watches
-const dbPathWatches = path.join(__dirname, '../db/watches.db');
+const dbPathWatches = path.join(__dirname, '../dbtesting/watches.db');
 const dbWatches = new sqlDriver(dbPathWatches);
 
 //Get all watches
@@ -223,6 +221,37 @@ app.delete('/api/cart/removecartcompletely', (req, res) => {
     res.json({"cartItems": result, "carts": result2});
 })
 //=================
+
+let wishList = path.join(__dirname, "wishList.json");
+
+// util functions
+const saveListData = (data) => {
+    const stringifyData = JSON.stringify(data, null, 2);
+    fs.writeFileSync(wishList, stringifyData);
+};
+const getListData = () => {
+    const jsonData = fs.readFileSync(wishList);
+    return JSON.parse(jsonData); 
+};
+
+app.post('/api/wishlist/add/new', (req, res) => {
+    saveListData(req.body);
+    res.send({success: true, msg: 'article added successfully'});
+});
+app.post('/api/wishlist/add', (req, res) => {
+    const currentData = getListData();
+    const newData = currentData.push();
+    currentData[newData] = req.body;
+    saveListData(currentData);
+    res.send({success: true, msg: 'article added successfully'});
+});
+
+
+app.get('/api/wishlist', (req, res) => {
+    res.json(getListData());
+  });
+
+//================
 
 
 const port = 4000;

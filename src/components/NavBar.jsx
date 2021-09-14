@@ -51,7 +51,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 
-img{
+a img{
     width: 100px;
 }
 

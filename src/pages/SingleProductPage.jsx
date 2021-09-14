@@ -6,6 +6,7 @@ import { addToCart } from '../helperFunctions/cartDBfunctions';
 function SingleProductPage({ match }) {
   const [info, setInfo] = useState({});
 
+
   useEffect(() => {
     fetchInfo();
   }, []);
@@ -17,12 +18,22 @@ function SingleProductPage({ match }) {
         throw new Error('HTTP Error! status: ' + response.status);
       }
       const data = await response.json();
-      console.log(data);
+      console.log(data[0]);
       setInfo(data[0]);
     } catch (error) {
       console.log(error);
     }
   };
+  
+  const postWish = async () => {
+    await fetch('/api/wishlist/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(info)
+    });
+  }
 
   return (
     <MainWrapper className="mainWrapper" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
@@ -54,7 +65,7 @@ function SingleProductPage({ match }) {
         <AddToCart onClick={() => { addToCart(match.params.id) }} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.3 }}>
           Lägg till i varukorg
         </AddToCart>
-        <AddSave>Spara Artikel</AddSave>
+        <AddSave onClick={() => { postWish() }}>Spara Artikel</AddSave>
       </InfoMainContainer>
     </MainWrapper>
   );
