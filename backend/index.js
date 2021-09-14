@@ -69,6 +69,40 @@ app.get('/api/watches/:id', (req, res) => {;
     res.json(result);
   });
 
+  // 1.0 Get all users
+app.get('/api/registration', (req, res) => {;
+    let stmt = dbWatches.prepare(`
+      SELECT *
+      FROM registration
+    `);
+    let result = stmt.all();
+    res.json(result);
+  });
+
+// 1.1 Add new user/Registration (Hashed password comrade, wake up Alan Turing to decrypt)
+
+app.post('/api/registration', async (req, res) => {
+    const saltRounds = 10;
+
+    // Generate salt & hash password
+    const hashed = await bcryptjs.hash(req.body.password, saltRounds);
+    let stmt = dbWatches.prepare(`
+    INSERT INTO registration (user_name, password)
+    VALUES (:user_name,'${hashed}')
+    `);
+    const result = stmt.run({
+        user_name: req.body.user_name,
+        password: req.body.password
+    });
+    res.json(result);
+})
+
+// 1.2 Compare user password with hash
+
+// 1.3 Login
+
+// ......BCRYPT
+
 
 
 //===== Cart ======
