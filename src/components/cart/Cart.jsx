@@ -88,7 +88,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
     }
     const handleOrderButton = async () => {
         if (!productsInCart.length) {
-            console.log('no products in cart');
+            // console.log('no products in cart');
             return;
         }
         //IRL you would send the order here somehow, or go to the next step
