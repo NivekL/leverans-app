@@ -57,19 +57,8 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
         if (cost === undefined) {
             return;
         }
-        let costStr = cost.toString();
-        let dotPos = costStr.indexOf('.');
-        if (dotPos < 0) {
-            return costStr + '.00';
-        } else {
-            return costStr.split('.').map((v, i) => {
-                if (i === 1) {
-                    return v.padEnd(2, '0');
-                } else {
-                    return v;
-                }
-            }).join('.');
-        }
+        let formattedCost = new Intl.NumberFormat('se-SE', { style: 'currency', currency: 'SEK' }).format(cost);
+        return formattedCost;
     }
   
     const handleQuantityButton = async (product, addOrSub) => {
@@ -144,19 +133,19 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
             <CostBreakdown>
                 <DivLR>
                     <p>Summa artiklar</p>
-                    <p className="boldText">{displayCost(costs.subTotalCost)} SEK</p>
+                    <p className="boldText">{displayCost(costs.subTotalCost)}</p>
                 </DivLR>
                 <DivLR>
                     <p>Fraktavgift</p>
-                    <p className="boldText">{displayCost(costs.shippingCost)} SEK</p>
+                    <p className="boldText">{displayCost(costs.shippingCost)}</p>
                 </DivLR>
                 <DivLR className="biggerText">
                     <p className="boldText">Totalt inkl. moms</p>
-                    <p className="boldText">{displayCost(costs.totalCost)} SEK</p>
+                    <p className="boldText">{displayCost(costs.totalCost)}</p>
                 </DivLR>
                 <DivLR>
                     <p>Varav 25% moms</p>
-                    <p className="boldText">{displayCost(costs.calcVAT)} SEK</p>
+                    <p className="boldText">{displayCost(costs.calcVAT)}</p>
                 </DivLR>
             </CostBreakdown>
             <OrderButtonContainer>
