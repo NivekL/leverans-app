@@ -28,6 +28,8 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
     let response = await addToCart(match.params.id);
     if (Boolean(response["Additions made"])) {
       setTriggerCartUpdate(Date.now);
+    } else {
+      throw new Error("Error regarding the response of addToCart, response looks like this:\n" + response);
     }
   }
 
