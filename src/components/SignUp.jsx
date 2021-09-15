@@ -1,67 +1,67 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
-    const [user_name, setUser_name] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+  const [user_name, setUser_name] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const user = { user_name, password };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const user = { user_name, password };
 
-        setLoading(true);
+    setLoading(true);
 
-        fetch("/api/registration", {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(user),
-        }).then(() => {
-            setLoading(false);
-        });
-    };
+    fetch('/api/registration', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(user),
+    }).then(() => {
+      setLoading(false);
+    });
+  };
 
-    return (
-        <FormContainer>
-            <Form onSubmit={handleSubmit}>
-                <FormInputContainer>
-                    <InputCont>
-                        <input
-                            required
-                            type="text"
-                            name="user_name"
-                            id=""
-                            placeholder="användarnamn"
-                            value={user_name}
-                            onChange={(e) => setUser_name(e.target.value)}
-                        />
-                    </InputCont>
-                    <InputCont>
-                        <input
-                            required
-                            type="password"
-                            name="password"
-                            id=""
-                            placeholder="lösenord"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </InputCont>
-                </FormInputContainer>
-                {!loading && <LoginButton>registrera</LoginButton>}
-                {loading && <Success disabled>välkommen</Success>}
-            </Form>
+  return (
+    <FormContainer>
+      <Form onSubmit={handleSubmit}>
+        <FormInputContainer>
+          <InputCont>
+            <input
+              required
+              type="text"
+              name="user_name"
+              id=""
+              placeholder="användarnamn"
+              value={user_name}
+              onChange={(e) => setUser_name(e.target.value)}
+            />
+          </InputCont>
+          <InputCont>
+            <input
+              required
+              type="password"
+              name="password"
+              id=""
+              placeholder="lösenord"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </InputCont>
+        </FormInputContainer>
+        {!loading && <SignUpBtn>registrera</SignUpBtn>}
+        {loading && <Success disabled>välkommen</Success>}
+      </Form>
 
-            <RegisterContainer>
-                <div>
-                    <p>Redan medlem?</p>
-                    <a href="#" onClick={() => setToggleLogIn(!toggleLogIn)}>
-                        Logga in
-                    </a>
-                </div>
-            </RegisterContainer>
-        </FormContainer>
-    );
+      <RegisterContainer>
+        <div>
+          <p>Redan medlem?</p>
+          <a href="#" onClick={() => setToggleLogIn(!toggleLogIn)}>
+            Logga in
+          </a>
+        </div>
+      </RegisterContainer>
+    </FormContainer>
+  );
 };
 
 export default SignUp;
@@ -78,7 +78,7 @@ const FormContainer = styled.div`
 const Form = styled.form`
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   input {
     padding: 5px;
@@ -97,10 +97,10 @@ const InputCont = styled.div`
   flex-direction: column;
 `;
 
-const LoginButton = styled.button`
+const SignUpBtn = styled.button`
   height: 45px;
-  width: 150px;
-  font-family: "Libre Franklin", sans-serif;
+  width: 146px;
+  font-family: 'Libre Franklin', sans-serif;
   border: 2px solid #292929;
   text-align: center;
   background-color: transparent;
@@ -109,6 +109,7 @@ const LoginButton = styled.button`
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
+  margin-bottom: 5px;
 
   &:hover {
     background-color: #292929;
@@ -118,7 +119,7 @@ const LoginButton = styled.button`
 const Success = styled.button`
   height: 45px;
   width: 150px;
-  font-family: "Libre Franklin", sans-serif;
+  font-family: 'Libre Franklin', sans-serif;
   border: 2px solid #292929;
   text-align: center;
   background-color: transparent;
@@ -134,7 +135,7 @@ const RegisterContainer = styled.div`
   flex-direction: column;
 
   p {
-    font-family: "Libre Franklin", sans-serif;
+    font-family: 'Libre Franklin', sans-serif;
     font-size: 0.8rem;
     margin-right: 6px;
   }
@@ -142,7 +143,7 @@ const RegisterContainer = styled.div`
   a {
     font-size: 0.8rem;
     color: #4e5da3;
-    font-family: "Montserrat";
+    font-family: 'Montserrat';
     text-decoration: none;
     letter-spacing: 1px;
     margin-bottom: 13px;
@@ -155,5 +156,3 @@ const RegisterContainer = styled.div`
     display: flex;
   }
 `;
-
-const RegisterButton = styled(LoginButton)``;
