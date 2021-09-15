@@ -23,7 +23,6 @@ function ThankYouForYourPurchase({ setShowWhichPopup, setIsCartOpen }) {
 
     useEffect(() => {
         setComponentDidMount(true);
-        console.log('popup did mount');
     }, [])
 
     const handleCloseAction = () => {
