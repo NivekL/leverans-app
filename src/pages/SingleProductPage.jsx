@@ -29,7 +29,7 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
     if (Boolean(response["Additions made"])) {
       setTriggerCartUpdate(Date.now);
     } else {
-      throw new Error("Error regarding the response of addToCart, response looks like this:\n" + response);
+      console.error("Error regarding the response of addToCart, response looks like this:\n" + response);
     }
   }
 
