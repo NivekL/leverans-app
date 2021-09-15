@@ -46,7 +46,6 @@ function ThankYouForYourPurchase({ setShowWhichPopup, setIsCartOpen }) {
                         <DoneSharp style={{ fontSize: iconInnerElWidth, color: "#28A745" }} />
                     </IconInner>
                 </IconOuter>
-                <Message>Tack!</Message>
                 <Message>Din beställning är på väg</Message>
             </MainContent>
         </ReturnDiv>
@@ -68,7 +67,7 @@ const ReturnDiv = styled.div`
     max-width: 700px;
     max-height: 700px;
     padding: 20px;
-    filter: drop-shadow(0 0 40px black);
+    filter: drop-shadow(0 0 40px #00000066);
 `
 const DivLR = styled.div`
     display: flex;
