@@ -7,7 +7,7 @@ import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 function WishList({ open, setOpen, setItemsInCartQuantity }) {
  const [productsInCart, setProductsInCart] = useState([]);
-    const [costs, setCosts] = useState({});
+    const [cost, setCosts] = useState({});
 
  
     useEffect(() => {
@@ -66,44 +66,60 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
         }
     }
   
-    const handleQuantityButton = (item, addOrSub) => {
-        switch (addOrSub) {
-            case 'add':
-                //fake fetch request to change quantity
-                for (let inCart of productsInCart) {
-                    if (inCart.id === item.id) {
-                        inCart.quantity += 1;
-                    }
-                }
-                setProductsInCart([...productsInCart]);
-                break;
-            case 'subtract':
-                //fake fetch request to change quantity
-                for (let inCart of productsInCart) {
-                    if (inCart.id === item.id) {
-                        if (inCart.quantity === 1) return;
-                        inCart.quantity -= 1;
-                    }
-                }
-                setProductsInCart([...productsInCart]);
-                break;
+    // const handleQuantityButton = (item, addOrSub) => {
+    //     switch (addOrSub) {
+    //         case 'add':
+    //             //fake fetch request to change quantity
+    //             for (let inCart of productsInCart) {
+    //                 if (inCart.id === item.id) {
+    //                     inCart.quantity += 1;
+    //                 }
+    //             }
+    //             setProductsInCart([...productsInCart]);
+    //             break;
+    //         case 'subtract':
+    //             //fake fetch request to change quantity
+    //             for (let inCart of productsInCart) {
+    //                 if (inCart.id === item.id) {
+    //                     if (inCart.quantity === 1) return;
+    //                     inCart.quantity -= 1;
+    //                 }
+    //             }
+    //             setProductsInCart([...productsInCart]);
+    //             break;
         
-            default:
-                break;
+    //         default:
+    //             break;
+    //     }
+    // }
+    
+    // Remove one watch from the list
+    const handleTrashcanButton = async (itemId) => {
+        try {
+            await fetch('/api/wishlist/delete/' + itemId, {
+                method: 'DELETE',
+            });
+            console.log(itemId);
+            let  cartData = productsInCart.filter(v => itemId !== v.id);
+            setProductsInCart([...cartData]);
+            
+        } catch (e) {
+            throw new Error(e);
         }
     }
-    const handleTrashcanButton = (item) => {
-        console.log('pressed trashcanbutton for product with id: ' + item.id);
-
-        //fake fetch request to delete from Cart
-      let  cartData = productsInCart.filter(v => item.id !== v.id);
-
-        setProductsInCart([...cartData]);
+    
+    // Remove everything in the list
+    const handleClearAll = async () => {
+        try {
+            await fetch('/api/wishlist/clearall/', {
+                method: 'DELETE',
+            });
+            setProductsInCart([]);  
+        } catch (e) {
+            throw new Error(e);
+        }
     }
-    const handleClearArticle = () => {
 
-        setProductsInCart([]);
-    }
     const handleAddToCart = () => {
         alert('Add to Cart button pressed');
     }
@@ -132,7 +148,7 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
                                         index={index}
                                         productsInCart={productsInCart}
                                         displayCost={displayCost}
-                                        handleQuantityButton={handleQuantityButton}
+                                        // handleQuantityButton={handleQuantityButton}
                                         handleTrashcanButton={handleTrashcanButton}
                                         handleAddToCart={handleAddToCart}
                                     />
@@ -143,7 +159,7 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
             </ProductsContainer>
 
             <OrderButtonContainer>
-                    <button onClick={handleClearArticle}>rensa artiklar</button>
+                    <button onClick={handleClearAll}>rensa artiklar</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
@@ -196,7 +212,7 @@ const ProductsContainer = styled.div`
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding-right: 35px;
+    padding-right: 25px;
     overflow-y: scroll;
 `
 

@@ -5,16 +5,23 @@ import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 
-function WishListProductRow({ product, index, displayCost, productsInCart, handleQuantityButton, handleTrashcanButton, handleAddToCart }) {
+function WishListProductRow({ product, index, displayCost, productsInCart, handleTrashcanButton, handleAddToCart }) {
 
+
+    const handleDelete = () => {
+        handleTrashcanButton(product.id);
+    }
+    // const itemPrice = (item) => {
+    //     if (item.quantity > 1) {
+    //         return `${item.quantity} x ${displayCost(item.price)}`;
+    //     } else if (item.quantity === 0) {
+    //         return displayCost(0);
+    //     } else {
+    //         return displayCost(item.price);
+    //     }
+    // }
     const itemPrice = (item) => {
-        if (item.quantity > 1) {
-            return `${item.quantity} x ${displayCost(item.price)}`;
-        } else if (item.quantity === 0) {
-            return displayCost(0);
-        } else {
-            return displayCost(item.price);
-        }
+        return displayCost(item.price);
     }
 
     const shortenText = (text, maxlength) => {
@@ -47,7 +54,7 @@ function WishListProductRow({ product, index, displayCost, productsInCart, handl
                         <p>{shortenText(product.description, 40)}</p>
                     </ProductRow2>
                     <ProductRow3>
-                        <table>
+                        {/* <table>
                             <tbody>
                                 <tr>
                                     <td onClick={() => { handleQuantityButton(product, 'subtract') }}>-</td>
@@ -55,8 +62,8 @@ function WishListProductRow({ product, index, displayCost, productsInCart, handl
                                     <td onClick={() => { handleQuantityButton(product, 'add') }}>+</td>
                                 </tr>
                             </tbody>
-                        </table>
-                        <span><FontAwesomeIcon icon={faTrashAlt} onClick={() => { handleTrashcanButton(product) }} /></span>
+                        </table> */}
+                        <span><FontAwesomeIcon icon={faTrashAlt} onClick={handleDelete} /></span>
                         <span> <AddShoppingCartIcon fontSize="small" onClick={() => { handleAddToCart(product) }}/></span>
                     </ProductRow3>
                 </ProductInfo>
@@ -74,11 +81,12 @@ const ProductDiv = styled.div`
     flex-direction: row;
     height: auto;
     img {
-        height: 160px;
+        height: 150px;
         width: auto;
     }
 `
 const ProductInfo = styled.div`
+    margin-top: 20px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -88,7 +96,7 @@ const ProductRow1 = styled.div`
     justify-content: space-between;
 `
 const ProductRow2 = styled.div`
-    flex-grow: 1;
+    flex-basis: 50%;
 `
 const ProductRow3 = styled.div`
     display: flex;
