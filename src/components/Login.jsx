@@ -13,6 +13,9 @@ function Login({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) {
             <input type="password" name="password" id="" placeholder="lösenord" />
           </InputCont>
         </FormInputContainer>
+        <LoginButton type="submit" onClick={() => setIsLoggedIn(!isLoggedIn)}>
+          logga in
+        </LoginButton>
       </Form>
 
       <RegisterContainer>
@@ -22,9 +25,6 @@ function Login({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) {
             Registrera
           </a>
         </div>
-        <LoginButton type="submit" onClick={() => setIsLoggedIn(!isLoggedIn)}>
-          logga in
-        </LoginButton>
       </RegisterContainer>
     </FormContainer>
   );
@@ -44,7 +44,7 @@ const FormContainer = styled.div`
 const Form = styled.form`
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   input {
     padding: 5px;
@@ -65,7 +65,7 @@ const InputCont = styled.div`
 
 const LoginButton = styled.button`
   height: 45px;
-  width: 150px;
+  width: 146px;
   font-family: 'Libre Franklin', sans-serif;
   border: 2px solid #292929;
   text-align: center;
@@ -75,6 +75,7 @@ const LoginButton = styled.button`
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
+  margin-bottom: 5px;
 
   &:hover {
     background-color: #292929;
