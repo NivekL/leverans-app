@@ -24,7 +24,8 @@ export const addToCart = async (productId) => {
               },
             body: JSON.stringify({'cartId': cartId})
         }
-        await fetch(`/api/cart/add/productid/${productId}`, httpReq);
+        let response = await (await fetch(`/api/cart/add/productid/${productId}`, httpReq)).json();
+        return response;
     } catch (error) {
         console.error(error);
     }

@@ -24,9 +24,11 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
     }
   };
 
-  const handleAddToCart = () => {
-    addToCart(match.params.id);
-    setTriggerCartUpdate(Date.now);
+  const handleAddToCart = async () => {
+    let response = await addToCart(match.params.id);
+    if (Boolean(response["Additions made"])) {
+      setTriggerCartUpdate(Date.now);
+    }
   }
 
   return (
