@@ -20,10 +20,12 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
         return quantity < 100 ? quantity : '>C';
     }
 
-    useEffect(async () => {
+    useEffect(() => {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
-        const cartData = await getWholeCart();
-        setProductsInCart(cartData);
+        (async () => {
+            const cartData = await getWholeCart();
+            setProductsInCart(cartData);
+        })();
     }, [triggerCartUpdate]);
 
     useEffect(() => {
