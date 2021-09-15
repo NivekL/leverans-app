@@ -4,83 +4,28 @@ import { Close } from '@material-ui/icons';
 import WishListProductRow from './WishListProductRow';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
-// Objekt med låtsasdata från databasen
-let cartDataFromDB = [
-    {
-        'name': 'Apple Watch SE',
-        'id': 1,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 2,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 2,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 149,
-        'quantity': 1,
-    },
-    {
-        'name': 'Apple Watch SE Special Ed.',
-        'id': 3,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 3,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 4,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 1,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 5,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 3195,
-        'quantity': 1,
-    },
-    {
-        'name': 'Apple Watch SE',
-        'id': 6,
-        'shortDesc': 'Aluminiumboett i guld 40 mm sandrosa sportband',
-        'desc': 'Apple Watch SE är fylld med nya funktioner som gör användningen ännu roligare: Retina skärm, kompass, cykelkoll & mycket mer! Naturligtvis hittar du alla gamla, användbara funktioner också. Apple Music, Apple Pay och Siri, bara för att nämna några. Du kan ändra klockans utseende snyggt och enkelt, välj mellan olika materialer och ett nytt armband utan spänne som gör användning extra bekvämt. Armbandet finns i två olika materialer och nio olika storlekar för att passa alla handleder. Denna klockan har ett rosa sportband som känns bekvämt mot handleden och 40mm aluminiumboett.',
-        'category': 'St Moritz Sport',
-        'image': 'St_Moritz_Sport/black-w.png',
-        'price': 1195,
-        'quantity': 4,
-    },
-]
 
 function WishList({ open, setOpen, setItemsInCartQuantity }) {
  const [productsInCart, setProductsInCart] = useState([]);
-    const [costs, setCosts] = useState({});
+    const [cost, setCosts] = useState({});
 
  
-
     useEffect(() => {
         // Gör en fetch till databasen, hämta den sparade varukorgen.
         // Ersätt "cartDataFromDB" nedan mot fetch-resultatet.
-        setProductsInCart(cartDataFromDB);
+        fetchArticles();
     }, []);
 
-
+    const fetchArticles = async () => {
+        try {
+            const response = await fetch("/api/wishlist");
+            const data = await response.json();
+            setProductsInCart(data);
+            console.log(data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     // Räkna ut totaler
     useEffect(() => {
@@ -121,44 +66,60 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
         }
     }
   
-    const handleQuantityButton = (item, addOrSub) => {
-        switch (addOrSub) {
-            case 'add':
-                //fake fetch request to change quantity
-                for (let inCart of cartDataFromDB) {
-                    if (inCart.id === item.id) {
-                        inCart.quantity += 1;
-                    }
-                }
-                setProductsInCart([...cartDataFromDB]);
-                break;
-            case 'subtract':
-                //fake fetch request to change quantity
-                for (let inCart of cartDataFromDB) {
-                    if (inCart.id === item.id) {
-                        if (inCart.quantity === 1) return;
-                        inCart.quantity -= 1;
-                    }
-                }
-                setProductsInCart([...cartDataFromDB]);
-                break;
+    // const handleQuantityButton = (item, addOrSub) => {
+    //     switch (addOrSub) {
+    //         case 'add':
+    //             //fake fetch request to change quantity
+    //             for (let inCart of productsInCart) {
+    //                 if (inCart.id === item.id) {
+    //                     inCart.quantity += 1;
+    //                 }
+    //             }
+    //             setProductsInCart([...productsInCart]);
+    //             break;
+    //         case 'subtract':
+    //             //fake fetch request to change quantity
+    //             for (let inCart of productsInCart) {
+    //                 if (inCart.id === item.id) {
+    //                     if (inCart.quantity === 1) return;
+    //                     inCart.quantity -= 1;
+    //                 }
+    //             }
+    //             setProductsInCart([...productsInCart]);
+    //             break;
         
-            default:
-                break;
+    //         default:
+    //             break;
+    //     }
+    // }
+    
+    // Remove one watch from the list
+    const handleTrashcanButton = async (itemId) => {
+        try {
+            await fetch('/api/wishlist/delete/' + itemId, {
+                method: 'DELETE',
+            });
+            console.log(itemId);
+            let  cartData = productsInCart.filter(v => itemId !== v.id);
+            setProductsInCart([...cartData]);
+            
+        } catch (e) {
+            throw new Error(e);
         }
     }
-    const handleTrashcanButton = (item) => {
-        console.log('pressed trashcanbutton for product with id: ' + item.id);
-
-        //fake fetch request to delete from Cart
-        cartDataFromDB = cartDataFromDB.filter(v => item.id !== v.id);
-
-        setProductsInCart([...cartDataFromDB]);
+    
+    // Remove everything in the list
+    const handleClearAll = async () => {
+        try {
+            await fetch('/api/wishlist/clearall/', {
+                method: 'DELETE',
+            });
+            setProductsInCart([]);  
+        } catch (e) {
+            throw new Error(e);
+        }
     }
-    const handleClearArticle = () => {
 
-        setProductsInCart([]);
-    }
     const handleAddToCart = () => {
         alert('Add to Cart button pressed');
     }
@@ -187,7 +148,7 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
                                         index={index}
                                         productsInCart={productsInCart}
                                         displayCost={displayCost}
-                                        handleQuantityButton={handleQuantityButton}
+                                        // handleQuantityButton={handleQuantityButton}
                                         handleTrashcanButton={handleTrashcanButton}
                                         handleAddToCart={handleAddToCart}
                                     />
@@ -198,7 +159,7 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
             </ProductsContainer>
 
             <OrderButtonContainer>
-                    <button onClick={handleClearArticle}>rensa artiklar</button>
+                    <button onClick={handleClearAll}>rensa artiklar</button>
             </OrderButtonContainer>
         </ReturnDiv>
     )
@@ -251,7 +212,7 @@ const ProductsContainer = styled.div`
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding: 0 var(--padding);
+    padding-right: 25px;
     overflow-y: scroll;
 `
 

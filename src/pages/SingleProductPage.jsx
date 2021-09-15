@@ -6,6 +6,7 @@ import { addToCart } from '../helperFunctions/cartDBfunctions';
 function SingleProductPage({ match, setTriggerCartUpdate }) {
   const [info, setInfo] = useState({});
 
+
   useEffect(() => {
     fetchInfo();
   }, []);
@@ -17,12 +18,22 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
         throw new Error('HTTP Error! status: ' + response.status);
       }
       const data = await response.json();
-      console.log(data);
+      console.log(data[0]);
       setInfo(data[0]);
     } catch (error) {
       console.log(error);
     }
   };
+  
+  const postWish = async () => {
+    await fetch('/api/wishlist/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(info)
+    });
+  }
 
   const handleAddToCart = async () => {
     let response = await addToCart(match.params.id);
@@ -67,7 +78,7 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
         >
           Lägg till i varukorg
         </AddToCart>
-        <AddSave>Spara Artikel</AddSave>
+        <AddSave onClick={() => { postWish() }}>Spara Artikel</AddSave>
       </InfoMainContainer>
     </MainWrapper>
   );
