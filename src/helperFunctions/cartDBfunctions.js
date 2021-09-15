@@ -11,7 +11,7 @@ export const addToCart = async (productId) => {
             window.localStorage.setItem('cartId', resObj.cartId);
             cartId = resObj.cartId;        
         } catch (error) {
-            throw new Error("HTTP request error on function\ncartDBfunctions => addToCart\nMore info: " + error);
+            console.error("HTTP request error on function\ncartDBfunctions => addToCart\nMore info: " + error);
         }
     }
 
@@ -27,7 +27,7 @@ export const addToCart = async (productId) => {
         let response = await (await fetch(`/api/cart/add/productid/${productId}`, httpReq)).json();
         return response;
     } catch (error) {
-        throw new Error("HTTP request error on function\ncartDBfunctions => addToCart\nMore info: " + error);
+        console.error("HTTP request error on function\ncartDBfunctions => addToCart\nMore info: " + error);
     }
 }
 
@@ -45,7 +45,7 @@ export const getWholeCart = async () => {
         const data = await (await fetch(`/api/cart/${cartId}`)).json();
         return data;
     } catch (error) {
-        throw new Error("HTTP request error on function\ncartDBfunctions => getWholeCart\nMore info: " + error);
+        console.error("HTTP request error on function\ncartDBfunctions => getWholeCart\nMore info: " + error);
     }
 }
 
@@ -53,7 +53,7 @@ export const removeProductFromCart = async (productid) => {
     let cartId = window.localStorage.getItem('cartId');
 
     if (!cartId) {
-        throw new Error("Error with cartId in local storage");
+        console.error("Error with cartId in local storage");
     }
 
     cartId = encodeURIComponent(cartId);
@@ -61,7 +61,7 @@ export const removeProductFromCart = async (productid) => {
     try {
         await fetch(`/api/cart/${cartId}/removefromcart/productid/${productid}`, { method: 'DELETE' });
     } catch (error) {
-        throw new Error("HTTP request error on function\ncartDBfunctions => removeProductFromCart\nMore info: " + error);
+        console.error("HTTP request error on function\ncartDBfunctions => removeProductFromCart\nMore info: " + error);
     }
 }
 
@@ -69,7 +69,7 @@ export const addQuantityOfProduct = async (productId) => {
     let cartId = window.localStorage.getItem('cartId');
 
     if (!cartId) {
-        throw new Error("Error with cartId in local storage");
+        console.error("Error with cartId in local storage");
     }
 
     try {
@@ -82,7 +82,7 @@ export const addQuantityOfProduct = async (productId) => {
         }
         await fetch(`/api/cart/add/productid/${productId}`, httpReq);
     } catch (error) {
-        throw new Error("HTTP request error on function\ncartDBfunctions => addQuantityOfProduct\nMore info: " + error);
+        console.error("HTTP request error on function\ncartDBfunctions => addQuantityOfProduct\nMore info: " + error);
     }
 }
 
@@ -90,7 +90,7 @@ export const subtractQuantityOfProduct = async (productId) => {
     let cartId = window.localStorage.getItem('cartId');
 
     if (!cartId) {
-        throw new Error("Error with cartId in local storage");
+        console.error("Error with cartId in local storage");
     }
 
     cartId = encodeURIComponent(cartId);
@@ -98,7 +98,7 @@ export const subtractQuantityOfProduct = async (productId) => {
     try {
         await fetch(`/api/cart/${cartId}/quantitydecrease/productid/${productId}`, { method: 'DELETE' });
     } catch (error) {
-        throw new Error("HTTP request error on function\ncartDBfunctions => subtractQuantityOfProduct\nMore info: " + error);
+        console.error("HTTP request error on function\ncartDBfunctions => subtractQuantityOfProduct\nMore info: " + error);
     }
 }
 
@@ -106,7 +106,7 @@ export const removeCartCompletelyFromDB = async () => {
     let cartId = window.localStorage.getItem('cartId');
 
     if (!cartId) {
-        throw new Error("Error with cartId in local storage");
+        console.error("Error with cartId in local storage");
     }
 
     cartId = encodeURIComponent(cartId);
@@ -114,6 +114,6 @@ export const removeCartCompletelyFromDB = async () => {
     try {
         await fetch(`/api/cart/${cartId}/removecartcompletely`, { method: 'DELETE' });
     } catch (error) {
-        throw new Error("HTTP request error on function\ncartDBfunctions => removeCartCompletelyFromDB\nMore info: " + error);
+        console.error("HTTP request error on function\ncartDBfunctions => removeCartCompletelyFromDB\nMore info: " + error);
     }
 }
