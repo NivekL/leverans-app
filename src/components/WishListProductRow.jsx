@@ -5,21 +5,17 @@ import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 
-function WishListProductRow({ product, index, displayCost, productsInCart, handleTrashcanButton, handleAddToCart }) {
+function WishListProductRow({ product, index, displayCost, productsInwishlist, handleTrashcanButton, handleAddToCartButton }) {
 
 
     const handleDelete = () => {
         handleTrashcanButton(product.id);
     }
-    // const itemPrice = (item) => {
-    //     if (item.quantity > 1) {
-    //         return `${item.quantity} x ${displayCost(item.price)}`;
-    //     } else if (item.quantity === 0) {
-    //         return displayCost(0);
-    //     } else {
-    //         return displayCost(item.price);
-    //     }
-    // }
+
+    const handleAddToCart = () => {
+        handleAddToCartButton(product.id);
+    }
+
     const itemPrice = (item) => {
         return displayCost(item.price);
     }
@@ -38,7 +34,6 @@ function WishListProductRow({ product, index, displayCost, productsInCart, handl
         }
     }
 
-
     return (
         <div>
             <ProductDiv>
@@ -54,21 +49,12 @@ function WishListProductRow({ product, index, displayCost, productsInCart, handl
                         <p>{shortenText(product.description, 40)}</p>
                     </ProductRow2>
                     <ProductRow3>
-                        {/* <table>
-                            <tbody>
-                                <tr>
-                                    <td onClick={() => { handleQuantityButton(product, 'subtract') }}>-</td>
-                                    <td>{product.quantity}</td>
-                                    <td onClick={() => { handleQuantityButton(product, 'add') }}>+</td>
-                                </tr>
-                            </tbody>
-                        </table> */}
                         <span><FontAwesomeIcon icon={faTrashAlt} onClick={handleDelete} /></span>
-                        <span> <AddShoppingCartIcon fontSize="small" onClick={() => { handleAddToCart(product) }}/></span>
+                        <span> <AddShoppingCartIcon fontSize="small" onClick={handleAddToCart}/></span>
                     </ProductRow3>
                 </ProductInfo>
             </ProductDiv>
-            {insertLine(productsInCart, index)}
+            {insertLine(productsInwishlist, index)}
         </div>
     )
 }

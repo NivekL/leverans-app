@@ -23,6 +23,7 @@ function App() {
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
+  const [wishListUpdate, setWishListUpdate] = useState(0);
 
   return (
     <Router>
@@ -36,7 +37,9 @@ function App() {
           setShowWhichPopup={setShowWhichPopup} 
           isCartOpen={isCartOpen} 
           setIsCartOpen={setIsCartOpen}
-          triggerCartUpdate={triggerCartUpdate} 
+          wishListUpdate={wishListUpdate}
+          triggerCartUpdate={triggerCartUpdate}
+          setTriggerCartUpdate={setTriggerCartUpdate} 
         />
           <div className="content">
             <Switch>
@@ -59,6 +62,7 @@ function App() {
               <Route path="/:category/:id/:name" render={props => (
                 <SingleProductPage {...props} 
                   setTriggerCartUpdate={setTriggerCartUpdate} 
+                  setWishListUpdate={setWishListUpdate} 
                 />
               )} />
               <Route path="*">
