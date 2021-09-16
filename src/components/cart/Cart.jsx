@@ -166,6 +166,7 @@ const ReturnDiv = styled.div`
     bottom: 0;
     z-index: 10000;
     background-color: whitesmoke;
+    box-shadow: ${({ open }) => open ? '-5px 0px 50px #3333337f' : '0px 0px 0px #3333337f'};
     font-family: 'Libre Franklin', sans-serif;
     font-size: 14px;
     --padding: 20px;
@@ -174,7 +175,7 @@ const ReturnDiv = styled.div`
     display: flex;
     flex-direction: column;
     transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
     @media screen and (max-width: 600px) {
         width: 100%
