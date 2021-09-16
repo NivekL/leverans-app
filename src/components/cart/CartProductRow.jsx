@@ -15,11 +15,6 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
         }
     }
 
-    const shortenText = (text, maxlength) => {
-        if (text.length < maxlength) return text;
-        return text.substring(0,maxlength).concat('...');
-    }
-
     const insertLine = (items, index) => {
         if (items.length > 1) {
             if (index === items.length - 1) {
@@ -38,11 +33,11 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
                 </span>
                 <ProductInfo>
                     <ProductRow1>
-                        <p className="boldText">{shortenText(product.name, 20)}</p>
+                        <p className="boldText ellipsis1Line">{product.name}</p>
                         <p className="boldText">{itemPrice(product)}</p>
                     </ProductRow1>
                     <ProductRow2>
-                        <p>{shortenText(product.description, 40)}</p>
+                        <p className="ellipsis2Line">{product.description}</p>
                     </ProductRow2>
                     <ProductRow3>
                         <table>
@@ -73,6 +68,18 @@ const ProductDiv = styled.div`
     img {
         height: 100%;
         width: auto;
+    }
+    .ellipsis1Line {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .ellipsis2Line {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 `
 const ProductInfo = styled.div`
