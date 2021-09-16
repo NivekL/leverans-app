@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
-  const [user_name, setUser_name] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [user_name, setUser_name] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  function handleResponse(response) {
+    return response.json().then((json) => {
+      if (!response.ok) {
+        const error = Object.assign({}, json, {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return Promise.reject(error);
+      }
+      return json;
+    });
+  }
+
+  function Success() {
+    setErrorMessage("Användare skapad.");
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = { user_name, password };
 
-    setLoading(true);
-
-    fetch('/api/registration', {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
+    fetch("/api/registration", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
       body: JSON.stringify(user),
-    }).then(() => {
-      setLoading(false);
-    });
+    })
+      .then(handleResponse)
+      .then(Success)
+      .catch((error) => {
+        setErrorMessage(error.message);
+      });
   };
 
   return (
@@ -30,10 +48,12 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
               required
               type="text"
               name="user_name"
-              id=""
               placeholder="användarnamn"
               value={user_name}
               onChange={(e) => setUser_name(e.target.value)}
+              pattern="[a-zA-Z0-9]+"
+              minlength="5"
+              maxlength="15"
             />
           </InputCont>
           <InputCont>
@@ -41,15 +61,17 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
               required
               type="password"
               name="password"
-              id=""
               placeholder="lösenord"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              pattern="[a-zA-Z0-9]+"
+              minlength="5"
+              maxLength="15"
             />
           </InputCont>
         </FormInputContainer>
-        {!loading && <SignUpBtn>registrera</SignUpBtn>}
-        {loading && <Success disabled>välkommen</Success>}
+        {<SignUpBtn>registrera</SignUpBtn>}
+        {errorMessage}
       </Form>
 
       <RegisterContainer>
@@ -100,7 +122,7 @@ const InputCont = styled.div`
 const SignUpBtn = styled.button`
   height: 45px;
   width: 146px;
-  font-family: 'Libre Franklin', sans-serif;
+  font-family: "Libre Franklin", sans-serif;
   border: 2px solid #292929;
   text-align: center;
   background-color: transparent;
@@ -119,7 +141,7 @@ const SignUpBtn = styled.button`
 const Success = styled.button`
   height: 45px;
   width: 150px;
-  font-family: 'Libre Franklin', sans-serif;
+  font-family: "Libre Franklin", sans-serif;
   border: 2px solid #292929;
   text-align: center;
   background-color: transparent;
@@ -135,7 +157,7 @@ const RegisterContainer = styled.div`
   flex-direction: column;
 
   p {
-    font-family: 'Libre Franklin', sans-serif;
+    font-family: "Libre Franklin", sans-serif;
     font-size: 0.8rem;
     margin-right: 6px;
   }
@@ -143,7 +165,7 @@ const RegisterContainer = styled.div`
   a {
     font-size: 0.8rem;
     color: #4e5da3;
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     text-decoration: none;
     letter-spacing: 1px;
     margin-bottom: 13px;
