@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 
-function SingleProductPage({ match, setTriggerCartUpdate }) {
+function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
   const [info, setInfo] = useState({});
-
 
   useEffect(() => {
     fetchInfo();
@@ -26,13 +25,19 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
   };
   
   const postWish = async () => {
-    await fetch('/api/wishlist/add', {
+   let response = await fetch('/api/wishlist/add/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(info)
     });
+    console.log(response.ok);
+    if (Boolean(response)) {
+      setWishListUpdate(Date.now);
+    } else {
+      console.error("Error regarding the response of addToCart, response looks like this:\n" + response);
+    }
   }
 
   const handleAddToCart = async () => {
@@ -78,7 +83,7 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
         >
           Lägg till i varukorg
         </AddToCart>
-        <AddSave onClick={() => { postWish() }}>Spara Artikel</AddSave>
+        <AddSave onClick={postWish}>Spara Artikel</AddSave>
       </InfoMainContainer>
     </MainWrapper>
   );

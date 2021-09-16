@@ -2,39 +2,39 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import WishListProductRow from './WishListProductRow';
+import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 
-function WishList({ open, setOpen, setItemsInCartQuantity }) {
- const [productsInCart, setProductsInCart] = useState([]);
+function WishList({ open, setOpen, setTriggerCartUpdate, wishListUpdate }) {
+    const [productsInwishlist, setProductsInwishlist] = useState([]);
     const [cost, setCosts] = useState({});
 
- 
+
     useEffect(() => {
-        // Gör en fetch till databasen, hämta den sparade varukorgen.
-        // Ersätt "cartDataFromDB" nedan mot fetch-resultatet.
         fetchArticles();
-    }, []);
+    }, [wishListUpdate]);
+
 
     const fetchArticles = async () => {
         try {
             const response = await fetch("/api/wishlist");
             const data = await response.json();
-            setProductsInCart(data);
+            setProductsInwishlist(data);
             console.log(data);
         } catch (err) {
             console.log(err);
         }
     };
 
-    // Räkna ut totaler
+    //Räkna ut totaler
     useEffect(() => {
             let subTotalCost = 0;
             let shippingCost = 0;
             let totalCost = 0;
             let percentageVAT = 25;
             let calcVAT = 0;
-            for (let product of productsInCart) {
+            for (let product of productsInwishlist) {
                 subTotalCost += product.quantity * product.price;
             }
             totalCost = subTotalCost + shippingCost;
@@ -45,7 +45,8 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
                 'totalCost': totalCost,
                 'calcVAT': calcVAT
             })
-    }, [productsInCart])
+    }, [productsInwishlist])
+
 
     const displayCost = (cost) => {
         if (cost === undefined) {
@@ -65,47 +66,22 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
             }).join('.');
         }
     }
-  
-    // const handleQuantityButton = (item, addOrSub) => {
-    //     switch (addOrSub) {
-    //         case 'add':
-    //             //fake fetch request to change quantity
-    //             for (let inCart of productsInCart) {
-    //                 if (inCart.id === item.id) {
-    //                     inCart.quantity += 1;
-    //                 }
-    //             }
-    //             setProductsInCart([...productsInCart]);
-    //             break;
-    //         case 'subtract':
-    //             //fake fetch request to change quantity
-    //             for (let inCart of productsInCart) {
-    //                 if (inCart.id === item.id) {
-    //                     if (inCart.quantity === 1) return;
-    //                     inCart.quantity -= 1;
-    //                 }
-    //             }
-    //             setProductsInCart([...productsInCart]);
-    //             break;
-        
-    //         default:
-    //             break;
-    //     }
-    // }
-    
-    // Remove one watch from the list
-    const handleTrashcanButton = async (itemId) => {
+    const deleteArticle = async (itemId) => {
         try {
             await fetch('/api/wishlist/delete/' + itemId, {
                 method: 'DELETE',
             });
             console.log(itemId);
-            let  cartData = productsInCart.filter(v => itemId !== v.id);
-            setProductsInCart([...cartData]);
+            let  wishlistData = productsInwishlist.filter(v => itemId !== v.id);
+            setProductsInwishlist([...wishlistData]);
             
         } catch (e) {
             throw new Error(e);
         }
+    }
+    // Remove one watch from the list
+    const handleTrashcanButton = async (itemId) => {
+        deleteArticle(itemId);
     }
     
     // Remove everything in the list
@@ -114,15 +90,21 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
             await fetch('/api/wishlist/clearall/', {
                 method: 'DELETE',
             });
-            setProductsInCart([]);  
+            setProductsInwishlist([]);  
         } catch (e) {
             throw new Error(e);
         }
     }
-
-    const handleAddToCart = () => {
-        alert('Add to Cart button pressed');
-    }
+    // Add to cart
+    const handleAddToCartButton = async (artId) => {
+        let response = await addToCart(artId);
+        if (Boolean(response["Additions made"])) {
+            setTriggerCartUpdate(Date.now);
+            deleteArticle(artId);
+        } else {
+          console.error("Error regarding the response of addToCart, response looks like this:\n" + response);
+        }
+      }
 
     return (
         <ReturnDiv open={open}>
@@ -133,10 +115,10 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
                 </DivLR>
             </TopBar>
             <ProductsContainer className="rowMargin">
-                {/* map out cart items */}
+                {/* map out wishlist items */}
                 <AnimateSharedLayout>
                     <AnimatePresence>
-                        {productsInCart.map((product, index) => (
+                        {productsInwishlist.map((product, index) => (
                                 <motion.div
                                     key={product.id}
                                     layoutId={product.id}
@@ -146,11 +128,10 @@ function WishList({ open, setOpen, setItemsInCartQuantity }) {
                                     <WishListProductRow
                                         product={product}
                                         index={index}
-                                        productsInCart={productsInCart}
+                                        productsInwishlist={productsInwishlist}
                                         displayCost={displayCost}
-                                        // handleQuantityButton={handleQuantityButton}
                                         handleTrashcanButton={handleTrashcanButton}
-                                        handleAddToCart={handleAddToCart}
+                                        handleAddToCartButton={handleAddToCartButton}
                                     />
                                 </motion.div>
                         ))}

@@ -290,7 +290,7 @@ app.post('/api/wishlist/add', (req, res) => {
             currentData[newData] = req.body;
             saveListData(currentData);
         }
-        res.send({success: true, msg: 'article added successfully'});
+        res.send({success: true, msg: 'added article'});
     } catch (e) {
         console.log(e)
     }
@@ -303,9 +303,9 @@ app.get('/api/wishlist', (req, res) => {
 app.delete('/api/wishlist/delete/:id', (req, res) => {
     const { id } = req.params;
     const currentData = getListData();
-    const projectIndex = currentData.findIndex(p => p.id == id);
+    const wishListArticle = currentData.findIndex(article => article.id == id);
    
-    currentData.splice(projectIndex, 1);
+    currentData.splice(wishListArticle, 1);
     saveListData(currentData);
     return res.send("delete data");
    });

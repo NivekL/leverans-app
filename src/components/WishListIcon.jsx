@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 
 
-function WishListIcon() {
+function WishListIcon({ setTriggerCartUpdate, wishListUpdate }) {
 
     const [open, setOpen] = useState(false)
 
@@ -15,7 +15,7 @@ function WishListIcon() {
               <ListAltOutlinedIcon open={open} onClick={() => setOpen(!open)} fontSize="large" style={{fill: "#504f4f", cursor: "pointer"}} />
             </IconContainer>
             
-            <WishList open={open} setOpen={setOpen}/>
+            <WishList open={open} setOpen={setOpen} setTriggerCartUpdate={setTriggerCartUpdate} wishListUpdate={wishListUpdate} />
         </React.Fragment>
     )
 }
