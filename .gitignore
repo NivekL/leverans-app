@@ -8,7 +8,7 @@
 # Database
 /dbtesting
 db/*
-wishList.json
+backend/wishList.json
 
 # testing
 /coverage
