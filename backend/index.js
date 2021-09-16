@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const sqlDriver = require('better-sqlite3');
 const bcryptjs = require('bcryptjs');
+const { get } = require('https');
 
 //----------- Webserver
 const app = express();
@@ -14,8 +15,6 @@ if (!fs.existsSync(buildDir)) {
 app.use(express.static(buildDir));
 //-----------
 app.use(express.json());
-
-
 
 //----------- REST API Watches
 const dbPathWatches = path.join(__dirname, '../dbtesting/watches.db');
@@ -261,6 +260,62 @@ app.delete('/api/cart/:cartid/removecartcompletely', (req, res) => {
     res.json({"cartItems": result, "carts": result2});
 })
 //=================
+
+let wishList = path.join(__dirname, "wishList.json");
+
+// Write data into wishlist.json file
+const saveListData = (data) => {
+    const uniqueId = new Set();
+    const duplicateCheck = data.some(element => uniqueId.size === uniqueId.add(element.id).size);
+    if(duplicateCheck) {
+        return console.log("duplicate value");
+    } else {
+        const stringifyData = JSON.stringify(data, null, 2);
+        fs.writeFileSync(wishList, stringifyData);
+    }
+};
+// Read data from wishlist.json file
+const getListData = () => {
+    const jsonData = fs.readFileSync(wishList, 'utf8');
+    return JSON.parse(jsonData); 
+};
+
+app.post('/api/wishlist/add', (req, res) => {
+    try {
+        if(!fs.existsSync(wishList)) {
+            saveListData([req.body]);
+        } else {
+            const currentData = getListData();
+            const newData = currentData.push();
+            currentData[newData] = req.body;
+            saveListData(currentData);
+        }
+        res.send({success: true, msg: 'article added successfully'});
+    } catch (e) {
+        console.log(e)
+    }
+});
+
+app.get('/api/wishlist', (req, res) => {
+    res.send(getListData());
+  });
+
+app.delete('/api/wishlist/delete/:id', (req, res) => {
+    const { id } = req.params;
+    const currentData = getListData();
+    const projectIndex = currentData.findIndex(p => p.id == id);
+   
+    currentData.splice(projectIndex, 1);
+    saveListData(currentData);
+    return res.send("delete data");
+   });
+
+app.delete('/api/wishlist/clearall/', (req,res) => {
+    fs.unlinkSync(wishList);
+    res.send("deleted wishlist");
+})
+
+//================
 
 
 const port = 4000;
