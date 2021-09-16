@@ -83,23 +83,27 @@ app.get('/api/registration', (req, res) => {;
 
 app.post('/api/registration', async (req, res) => {
     const saltRounds = 10;
-
     // Generate salt & hash password
     const hashed = await bcryptjs.hash(req.body.password, saltRounds);
-    let stmt = dbWatches.prepare(`
-    INSERT INTO registration (user_name, password)
-    VALUES (:user_name,'${hashed}')
-    `);
-    const result = stmt.run({
-        user_name: req.body.user_name,
-        password: req.body.password
-    });
-    res.json(result);
+
+   try{
+    const stmt = dbWatches.prepare(`
+     INSERT INTO registration (user_name, password)
+     VALUES (:user_name,'${hashed}')
+         `);
+         const result = stmt.run({
+             user_name: req.body.user_name,
+             password: req.body.password
+            });
+            res.json(result);
+   } catch(err) {
+       res.status(409).json({message: 'Användarnamnet upptaget.'});
+   }
 })
 
-// 1.2 Compare user password with hash
 
-// 1.3 Login
+// 1.2 Login
+bcryptjs.compare();
 
 // ......BCRYPT
 
