@@ -2,7 +2,7 @@ import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import React,  { useState } from 'react';
 import Cart from './cart/Cart';
 import styled from 'styled-components';
-import CartIconItemsInCart from './CartIconItemsInCart';
+import NotificationBubbleQuantity from './NotificationBubbleQuantity';
 
 function CartIcon({ setShowWhichPopup, open, setOpen, triggerCartUpdate }) {
     const [itemsInCartQuantity, setItemsInCartQuantity] = useState(0);
@@ -11,7 +11,7 @@ function CartIcon({ setShowWhichPopup, open, setOpen, triggerCartUpdate }) {
         <React.Fragment>
             <IconContainer open={open} onClick={() => setOpen(!open)} style={{cursor: "pointer"}}>
                  <ShoppingCartOutlinedIcon fontSize="large" style={{fill: "#504f4f"}} />
-                 <CartIconItemsInCart itemsInCartQuantity={itemsInCartQuantity} />
+                 <NotificationBubbleQuantity dynamicQuantityState={itemsInCartQuantity} />
             </IconContainer>
 
             <Cart 

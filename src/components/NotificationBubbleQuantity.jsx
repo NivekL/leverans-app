@@ -1,13 +1,8 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-function CartIconItemsInCart({ itemsInCartQuantity }) {
-    const [nbOfItemsInCart, setNbOfItemsInCart] = useState();
-
-    useEffect(() => {
-        setNbOfItemsInCart(itemsInCartQuantity);
-    }, [itemsInCartQuantity])
+function NotificationBubbleQuantity({ dynamicQuantityState }) {
 
     const variants = {
         initial: { scale: 1 },
@@ -19,10 +14,10 @@ function CartIconItemsInCart({ itemsInCartQuantity }) {
     return (
         <div>
             {
-                nbOfItemsInCart ?
-                <ItemsInCart
+                dynamicQuantityState ?
+                <NotificationBubble
                     as={motion.div}
-                    key={nbOfItemsInCart}
+                    key={dynamicQuantityState}
                     variants={variants}
                     initial="initial"
                     animate="animate"
@@ -33,17 +28,17 @@ function CartIconItemsInCart({ itemsInCartQuantity }) {
                         duration: 0.8
                     }}
                 >
-                    <div>{nbOfItemsInCart}</div>
-                </ItemsInCart>
+                    <div>{dynamicQuantityState}</div>
+                </NotificationBubble>
                 : null
             }
         </div>
     )
 }
 
-export default CartIconItemsInCart
+export default NotificationBubbleQuantity
 
-const ItemsInCart = styled.div`
+const NotificationBubble = styled.div`
     position: absolute;
     top: -10%;
     right: -7%;
