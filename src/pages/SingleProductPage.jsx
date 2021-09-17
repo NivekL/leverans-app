@@ -194,6 +194,7 @@ const AddToCart = styled(motion.button)`
   align-items: center;
   text-transform: uppercase;
   position: relative;
+  cursor: pointer;
 `;
 
 const AddSave = styled(AddToCart)`
