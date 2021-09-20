@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
+import { displayCost } from '../helperFunctions/IntPrice';
 
 function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
   const [info, setInfo] = useState({});
@@ -23,31 +24,31 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
       console.log(error);
     }
   };
-  
+
   const postWish = async () => {
-   let response = await fetch('/api/wishlist/add/', {
+    let response = await fetch('/api/wishlist/add/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(info)
+      body: JSON.stringify(info),
     });
     console.log(response.ok);
     if (Boolean(response)) {
       setWishListUpdate(Date.now);
     } else {
-      console.error("Error regarding the response of addToCart, response looks like this:\n" + response);
+      console.error('Error regarding the response of addToCart, response looks like this:\n' + response);
     }
-  }
+  };
 
   const handleAddToCart = async () => {
     let response = await addToCart(match.params.id);
-    if (Boolean(response["Additions made"])) {
+    if (Boolean(response['Additions made'])) {
       setTriggerCartUpdate(Date.now);
     } else {
-      console.error("Error regarding the response of addToCart, response looks like this:\n" + response);
+      console.error('Error regarding the response of addToCart, response looks like this:\n' + response);
     }
-  }
+  };
 
   return (
     <MainWrapper className="mainWrapper" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
@@ -67,7 +68,7 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
             <h2 className="watchName">{info.name}</h2>
           </InnerInfo>
           <PriceContainer>
-            <p className="price">{info.price} kr</p>
+            <p className="price">{displayCost(info.price)}</p>
           </PriceContainer>
         </InfoContainer>
 
@@ -76,9 +77,10 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
           <p className="descriptionText">{info.description}</p>
         </DescriptionContainer>
 
-        <AddToCart onClick={ handleAddToCart } 
-          initial={{ y: 20, opacity: 0 }} 
-          animate={{ y: 0, opacity: 1 }} 
+        <AddToCart
+          onClick={handleAddToCart}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
           transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.3 }}
         >
           Lägg till i varukorg
