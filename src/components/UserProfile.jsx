@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext} from 'react';
 import styled from 'styled-components';
+import { UserContext } from '../App';
+
 
 function UserProfile({ isLoggedIn, setIsLoggedIn }) {
+  const {userName} = useContext(UserContext);
+
+  
   return (
     <>
-      <h3>hej, "USER_NAME prop"</h3>
       <UserContainer>
-        <h4>"Name Lastname"</h4>
-        <h4>"Orders"</h4>
+      <h3>Hej, {userName}</h3>
         <LogOutButton onClick={() => setIsLoggedIn(!isLoggedIn)}>Logga ut</LogOutButton>
       </UserContainer>
     </>

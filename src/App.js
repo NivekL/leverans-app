@@ -13,13 +13,20 @@ import SingleProductPage from './pages/SingleProductPage';
 import Footer from './components/Footer';
 import Popups from './components/Popups';
 import { ErrorPage } from './components/ErrorPage';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 
 
 
+export const UserContext = React.createContext({
+  userName: '',
+  setUserName: () => {},
+});
 
 function App() {
+  const [userName, setUserName] = useState('');
+  const userContextValue = {userName, setUserName};
+
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
@@ -28,50 +35,52 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Popups 
-          showWhichPopup={showWhichPopup} 
-          setShowWhichPopup={setShowWhichPopup} 
-          setIsCartOpen={setIsCartOpen}
-        />
-        <NavBar 
-          setShowWhichPopup={setShowWhichPopup} 
-          isCartOpen={isCartOpen} 
-          setIsCartOpen={setIsCartOpen}
-          wishListUpdate={wishListUpdate}
-          triggerCartUpdate={triggerCartUpdate}
-          setTriggerCartUpdate={setTriggerCartUpdate} 
-        />
-          <div className="content">
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
+        <UserContext.Provider value={userContextValue}>
+          <Popups 
+            showWhichPopup={showWhichPopup} 
+            setShowWhichPopup={setShowWhichPopup} 
+            setIsCartOpen={setIsCartOpen}
+          />
+          <NavBar 
+            setShowWhichPopup={setShowWhichPopup} 
+            isCartOpen={isCartOpen} 
+            setIsCartOpen={setIsCartOpen}
+            wishListUpdate={wishListUpdate}
+            triggerCartUpdate={triggerCartUpdate}
+            setTriggerCartUpdate={setTriggerCartUpdate} 
+          />
+            <div className="content">
+              <Switch>
+                <Route exact path="/">
+                  <Home />
+                </Route>
 
-              <Route path="/LondonClassic">
-                <LondonClassic />
-              </Route>
+                <Route path="/LondonClassic">
+                  <LondonClassic />
+                </Route>
 
-              <Route path="/StMoritzSport">
-                <StMoritzSport />
-              </Route>
+                <Route path="/StMoritzSport">
+                  <StMoritzSport />
+                </Route>
 
-              <Route path="/DubaiLuxury">
-                <DubaiLuxury />
-              </Route>
+                <Route path="/DubaiLuxury">
+                  <DubaiLuxury />
+                </Route>
 
-              <Route path="/:category/:id/:name" render={props => (
-                <SingleProductPage {...props} 
-                  setTriggerCartUpdate={setTriggerCartUpdate} 
-                  setWishListUpdate={setWishListUpdate} 
-                />
-              )} />
-              <Route path="*">
-                <ErrorPage />
-              </Route>
-            </Switch>
-          </div>
+                <Route path="/:category/:id/:name" render={props => (
+                  <SingleProductPage {...props} 
+                    setTriggerCartUpdate={setTriggerCartUpdate} 
+                    setWishListUpdate={setWishListUpdate} 
+                  />
+                )} />
+                <Route path="*">
+                  <ErrorPage />
+                </Route>
+              </Switch>
+            </div>
 
-          <Footer />
+            <Footer />
+          </UserContext.Provider>
        </div>
     </Router>
   );

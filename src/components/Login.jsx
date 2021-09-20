@@ -1,41 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import { UserContext } from '../App';
+
+
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
   const [user_name, setUser_name] = useState("");
   const [password, setPassword] = useState("");
-
-  function handleResponse(response) {
-    return response.json().then((json) => {
-      if (!response.ok) {
-        const error = Object.assign({}, json, {
-          status: response.status,
-          statusText: response.statusText,
-        });
-        return Promise.reject(error);
-      }
-      return json;
-    });
-  }
+  const {setUserName} = useContext(UserContext);
 
   function Success() {
-    console.log("Success.")
+    setIsLoggedIn(!isLoggedIn)
+    console.log("Success.");
   }
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const user = { user_name, password };
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-fetch("/api/registration", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(user),
-    })
-      .then(handleResponse)
-      .then(Success)
-      .catch((err) => {
-        console.log(err);
-      });
+    let userNameEnc = encodeURIComponent(user_name);
+    let passwordEnc = encodeURIComponent(password);
+
+    let response = await (await fetch(`/api/registration/${userNameEnc}/${passwordEnc}`)).json();
+
+    if (response.loginSuccess) {
+      Success();
+      console.log(response.user_name);
+      //setUsername med responsen
+      setUserName(response.user_name);
+    } else {
+      return; //byt ut mot att skicka errormeddelande
+    }
   };
 
   return (
