@@ -80,7 +80,7 @@ app.get('/api/registration', (req, res) => {;
 
 // 1.1 Add new user/Registration (Hashed password comrade, wake up Alan Turing to decrypt)
 
-app.post('/api/registration', async (req, res) => {
+app.post('/api/registration/add', async (req, res) => {
     const saltRounds = 10;
     // Generate salt & hash password
     const hashed = await bcryptjs.hash(req.body.password, saltRounds);
@@ -100,9 +100,29 @@ app.post('/api/registration', async (req, res) => {
    }
 })
 
+    // 1.3 Login
+app.get('/api/registration/:user_name/:password', async (req, res) => {
+    let userNameDecoded = decodeURIComponent(req.params.user_name);
+    let passwordDecoded = decodeURIComponent(req.params.password);
 
-// 1.2 Login
-bcryptjs.compare();
+    const stmt = dbWatches.prepare(`
+        SELECT * FROM registration WHERE user_name = :user_name
+    `);
+    const user = stmt.all({
+        user_name: userNameDecoded,
+    });
+    console.log(user[0]);
+    let validPassword = await bcryptjs.compare(passwordDecoded, user[0].password);
+  
+    return res.json({ loginSuccess: validPassword, user_name: user[0].user_name });
+
+    //     } else {
+    //       res.status(400).json({ error: "Invalid Password" });
+    //     }
+    //   } else {
+    //     res.status(401).json({ error: "User does not exist" });
+    //   }
+    });
 
 // ......BCRYPT
 
@@ -150,7 +170,7 @@ app.post('/api/cart/new', (req, res) => {
     (async () => {
         try {
             const cryptedCartId = await cryptCartId(info.lastInsertRowid.toString());
-            
+
             let stmt2 = dbWatches.prepare(`
                 UPDATE carts
                 SET cryptId = :cryptIdParam
@@ -192,7 +212,7 @@ app.get('/api/cart/:cartid', (req, res) => {
     const cartIdFromDB = getUncryptedCartId(cryptedCartId);
 
     let stmt = dbWatches.prepare(`
-        SELECT products.*, 
+        SELECT products.*,
         COUNT(productId) AS quantity FROM cartItems
         LEFT JOIN products ON cartItems.productId = products.id
         WHERE cartId = :cartIdParam
@@ -281,7 +301,7 @@ const saveListData = (data) => {
 // Read data from wishlist.json file
 const getListData = () => {
     const jsonData = fs.readFileSync(wishList, 'utf8');
-    return JSON.parse(jsonData); 
+    return JSON.parse(jsonData);
 };
 
 app.post('/api/wishlist/add', (req, res) => {
@@ -308,7 +328,7 @@ app.delete('/api/wishlist/delete/:id', (req, res) => {
     const { id } = req.params;
     const currentData = getListData();
     const wishListArticle = currentData.findIndex(article => article.id == id);
-   
+
     currentData.splice(wishListArticle, 1);
     saveListData(currentData);
     return res.send("delete data");

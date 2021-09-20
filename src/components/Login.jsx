@@ -1,19 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import { UserContext } from '../App';
 
-function Login({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) {
+
+export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
+  const [user_name, setUser_name] = useState("");
+  const [password, setPassword] = useState("");
+  const {setUserName} = useContext(UserContext);
+
+  function Success() {
+    setIsLoggedIn(!isLoggedIn)
+    console.log("Success.");
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let userNameEnc = encodeURIComponent(user_name);
+    let passwordEnc = encodeURIComponent(password);
+
+    let response = await (await fetch(`/api/registration/${userNameEnc}/${passwordEnc}`)).json();
+
+    if (response.loginSuccess) {
+      Success();
+      console.log(response.user_name);
+      //setUsername med responsen
+      setUserName(response.user_name);
+    } else {
+      return; //byt ut mot att skicka errormeddelande
+    }
+  };
+
   return (
     <FormContainer>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
-            <input type="text" name="username" id="" placeholder="användarnamn" />
+            <input type="text" name="username" value={user_name}  onChange={(e) => setUser_name(e.target.value)} />
           </InputCont>
           <InputCont>
-            <input type="password" name="password" id="" placeholder="lösenord" />
+            <input type="password" name="password" value={password}  onChange={(e) => setPassword(e.target.value)} />
           </InputCont>
         </FormInputContainer>
-        <LoginButton type="submit" onClick={() => setIsLoggedIn(!isLoggedIn)}>
+        <LoginButton type="submit">
           logga in
         </LoginButton>
       </Form>

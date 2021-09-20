@@ -27,7 +27,7 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
     e.preventDefault();
     const user = { user_name, password };
 
-    fetch("/api/registration", {
+    fetch("/api/registration/add", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(user),
@@ -51,9 +51,9 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
               placeholder="användarnamn"
               value={user_name}
               onChange={(e) => setUser_name(e.target.value)}
-              pattern="[a-zA-Z0-9]+"
-              minlength="5"
-              maxlength="15"
+              pattern="[a-zAåäö-Z0-9]+"
+              minLength="5"
+              maxLength="15"
             />
           </InputCont>
           <InputCont>
@@ -64,7 +64,7 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
               placeholder="lösenord"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              pattern="[a-zA-Z0-9]+"
+              pattern="[a-zAåäö-Z0-9]+"
               minlength="5"
               maxLength="15"
             />
