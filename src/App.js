@@ -12,7 +12,7 @@ import StMoritzSport from './pages/StMoritzSport';
 import SingleProductPage from './pages/SingleProductPage';
 import Footer from './components/Footer';
 import Popups from './components/Popups';
-import { Error, ErrorPage } from './components/ErrorPage';
+import { ErrorPage } from './components/ErrorPage';
 import { useState } from 'react';
 
 

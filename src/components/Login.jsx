@@ -1,19 +1,55 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
+  const [user_name, setUser_name] = useState("");
+  const [password, setPassword] = useState("");
 
-function Login({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) {
+  function handleResponse(response) {
+    return response.json().then((json) => {
+      if (!response.ok) {
+        const error = Object.assign({}, json, {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        return Promise.reject(error);
+      }
+      return json;
+    });
+  }
+
+  function Success() {
+    console.log("Success.")
+  }
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const user = { user_name, password };
+  
+
+fetch("/api/registration", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(user),
+    })
+      .then(handleResponse)
+      .then(Success)
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <FormContainer>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
-            <input type="text" name="username" id="" placeholder="användarnamn" />
+            <input type="text" name="username" value={user_name}  onChange={(e) => setUser_name(e.target.value)} />
           </InputCont>
           <InputCont>
-            <input type="password" name="password" id="" placeholder="lösenord" />
+            <input type="password" name="password" value={password}  onChange={(e) => setPassword(e.target.value)} />
           </InputCont>
         </FormInputContainer>
-        <LoginButton type="submit" onClick={() => setIsLoggedIn(!isLoggedIn)}>
+        <LoginButton type="submit">
           logga in
         </LoginButton>
       </Form>

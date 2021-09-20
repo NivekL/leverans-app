@@ -80,29 +80,47 @@ app.get('/api/registration', (req, res) => {;
 
 // 1.1 Add new user/Registration (Hashed password comrade, wake up Alan Turing to decrypt)
 
-app.post('/api/registration', async (req, res) => {
-    const saltRounds = 10;
-    // Generate salt & hash password
-    const hashed = await bcryptjs.hash(req.body.password, saltRounds);
+// app.post('/api/registration', async (req, res) => {
+//     const saltRounds = 10;
+//     // Generate salt & hash password
+//     const hashed = await bcryptjs.hash(req.body.password, saltRounds);
 
-   try{
-    const stmt = dbWatches.prepare(`
-     INSERT INTO registration (user_name, password)
-     VALUES (:user_name,'${hashed}')
-         `);
-         const result = stmt.run({
-             user_name: req.body.user_name,
-             password: req.body.password
-            });
-            res.json(result);
-   } catch(err) {
-       res.status(409).json({message: 'Användarnamnet upptaget.'});
-   }
-})
+//    try{
+//     const stmt = dbWatches.prepare(`
+//      INSERT INTO registration (user_name, password)
+//      VALUES (:user_name,'${hashed}')
+//          `);
+//          const result = stmt.run({
+//              user_name: req.body.user_name,
+//              password: req.body.password
+//             });
+//             res.json(result);
+//    } catch(err) {
+//        res.status(409).json({message: 'Användarnamnet upptaget.'});
+//    }
+// })
 
 
 // 1.2 Login
-bcryptjs.compare();
+app.post('/api/registration', async (req, res) => {
+    const stmt = dbWatches.prepare(`
+    SELECT * FROM registration WHERE user_name = ':user_name'
+    `);
+    const user = stmt.run({
+        user_name: req.body.user_name,
+       });
+       console.log(user.password);
+        if (user) {
+        const validPassword = bcryptjs.compare(req.body.password, user.password);
+        if (validPassword) {
+          res.status(200).json({ message: "Valid password" });
+        } else {
+          res.status(400).json({ error: "Invalid Password" });
+        }
+      } else {
+        res.status(401).json({ error: "User does not exist" });
+      }
+    });
 
 // ......BCRYPT
 
