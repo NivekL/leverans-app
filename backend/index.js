@@ -81,18 +81,35 @@ app.get('/api/registration', (req, res) => {;
 // 1.1 Add new user/Registration (Hashed password comrade, wake up Alan Turing to decrypt)
 
 app.post('/api/registration/add', async (req, res) => {
+    //create personal cart in DB
+    let stmtCreateCart, infoCreateCart;
+    try {
+        stmtCreateCart = dbWatches.prepare(`
+            INSERT INTO carts
+            DEFAULT VALUES
+        `);
+        infoCreateCart = stmtCreateCart.run();
+        if (infoCreateCart.lastInsertRowid <= 0) {
+            throw new Error();
+        }
+    } catch (error) {
+        res.status(409).json({message: 'Kunde inte skapa en personlig kundvagn'});
+    }
+    //later insert that cartId into registration-table as foreign key
+
     const saltRounds = 10;
     // Generate salt & hash password
     const hashed = await bcryptjs.hash(req.body.password, saltRounds);
 
    try{
     const stmt = dbWatches.prepare(`
-     INSERT INTO registration (user_name, password)
-     VALUES (:user_name,'${hashed}')
+     INSERT INTO registration (user_name, password, cartId)
+     VALUES (:user_name,'${hashed}', :cartId)
          `);
          const result = stmt.run({
              user_name: req.body.user_name,
-             password: req.body.password
+             password: req.body.password,
+             cartId: infoCreateCart.lastInsertRowid
             });
             res.json(result);
    } catch(err) {
