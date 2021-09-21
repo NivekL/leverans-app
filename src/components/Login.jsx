@@ -7,7 +7,7 @@ import { removeCartCompletelyFromDB } from '../helperFunctions/cartDBfunctions';
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
   const [user_name, setUser_name] = useState("");
   const [password, setPassword] = useState("");
-  const {setUserName} = useContext(UserContext);
+  const {setUserName, setUserCartId} = useContext(UserContext);
 
   function Success() {
     setIsLoggedIn(!isLoggedIn)
@@ -48,8 +48,9 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
           }
       }
       Success();
-      //setUsername med responsen
+      
       setUserName(response.user_name);
+      setUserCartId(response.userCartId);
     } else {
       return; //byt ut mot att skicka errormeddelande
     }

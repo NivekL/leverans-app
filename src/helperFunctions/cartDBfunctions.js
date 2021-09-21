@@ -31,10 +31,14 @@ export const addToCart = async (productId) => {
     }
 }
 
-export const getWholeCart = async () => {
-    let cartId = window.localStorage.getItem('cartId');
+export const getWholeCart = async (userCartId) => {
+    let cartId;
 
-    if (!cartId) {
+    if (userCartId) {
+        cartId = userCartId;
+    } else if (window.localStorage.getItem('cartId')) {
+        cartId = window.localStorage.getItem('cartId');
+    } else if (!window.localStorage.getItem('cartId')) {
         // No products added to cart yet
         return null;
     }

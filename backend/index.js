@@ -177,6 +177,18 @@ const getUncryptedCartId = (cryptedId) => {
     return cartIdFromDB;
 }
 
+const handleCartIdBeforeDB = (reqCartId) => {
+    const cartIdFromFrontend = decodeURIComponent(reqCartId);
+    let plainCartId;
+    const regexOnlyNumbers = new RegExp('^[0-9]+$', 'gi');
+    if (regexOnlyNumbers.test(cartIdFromFrontend)) {
+        plainCartId = cartIdFromFrontend;
+    } else {
+        plainCartId = getUncryptedCartId(cartIdFromFrontend);
+    }
+    return plainCartId;
+}
+
 // Create a new cart
 app.post('/api/cart/new', (req, res) => {
     let stmt = dbWatches.prepare(`
@@ -226,8 +238,7 @@ app.post('/api/cart/add/productid/:productid', (req, res) => {
 
 // Get all items in your cart
 app.get('/api/cart/:cartid', (req, res) => {
-    const cryptedCartId = decodeURIComponent(req.params.cartid);
-    const cartIdFromDB = getUncryptedCartId(cryptedCartId);
+    let plainCartId = handleCartIdBeforeDB(req.params.cartid);
 
     let stmt = dbWatches.prepare(`
         SELECT products.*,
@@ -237,7 +248,7 @@ app.get('/api/cart/:cartid', (req, res) => {
         GROUP BY productId
     `);
     let result = stmt.all({
-        cartIdParam: cartIdFromDB
+        cartIdParam: plainCartId
     })
     res.json(result);
 })

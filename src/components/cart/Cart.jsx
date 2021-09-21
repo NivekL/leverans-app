@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import CartProductRow from './CartProductRow';
@@ -11,10 +11,13 @@ import {
   subtractQuantityOfProduct,
 } from '../../helperFunctions/cartDBfunctions';
 import { displayCost } from '../../helperFunctions/IntPrice';
+import { UserContext } from '../../App';
+
 
 function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, triggerCartUpdate }) {
   const [productsInCart, setProductsInCart] = useState([]);
   const [costs, setCosts] = useState({});
+  const {userCartId} = useContext(UserContext);
 
   //Function to get total quantity
   const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
@@ -30,10 +33,10 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
   useEffect(() => {
     // Gör en fetch till databasen, hämta den sparade varukorgen.
     (async () => {
-      const cartData = await getWholeCart();
+      const cartData = await getWholeCart(userCartId);
       setProductsInCart(cartData);
     })();
-  }, [triggerCartUpdate]);
+  }, [triggerCartUpdate, userCartId]);
 
   useEffect(() => {
     // Send the quantity-total to the Cart icon
