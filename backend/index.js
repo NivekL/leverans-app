@@ -128,10 +128,11 @@ app.get('/api/registration/:user_name/:password', async (req, res) => {
     const user = stmt.all({
         user_name: userNameDecoded,
     });
-    console.log(user[0]);
+    // console.log('Login response object:');
+    // console.log(user[0]);
     let validPassword = await bcryptjs.compare(passwordDecoded, user[0].password);
   
-    return res.json({ loginSuccess: validPassword, user_name: user[0].user_name });
+    return res.json({ loginSuccess: validPassword, user_name: user[0].user_name, userCartId: user[0].cartId });
 
     //     } else {
     //       res.status(400).json({ error: "Invalid Password" });
@@ -276,6 +277,24 @@ app.delete('/api/cart/:cartid/quantitydecrease/productid/:productid', (req, res)
         cartIdParam: cartIdFromDB,
         productIdParam: req.params.productid
     })
+    res.json(result);
+})
+
+// On login, move any items in logged-out cart to personal cart
+app.patch('/api/cart/movetopersonalcart', (req, res) => {
+    const oldCartId = getUncryptedCartId(req.body.cartIdLocalSt);
+    const newCartId = req.body.cartIdPersonal;
+
+    let stmt = dbWatches.prepare(`
+        UPDATE cartItems
+        SET cartId = :newCartId
+        WHERE cartId = :oldCartId
+    `);
+    let result = stmt.run({
+        oldCartId: oldCartId,
+        newCartId: newCartId
+    })
+
     res.json(result);
 })
 

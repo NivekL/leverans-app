@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../App';
+import { removeCartCompletelyFromDB } from '../helperFunctions/cartDBfunctions';
 
 
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
@@ -22,8 +23,31 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
     let response = await (await fetch(`/api/registration/${userNameEnc}/${passwordEnc}`)).json();
 
     if (response.loginSuccess) {
+      let cartIdLocalSt = window.localStorage.getItem('cartId');
+      if (cartIdLocalSt) {
+          try {
+            let patchReq = {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                'cartIdLocalSt': cartIdLocalSt,
+                'cartIdPersonal': response.userCartId
+              })
+            }
+            await fetch('/api/cart/movetopersonalcart', patchReq);
+          } catch (error) {
+            console.error('Error on cart-patch to /api/cart/movetopersonalcart\n' + error);
+          }
+          try {
+            await removeCartCompletelyFromDB();
+            window.localStorage.removeItem('cartId');
+          } catch (error) {
+            console.error('Error on removeCartCompletelyFromDB\n' + error);
+          }
+      }
       Success();
-      console.log(response.user_name);
       //setUsername med responsen
       setUserName(response.user_name);
     } else {
