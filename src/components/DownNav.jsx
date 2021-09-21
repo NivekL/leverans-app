@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import UserProfile from './UserProfile';
-import LoginSignUp from './LoginSignUp';
+import UserLogin from './UserLogin';
 
-function DownNav({ open, setOpen }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function DownNav({ open, setOpen, isLoggedIn, setIsLoggedIn }) {
 
   return (
     <MenuWrapper open={open}>
@@ -30,13 +28,7 @@ function DownNav({ open, setOpen }) {
           visa alla{' '}
         </Link>
       </Ul>
-      <UserContainer>
-        {isLoggedIn ? (
-          <UserProfile isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-        ) : (
-          <LoginSignUp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-        )}
-      </UserContainer>
+      <UserLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
     </MenuWrapper>
   );
 }
@@ -102,19 +94,5 @@ const Ul = styled.ul`
     &:hover {
       border-bottom: 2px solid #292929;
     }
-  }
-`;
-
-const UserContainer = styled.div`
-  width: 55%;
-  height: 13rem;
-  border-left: 1px solid #c9c9c9;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-
-  h3 {
-    margin-left: 2rem;
   }
 `;

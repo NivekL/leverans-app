@@ -15,9 +15,6 @@ import Popups from './components/Popups';
 import { ErrorPage } from './components/ErrorPage';
 import React, { useState } from 'react';
 
-
-
-
 export const UserContext = React.createContext({
   userName: '',
   setUserName: () => {},
@@ -26,7 +23,7 @@ export const UserContext = React.createContext({
 function App() {
   const [userName, setUserName] = useState('');
   const userContextValue = {userName, setUserName};
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
@@ -48,6 +45,8 @@ function App() {
             wishListUpdate={wishListUpdate}
             triggerCartUpdate={triggerCartUpdate}
             setTriggerCartUpdate={setTriggerCartUpdate} 
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
           />
             <div className="content">
               <Switch>

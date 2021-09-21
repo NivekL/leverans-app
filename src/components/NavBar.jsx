@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 import CartIcon from './CartIcon';
 import WishListIcon from './WishListIcon';
 
-
-
-
-function NavBar({ setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, wishListUpdate }) {
+function NavBar({ setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, wishListUpdate, isLoggedIn, setIsLoggedIn }) {
     return (
         <Nav>
-            <Burger/>
+            <Burger 
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            />
             <LogoContainer>
                 <Link to="/"><img src={logo} alt="Store logo"  /></Link>
             </LogoContainer>
