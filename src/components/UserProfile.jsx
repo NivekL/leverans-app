@@ -4,14 +4,17 @@ import { UserContext } from '../App';
 
 
 function UserProfile({ isLoggedIn, setIsLoggedIn }) {
-  const {userName} = useContext(UserContext);
+  const {userName, setUserCartId} = useContext(UserContext);
 
   
   return (
     <>
       <UserContainer>
       <h3>Hej, {userName}</h3>
-        <LogOutButton onClick={() => setIsLoggedIn(!isLoggedIn)}>Logga ut</LogOutButton>
+        <LogOutButton onClick={() => {
+          setIsLoggedIn(!isLoggedIn);
+          setUserCartId(0);
+        }}>Logga ut</LogOutButton>
       </UserContainer>
     </>
   );

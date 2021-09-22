@@ -22,7 +22,7 @@ export const UserContext = React.createContext({
   userName: '',
   setUserName: () => {},
   userCartId: 0,
-  setUserCartId: () => {}
+  setUserCartId: () => {},
 });
 
 function App() {

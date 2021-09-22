@@ -34,7 +34,11 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
     // Gör en fetch till databasen, hämta den sparade varukorgen.
     (async () => {
       const cartData = await getWholeCart(userCartId);
-      setProductsInCart(cartData);
+      if (cartData === null) {
+        setProductsInCart([]);
+      } else {
+        setProductsInCart(cartData);
+      }
     })();
   }, [triggerCartUpdate, userCartId]);
 
