@@ -43,9 +43,9 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
                         <table>
                             <tbody>
                                 <tr>
-                                    <td onClick={() => { handleQuantityButton(product, 'subtract') }}>-</td>
+                                    <td data-testid="sub" onClick={() => { handleQuantityButton(product, 'subtract') }}>-</td>
                                     <td>{product.quantity}</td>
-                                    <td onClick={() => { handleQuantityButton(product, 'add') }}>+</td>
+                                    <td data-testid="add" onClick={() => { handleQuantityButton(product, 'add') }}>+</td>
                                 </tr>
                             </tbody>
                         </table>

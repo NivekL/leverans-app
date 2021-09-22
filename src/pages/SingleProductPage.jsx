@@ -78,6 +78,7 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
         </DescriptionContainer>
 
         <AddToCart
+          data-testid="addProd"
           onClick={handleAddToCart}
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
