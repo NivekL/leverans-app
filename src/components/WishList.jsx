@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import WishListProductRow from './WishListProductRow';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
+import { ThemeContext } from '../App';
 
 
 function WishList({ open, setOpen, setTriggerCartUpdate, wishListUpdate }) {
     const [productsInwishlist, setProductsInwishlist] = useState([]);
     const [cost, setCosts] = useState({});
+    
+    
+    const theme = useContext(ThemeContext);
+    const styles = {
+        backgroundColor: theme ? "white" : "black",
+        color: theme ? "black" : "white",
+    }
 
 
     useEffect(() => {
@@ -107,7 +115,7 @@ function WishList({ open, setOpen, setTriggerCartUpdate, wishListUpdate }) {
       }
 
     return (
-        <ReturnDiv open={open}>
+        <ReturnDiv open={open} style={styles}>
             <TopBar>
                 <DivLR>
                     <p>Sparade artiklar</p>

@@ -1,11 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { displayCost } from '../helperFunctions/IntPrice';
+import { ThemeContext } from '../App';
 
 function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
   const [info, setInfo] = useState({});
+  const theme = useContext(ThemeContext);
+
+  const button = {
+    borderStyle: theme ? "none" : "solid"
+  }
+  const styles = {
+    color: theme ? "black" : "white",
+    borderStyle: theme ? "solid" : "solid",
+    borderColor: theme ? "black" : "white",
+  }
+  
 
   useEffect(() => {
     fetchInfo();
@@ -82,10 +94,11 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.3 }}
+          style={button}
         >
           Lägg till i varukorg
         </AddToCart>
-        <AddSave onClick={postWish}>Spara Artikel</AddSave>
+        <AddSave onClick={postWish} style={styles}>Spara Artikel</AddSave>
       </InfoMainContainer>
     </MainWrapper>
   );

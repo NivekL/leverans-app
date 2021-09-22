@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
+import React, {useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import UserLogin from './UserLogin';
+import { ThemeContext } from '../App';
 
 function DownNav({ open, setOpen, isLoggedIn, setIsLoggedIn }) {
 
+  const theme = useContext(ThemeContext);
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
+  const para = {
+    color: theme ? "black" : "white",
+  }
+
   return (
-    <MenuWrapper open={open}>
+    <MenuWrapper open={open} style={styles}>
       <Ul>
-        <h3>Kategorier</h3>
+        <h3 style={para}>Kategorier</h3>
         <li>
-          <MenuLink to="/LondonClassic" onClick={() => setOpen(!open)}>
+          <MenuLink to="/LondonClassic" onClick={() => setOpen(!open)} style={para}>
             Classic
           </MenuLink>
         </li>
         <li>
-          <MenuLink to="/StMoritzSport" onClick={() => setOpen(!open)}>
+          <MenuLink to="/StMoritzSport" onClick={() => setOpen(!open)} style={para}>
             Sport
           </MenuLink>{' '}
         </li>
         <li>
-          <MenuLink to="/DubaiLuxury" onClick={() => setOpen(!open)}>
+          <MenuLink to="/DubaiLuxury" onClick={() => setOpen(!open)} style={para}>
             Luxury
           </MenuLink>
         </li>
-        <Link to="/" className="showAllLink" onClick={() => setOpen(!open)}>
+        <Link to="/" className="showAllLink" onClick={() => setOpen(!open)} style={para}>
           visa alla{' '}
         </Link>
       </Ul>

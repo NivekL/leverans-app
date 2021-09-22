@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import CartProductRow from './CartProductRow';
@@ -11,10 +11,17 @@ import {
   subtractQuantityOfProduct,
 } from '../../helperFunctions/cartDBfunctions';
 import { displayCost } from '../../helperFunctions/IntPrice';
+import { ThemeContext } from '../../App';
 
 function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, triggerCartUpdate }) {
   const [productsInCart, setProductsInCart] = useState([]);
   const [costs, setCosts] = useState({});
+  const theme = useContext(ThemeContext);
+
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
 
   //Function to get total quantity
   const getItemsInCartQuantity = (dataArr, pathToQuantityProperty) => {
@@ -100,7 +107,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
   };
 
   return (
-    <ReturnDiv open={open}>
+    <ReturnDiv open={open} style={styles}>
       <TopBar>
         <DivLR>
           <p>Varukorg</p>

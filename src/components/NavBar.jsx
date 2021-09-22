@@ -5,16 +5,29 @@ import Burger from './Burger'
 import { Link } from "react-router-dom";
 import CartIcon from './CartIcon';
 import WishListIcon from './WishListIcon';
+import { DarkModeIcon } from './DarkModeIcon';
 
-function NavBar({ setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, wishListUpdate, isLoggedIn, setIsLoggedIn }) {
-    return (
-        <Nav>
+
+
+function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, wishListUpdate, isLoggedIn, setIsLoggedIn }) {
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
+  return (
+        <Nav style={styles}>
             <Burger 
             isLoggedIn={isLoggedIn}
             setIsLoggedIn={setIsLoggedIn}
             />
             <LogoContainer>
                 <Link to="/"><img src={logo} alt="Store logo"  /></Link>
+            </LogoContainer>
+            <LogoContainer>
+                <DarkModeIcon
+                   theme={theme} 
+                   setTheme={setTheme} 
+                 />
             </LogoContainer>
             <LogoContainer>
                 <WishListIcon

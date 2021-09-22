@@ -13,12 +13,14 @@ import SingleProductPage from './pages/SingleProductPage';
 import Footer from './components/Footer';
 import Popups from './components/Popups';
 import { ErrorPage } from './components/ErrorPage';
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 
 export const UserContext = React.createContext({
   userName: '',
   setUserName: () => {},
 });
+
+export const ThemeContext = createContext({});
 
 function App() {
   const [userName, setUserName] = useState('');
@@ -28,10 +30,17 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
   const [wishListUpdate, setWishListUpdate] = useState(0);
+  const [theme, setTheme] = useState(true);
+
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
 
   return (
     <Router>
-      <div className="App">
+      <ThemeContext.Provider value={theme}>
+      <div className="App" style={styles}>
         <UserContext.Provider value={userContextValue}>
           <Popups 
             showWhichPopup={showWhichPopup} 
@@ -47,6 +56,8 @@ function App() {
             setTriggerCartUpdate={setTriggerCartUpdate} 
             isLoggedIn={isLoggedIn}
             setIsLoggedIn={setIsLoggedIn}
+            theme={theme}
+            setTheme={setTheme}
           />
             <div className="content">
               <Switch>
@@ -68,10 +79,10 @@ function App() {
 
                 <Route path="/:category/:id/:name" render={props => (
                   <SingleProductPage {...props} 
-                    setTriggerCartUpdate={setTriggerCartUpdate} 
-                    setWishListUpdate={setWishListUpdate} 
+                  setTriggerCartUpdate={setTriggerCartUpdate} 
+                  setWishListUpdate={setWishListUpdate} 
                   />
-                )} />
+                  )} />
                 <Route path="*">
                   <ErrorPage />
                 </Route>
@@ -81,6 +92,7 @@ function App() {
             <Footer />
           </UserContext.Provider>
        </div>
+       </ThemeContext.Provider>
     </Router>
   );
 }

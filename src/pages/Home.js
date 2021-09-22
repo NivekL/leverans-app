@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { displayCost } from '../helperFunctions/IntPrice';
+import { ThemeContext } from '../App';
 
 function Home() {
   const [watches, setWatches] = useState([]);
@@ -23,18 +24,35 @@ function Home() {
       console.log(error);
     }
   };
+  
+  const theme = useContext(ThemeContext);
+
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
+  const card = {
+    backgroundColor: theme ? "whitesmoke" : "	#303030",
+    color: theme ? "black" : "white",
+  }
+  const darken = {
+    opacity: theme ? "1" : "0.7"
+  }
+  const para = {
+    color: theme ? "black" : "white",
+  }
 
   return (
-    <div>
-      <Hero>
+    <div style={styles}>
+      <Hero style={darken}>
         <div>
-          <p>Refined watches</p>
-          <h1>MVMT 2021</h1>
+          <p style={para}>Refined watches</p>
+          <h1 style={para}>MVMT 2021</h1>
         </div>
       </Hero>
       <div>
         <div>
-          <SectionLink to="/LondonClassic">London Classic</SectionLink>
+          <SectionLink to="/LondonClassic" style={styles}>London Classic</SectionLink>
 
           <Watchcon>
             {watches
@@ -42,7 +60,7 @@ function Home() {
               .slice(0, 4)
               .map((watch) => (
                 <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
-                  <div key={watch.id} className="card">
+                  <div key={watch.id} className="card" style={card}>
                     <img
                       src={process.env.PUBLIC_URL + '/images/' + watch.image}
                       alt=""
@@ -56,9 +74,9 @@ function Home() {
               ))}
           </Watchcon>
         </div>
-        <Hero1></Hero1>
+        <Hero1 style={darken}></Hero1>
         <div>
-          <SectionLink to="/DubaiLuxury">Dubai Luxury</SectionLink>
+          <SectionLink to="/DubaiLuxury" style={styles}>Dubai Luxury</SectionLink>
 
           <Watchcon>
             {watches
@@ -66,7 +84,7 @@ function Home() {
               .slice(0, 4)
               .map((watch) => (
                 <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
-                  <div key={watch.id} className="card">
+                  <div key={watch.id} className="card" style={card}>
                     <img
                       src={process.env.PUBLIC_URL + '/images/' + watch.image}
                       alt=""
@@ -80,9 +98,9 @@ function Home() {
               ))}
           </Watchcon>
         </div>
-        <Ocean></Ocean>
+        <Ocean style={darken}></Ocean>
         <div>
-          <SectionLink to="/StMoritzSport">St Moritz Sport</SectionLink>
+          <SectionLink to="/StMoritzSport" style={styles}>St Moritz Sport</SectionLink>
 
           <Watchcon>
             {watches
@@ -90,7 +108,7 @@ function Home() {
               .slice(0, 4)
               .map((watch) => (
                 <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
-                  <div key={watch.id} className="card">
+                  <div key={watch.id} className="card" style={card}>
                     <img
                       src={process.env.PUBLIC_URL + '/images/' + watch.image}
                       alt=""
