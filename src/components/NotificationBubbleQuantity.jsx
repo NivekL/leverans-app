@@ -1,8 +1,13 @@
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
+import { ThemeContext } from '../App';
 
 function NotificationBubbleQuantity({ dynamicQuantityState }) {
+    const theme = useContext(ThemeContext);
+    const styles = {
+        color: theme ? "black" : "black",
+      }
 
     const variants = {
         initial: { scale: 1 },
@@ -12,7 +17,7 @@ function NotificationBubbleQuantity({ dynamicQuantityState }) {
     }
 
     return (
-        <div>
+        <div style={styles}>
             {
                 dynamicQuantityState ?
                 <NotificationBubble

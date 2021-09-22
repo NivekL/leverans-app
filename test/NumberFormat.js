@@ -19,12 +19,3 @@ describe('Funktion som formaterar nummer till internationellt nummerformat.', ()
                 })
             })
         })
-
-        describe('Add product to cart', () => {
-            it('', () => {
-                it('')
-                assert.throw( () => {
-                    
-                    })
-                })
-            })
