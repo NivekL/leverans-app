@@ -18,11 +18,16 @@ import React, { useState } from 'react';
 export const UserContext = React.createContext({
   userName: '',
   setUserName: () => {},
+  userCartId: 0,
+  setUserCartId: () => {},
 });
 
 function App() {
   const [userName, setUserName] = useState('');
-  const userContextValue = {userName, setUserName};
+  const [userCartId, setUserCartId] = useState(0);
+  const userContextValue = {userName, setUserName, userCartId, setUserCartId};
+
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
