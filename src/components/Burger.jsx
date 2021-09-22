@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import DownNav from './DownNav'
 import styled from 'styled-components'
 
-function Burger() {
+function Burger({isLoggedIn, setIsLoggedIn}) {
+  
 const [open, setOpen] = useState(false)
 
     return (
@@ -12,7 +13,11 @@ const [open, setOpen] = useState(false)
                 <div/>
                 <div/>
             </StyledBurger>
-            <DownNav open={open} setOpen={setOpen}/>
+            <DownNav 
+            open={open} setOpen={setOpen} 
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            />
         </React.Fragment>
     )
 }
