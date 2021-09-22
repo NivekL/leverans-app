@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../App';
-import { removeCartCompletelyFromDB } from '../helperFunctions/cartDBfunctions';
+import { cartCheckoutDB } from '../helperFunctions/cartDBfunctions';
 
 
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
@@ -41,10 +41,10 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
             console.error('Error on cart-patch to /api/cart/movetopersonalcart\n' + error);
           }
           try {
-            await removeCartCompletelyFromDB();
+            await cartCheckoutDB();
             window.localStorage.removeItem('cartId');
           } catch (error) {
-            console.error('Error on removeCartCompletelyFromDB\n' + error);
+            console.error('Error on cartCheckoutDB\n' + error);
           }
       }
       Success();

@@ -1,5 +1,20 @@
-export const addToCart = async (productId) => {
-    let cartId = window.localStorage.getItem('cartId');
+const definedCartIdVar = (userCartId) => {
+    // connect with the right cart in the database
+    // either the personal cart, the temporary local storage one
+    // or return null if no cart at all
+
+    if (userCartId) {
+        return userCartId;
+    } else if (window.localStorage.getItem('cartId')) {
+        return window.localStorage.getItem('cartId');
+    } else if (!window.localStorage.getItem('cartId')) {
+        // No products added to cart yet
+        return null;
+    }
+}
+
+export const addToCart = async (productId, userCartId) => {
+    let cartId = definedCartIdVar(userCartId);
     // if no cart, create one and put the ID in local storage
     if (!cartId) {
         //Create a cart i DB
@@ -32,17 +47,8 @@ export const addToCart = async (productId) => {
 }
 
 export const getWholeCart = async (userCartId) => {
-    let cartId;
-
-    if (userCartId) {
-        cartId = userCartId;
-    } else if (window.localStorage.getItem('cartId')) {
-        cartId = window.localStorage.getItem('cartId');
-    } else if (!window.localStorage.getItem('cartId')) {
-        // No products added to cart yet
-        return null;
-    }
-
+    let cartId = definedCartIdVar(userCartId);
+    if (!cartId) return null;
     cartId = encodeURIComponent(cartId);
 
     try {
@@ -53,11 +59,11 @@ export const getWholeCart = async (userCartId) => {
     }
 }
 
-export const removeProductFromCart = async (productid) => {
-    let cartId = window.localStorage.getItem('cartId');
+export const removeProductFromCart = async (productid, userCartId) => {
+    let cartId = definedCartIdVar(userCartId);
 
     if (!cartId) {
-        console.error("Error with cartId in local storage");
+        console.error("Error with cartId");
     }
 
     cartId = encodeURIComponent(cartId);
@@ -69,11 +75,11 @@ export const removeProductFromCart = async (productid) => {
     }
 }
 
-export const addQuantityOfProduct = async (productId) => {
-    let cartId = window.localStorage.getItem('cartId');
+export const addQuantityOfProduct = async (productId, userCartId) => {
+    let cartId = definedCartIdVar(userCartId);
 
     if (!cartId) {
-        console.error("Error with cartId in local storage");
+        console.error("Error with cartId");
     }
 
     try {
@@ -90,11 +96,11 @@ export const addQuantityOfProduct = async (productId) => {
     }
 }
 
-export const subtractQuantityOfProduct = async (productId) => {
-    let cartId = window.localStorage.getItem('cartId');
+export const subtractQuantityOfProduct = async (productId, userCartId) => {
+    let cartId = definedCartIdVar(userCartId);
 
     if (!cartId) {
-        console.error("Error with cartId in local storage");
+        console.error("Error with cartId");
     }
 
     cartId = encodeURIComponent(cartId);
@@ -106,8 +112,8 @@ export const subtractQuantityOfProduct = async (productId) => {
     }
 }
 
-export const removeCartCompletelyFromDB = async () => {
-    let cartId = window.localStorage.getItem('cartId');
+export const cartCheckoutDB = async (userCartId) => {
+    let cartId = definedCartIdVar(userCartId);
 
     if (!cartId) {
         console.error("Error with cartId in local storage");
@@ -116,8 +122,8 @@ export const removeCartCompletelyFromDB = async () => {
     cartId = encodeURIComponent(cartId);
 
     try {
-        await fetch(`/api/cart/${cartId}/removecartcompletely`, { method: 'DELETE' });
+        await fetch(`/api/cart/${cartId}/cartcheckoutdb`, { method: 'DELETE' });
     } catch (error) {
-        console.error("HTTP request error on function\ncartDBfunctions => removeCartCompletelyFromDB\nMore info: " + error);
+        console.error("HTTP request error on function\ncartDBfunctions => cartCheckoutDB\nMore info: " + error);
     }
 }
