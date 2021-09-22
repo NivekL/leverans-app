@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../App';
+import { cartCheckoutDB } from '../helperFunctions/cartDBfunctions';
 
 
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
   const [user_name, setUser_name] = useState("");
   const [password, setPassword] = useState("");
-  const {setUserName} = useContext(UserContext);
+  const {setUserName, setUserCartId} = useContext(UserContext);
 
   function Success() {
     setIsLoggedIn(!isLoggedIn)
@@ -22,10 +23,34 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
     let response = await (await fetch(`/api/registration/${userNameEnc}/${passwordEnc}`)).json();
 
     if (response.loginSuccess) {
+      let cartIdLocalSt = window.localStorage.getItem('cartId');
+      if (cartIdLocalSt) {
+          try {
+            let patchReq = {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                'cartIdLocalSt': cartIdLocalSt,
+                'cartIdPersonal': response.userCartId
+              })
+            }
+            await fetch('/api/cart/movetopersonalcart', patchReq);
+          } catch (error) {
+            console.error('Error on cart-patch to /api/cart/movetopersonalcart\n' + error);
+          }
+          try {
+            await cartCheckoutDB();
+            window.localStorage.removeItem('cartId');
+          } catch (error) {
+            console.error('Error on cartCheckoutDB\n' + error);
+          }
+      }
       Success();
-      console.log(response.user_name);
-      //setUsername med responsen
+      
       setUserName(response.user_name);
+      setUserCartId(response.userCartId);
     } else {
       return; //byt ut mot att skicka errormeddelande
     }

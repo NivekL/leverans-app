@@ -6,18 +6,19 @@ import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 import {
   addQuantityOfProduct,
   getWholeCart,
-  removeCartCompletelyFromDB,
+  cartCheckoutDB,
   removeProductFromCart,
   subtractQuantityOfProduct,
 } from '../../helperFunctions/cartDBfunctions';
 import { displayCost } from '../../helperFunctions/IntPrice';
-import { ThemeContext } from '../../App';
+import { UserContext, ThemeContext } from '../../App';
 
 function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, triggerCartUpdate }) {
   const [productsInCart, setProductsInCart] = useState([]);
   const [costs, setCosts] = useState({});
   const theme = useContext(ThemeContext);
-
+  const {userCartId} = useContext(UserContext);
+  
   const styles = {
     backgroundColor: theme ? "white" : "black",
     color: theme ? "black" : "white",
@@ -37,10 +38,14 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
   useEffect(() => {
     // Gör en fetch till databasen, hämta den sparade varukorgen.
     (async () => {
-      const cartData = await getWholeCart();
-      setProductsInCart(cartData);
+      const cartData = await getWholeCart(userCartId);
+      if (cartData === null) {
+        setProductsInCart([]);
+      } else {
+        setProductsInCart(cartData);
+      }
     })();
-  }, [triggerCartUpdate]);
+  }, [triggerCartUpdate, userCartId]);
 
   useEffect(() => {
     // Send the quantity-total to the Cart icon
@@ -73,13 +78,13 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
     let cartData;
     switch (addOrSub) {
       case 'add':
-        await addQuantityOfProduct(product.id);
-        cartData = await getWholeCart();
+        await addQuantityOfProduct(product.id, userCartId);
+        cartData = await getWholeCart(userCartId);
         setProductsInCart(cartData);
         break;
       case 'subtract':
-        await subtractQuantityOfProduct(product.id);
-        cartData = await getWholeCart();
+        await subtractQuantityOfProduct(product.id, userCartId);
+        cartData = await getWholeCart(userCartId);
         setProductsInCart(cartData);
         break;
 
@@ -88,8 +93,8 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
     }
   };
   const handleTrashcanButton = async (product) => {
-    await removeProductFromCart(product.id);
-    const cartData = await getWholeCart();
+    await removeProductFromCart(product.id, userCartId);
+    const cartData = await getWholeCart(userCartId);
     setProductsInCart(cartData);
   };
   const handleOrderButton = async () => {
@@ -99,10 +104,11 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
     }
     //IRL you would send the order here somehow, or go to the next step
     //We will however simply clear the Cart and then show a thank you-message
-    await removeCartCompletelyFromDB();
+    await cartCheckoutDB(userCartId);
     setProductsInCart([]);
-    window.localStorage.removeItem('cartId');
-
+    if (window.localStorage.getItem('cartId')) {
+      window.localStorage.removeItem('cartId');
+    }
     setShowWhichPopup('thankYouForYourPurchase');
   };
 

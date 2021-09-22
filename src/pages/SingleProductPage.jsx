@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { displayCost } from '../helperFunctions/IntPrice';
-import { ThemeContext } from '../App';
+import { UserContext, ThemeContext } from '../App';
 
 function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
   const [info, setInfo] = useState({});
+  const {userCartId} = useContext(UserContext);
   const theme = useContext(ThemeContext);
 
   const button = {
@@ -17,7 +18,6 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
     borderStyle: theme ? "solid" : "solid",
     borderColor: theme ? "black" : "white",
   }
-  
 
   useEffect(() => {
     fetchInfo();
@@ -54,7 +54,7 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
   };
 
   const handleAddToCart = async () => {
-    let response = await addToCart(match.params.id);
+    let response = await addToCart(match.params.id, userCartId);
     if (Boolean(response['Additions made'])) {
       setTriggerCartUpdate(Date.now);
     } else {
