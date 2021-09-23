@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Login from './Login';
 import SignUp from './SignUp';
+import styled from 'styled-components';
 
 function LoginSignUp({ isLoggedIn, setIsLoggedIn }) {
   const [toggleLogIn, setToggleLogIn] = useState(true);
 
   return (
-    <>
+    <UserContainer>
       {toggleLogIn ? (
         <div>
           <h3>logga in</h3>
@@ -18,8 +19,16 @@ function LoginSignUp({ isLoggedIn, setIsLoggedIn }) {
           <SignUp toggleLogIn={toggleLogIn} setToggleLogIn={setToggleLogIn} />
         </div>
       )}
-    </>
+    </UserContainer>
   );
 }
 
 export default LoginSignUp;
+
+// Styling
+
+const UserContainer = styled.div`
+  h3 {
+    margin-left: 2rem;
+  }
+`;
