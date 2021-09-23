@@ -12,50 +12,92 @@ import StMoritzSport from './pages/StMoritzSport';
 import SingleProductPage from './pages/SingleProductPage';
 import Footer from './components/Footer';
 import Popups from './components/Popups';
-import { useState } from 'react';
+import { ErrorPage } from './components/ErrorPage';
+import React, { useState, createContext } from 'react';
 
+export const UserContext = React.createContext({
+  userName: '',
+  setUserName: () => {},
+  userCartId: 0,
+  setUserCartId: () => {},
+});
 
-
-
+export const ThemeContext = createContext({});
 
 function App() {
+  const [userName, setUserName] = useState('');
+  const [userCartId, setUserCartId] = useState(0);
+  const userContextValue = {userName, setUserName, userCartId, setUserCartId};
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
+  const [wishListUpdate, setWishListUpdate] = useState(0);
+  const [theme, setTheme] = useState(true);
+
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
 
   return (
     <Router>
-      <div className="App">
-       <Popups 
-        showWhichPopup={showWhichPopup} 
-        setShowWhichPopup={setShowWhichPopup} 
-        setIsCartOpen={setIsCartOpen}
-      />
-       <NavBar setShowWhichPopup={setShowWhichPopup} isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
-          <div className="content">
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
+      <ThemeContext.Provider value={theme}>
+      <div className="App" style={styles}>
+        <UserContext.Provider value={userContextValue}>
+          <Popups 
+            showWhichPopup={showWhichPopup} 
+            setShowWhichPopup={setShowWhichPopup} 
+            setIsCartOpen={setIsCartOpen}
+          />
+          <NavBar 
+            setShowWhichPopup={setShowWhichPopup} 
+            isCartOpen={isCartOpen} 
+            setIsCartOpen={setIsCartOpen}
+            wishListUpdate={wishListUpdate}
+            triggerCartUpdate={triggerCartUpdate}
+            setTriggerCartUpdate={setTriggerCartUpdate} 
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            theme={theme}
+            setTheme={setTheme}
+          />
+            <div className="content">
+              <Switch>
+                <Route exact path="/">
+                  <Home />
+                </Route>
 
-              <Route path="/LondonClassic">
-                <LondonClassic />
-              </Route>
+                <Route path="/LondonClassic">
+                  <LondonClassic />
+                </Route>
 
-              <Route path="/StMoritzSport">
-                <StMoritzSport />
-              </Route>
+                <Route path="/StMoritzSport">
+                  <StMoritzSport />
+                </Route>
 
-              <Route path="/DubaiLuxury">
-                <DubaiLuxury />
-              </Route>
+                <Route path="/DubaiLuxury">
+                  <DubaiLuxury />
+                </Route>
 
-              <Route path="/:category/:id/:name" component={SingleProductPage}>
-              </Route>
-            </Switch>
-          </div>
+                <Route path="/:category/:id/:name" render={props => (
+                  <SingleProductPage {...props} 
+                  setTriggerCartUpdate={setTriggerCartUpdate} 
+                  setWishListUpdate={setWishListUpdate} 
+                  />
+                  )} />
+                <Route path="*">
+                  <ErrorPage />
+                </Route>
+              </Switch>
+            </div>
 
-          <Footer />
+            <Footer />
+          </UserContext.Provider>
        </div>
+       </ThemeContext.Provider>
     </Router>
   );
 }

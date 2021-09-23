@@ -1,279 +1,306 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { displayCost } from '../helperFunctions/IntPrice';
+import { ThemeContext } from '../App';
 
 function Home() {
+  const [watches, setWatches] = useState([]);
 
-    const [watches, setWatches] = useState([]);
+  useEffect(() => {
+    fetchWatches();
+  }, []);
 
-    useEffect(() => {
-        fetchWatches();
-    }, [])
-
-    const fetchWatches = async () => {
-        try {
-            const response = await fetch('/api/watches/');
-            if (!response.ok) {
-                throw new Error('HTTP Error! status: ' + response.status);
-            }
-            const data = await response.json();
-            console.log(data);
-            setWatches(data);
-        } catch (error) {
-            console.log(error);
-        }
+  const fetchWatches = async () => {
+    try {
+      const response = await fetch('/api/watches/');
+      if (!response.ok) {
+        throw new Error('HTTP Error! status: ' + response.status);
+      }
+      const data = await response.json();
+      console.log(data);
+      setWatches(data);
+    } catch (error) {
+      console.log(error);
     }
+  };
+  
+  const theme = useContext(ThemeContext);
 
-    return (
-        <PageCon>
-            <Hero>
-                <div>
-                    <p>Best Watches</p>
-                    <h1>Nice Watch</h1>
-                </div>
-            </Hero>
-            <div>
-                <div>
-                    <SectionLink to="/LondonClassic">London Classic</SectionLink>
-                    
-                    <Watchcon>
-                        {watches.filter(obj => obj.category === 'Classic').slice(0, 4).map((watch) => (
-                            <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
-                                <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                    <p>{watch.name}</p>
-                                    <p>{watch.price} SEK</p>
-                                </div>
-                            </StyledLink>
-                        ))}
-                    </Watchcon>
-                </div>
-                <Hero1>
-                
-                </Hero1>
-                <div>
-                    <SectionLink to="/DubaiLuxury">Dubai Luxury</SectionLink>
-                    
-                    <Watchcon>
-                        {watches.filter(obj => obj.category === 'Luxury').slice(0, 4).map((watch) => (
-                            <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
-                                <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                    <p>{watch.name}</p>
-                                    <p>{watch.price} SEK</p>
-                                </div>
-                            </StyledLink>
-                        ))}
-                    </Watchcon>
-                </div>
-                <Ocean>
-                   
-                </Ocean>
-                <div>
-                    <SectionLink to="/StMoritzSport">St Moritz Sport</SectionLink>
-                    
-                    <Watchcon>
-                        {watches.filter(obj => obj.category === 'Sport').slice(0, 4).map((watch) => (
-                            <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
-                                <div key={watch.id} className="card">
-                                    <img src={process.env.PUBLIC_URL + '/images/' + watch.image} alt="" />
-                                    <p>{watch.name}</p>
-                                    <p>{watch.price} SEK</p>
-                                </div>
-                            </StyledLink>
-                        ))}
-                    </Watchcon>
-                </div>
-            </div>
-        </PageCon>
-    )
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
+  const card = {
+    backgroundColor: theme ? "whitesmoke" : "	#303030",
+    color: theme ? "black" : "white",
+  }
+  const darken = {
+    opacity: theme ? "1" : "0.7"
+  }
+  const para = {
+    color: theme ? "black" : "white",
+  }
+
+  return (
+    <div style={styles}>
+      <Hero style={darken}>
+        <div>
+          <p style={para}>Refined watches</p>
+          <h1 style={para}>MVMT 2021</h1>
+        </div>
+      </Hero>
+      <div>
+        <div>
+          <SectionLink to="/LondonClassic" style={styles}>London Classic</SectionLink>
+
+          <Watchcon>
+            {watches
+              .filter((obj) => obj.category === 'Classic')
+              .slice(0, 4)
+              .map((watch) => (
+                <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
+                  <div key={watch.id} className="card" style={card}>
+                    <img
+                      src={process.env.PUBLIC_URL + '/images/' + watch.image}
+                      alt=""
+                      onMouseEnter={(e) => (e.currentTarget.src = process.env.PUBLIC_URL + '/images/' + watch.zoom)}
+                      onMouseOut={(e) => (e.currentTarget.src = process.env.PUBLIC_URL + '/images/' + watch.image)}
+                    />
+                    <p>{watch.name}</p>
+                    <p>{displayCost(watch.price)}</p>
+                  </div>
+                </StyledLink>
+              ))}
+          </Watchcon>
+        </div>
+        <Hero1 style={darken}></Hero1>
+        <div>
+          <SectionLink to="/DubaiLuxury" style={styles}>Dubai Luxury</SectionLink>
+
+          <Watchcon>
+            {watches
+              .filter((obj) => obj.category === 'Luxury')
+              .slice(0, 4)
+              .map((watch) => (
+                <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
+                  <div key={watch.id} className="card" style={card}>
+                    <img
+                      src={process.env.PUBLIC_URL + '/images/' + watch.image}
+                      alt=""
+                      onMouseEnter={(e) => (e.currentTarget.src = process.env.PUBLIC_URL + '/images/' + watch.zoom)}
+                      onMouseOut={(e) => (e.currentTarget.src = process.env.PUBLIC_URL + '/images/' + watch.image)}
+                    />
+                    <p>{watch.name}</p>
+                    <p>{displayCost(watch.price)}</p>
+                  </div>
+                </StyledLink>
+              ))}
+          </Watchcon>
+        </div>
+        <Ocean style={darken}></Ocean>
+        <div>
+          <SectionLink to="/StMoritzSport" style={styles}>St Moritz Sport</SectionLink>
+
+          <Watchcon>
+            {watches
+              .filter((obj) => obj.category === 'Sport')
+              .slice(0, 4)
+              .map((watch) => (
+                <StyledLink to={`/${watch.category}/${watch.id}/${watch.name}`}>
+                  <div key={watch.id} className="card" style={card}>
+                    <img
+                      src={process.env.PUBLIC_URL + '/images/' + watch.image}
+                      alt=""
+                      onMouseEnter={(e) => (e.currentTarget.src = process.env.PUBLIC_URL + '/images/' + watch.zoom)}
+                      onMouseOut={(e) => (e.currentTarget.src = process.env.PUBLIC_URL + '/images/' + watch.image)}
+                    />
+                    <p>{watch.name}</p>
+                    <p>{displayCost(watch.price)}</p>
+                  </div>
+                </StyledLink>
+              ))}
+          </Watchcon>
+        </div>
+      </div>
+    </div>
+  );
 }
-
-const PageCon = styled.div`
-    
-`
 
 const Watchcon = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  gap: 5px;
 
-    div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-        background-color: whitesmoke;
-        margin-bottom: 5px;
-        padding-bottom: 10px;
-        font-family: 'Libre Franklin', sans-serif;
-    }
-    div:hover {
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    }
+  div {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: whitesmoke;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+    font-family: 'Libre Franklin', sans-serif;
 
-    p:last-of-type {
-        font-size: 12px;
-        padding-top: 5px;
-        font-weight: bold;
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 20px;
     }
+  }
 
-    img {
-        height: 180px;
-        @media screen and (min-width: 1024px) {
-            height: 500px;
-        } 
-        @media screen and (min-width: 1200px) {
-            height: 360px;
-        }   
+  p:last-of-type {
+    font-size: 12px;
+    padding-top: 5px;
+    font-weight: bold;
+  }
+
+  img {
+    height: 180px;
+    @media screen and (min-width: 1024px) {
+      height: 480px;
     }
-`
+    @media screen and (min-width: 1200px) {
+      height: 360px;
+    }
+  }
+`;
 
-const StyledLink = styled(Link) `
-    text-decoration: none;
-    color: #000;
-`
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+`;
 
 const SectionLink = styled(Link)`
-text-decoration: none;
-color: #292929;
-font-family: 'Libre Franklin', sans-serif;
-font-size: 2rem;
-margin-left: .5rem;
+  text-decoration: none;
+  color: #292929;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 2rem;
+  margin-left: 0.5rem;
 
+  @media screen and (min-width: 768px) {
+    margin-left: 1rem;
+  }
 
-@media screen and (min-width: 730px) {
-    margin-left: 2.6rem;
-    } 
-
-
-&:hover{
+  &:hover {
     border-bottom: 2px solid #292929;
-}
-`
+  }
+`;
 
 const Hero = styled.div`
-    font-family: 'Libre Franklin', sans-serif;
-    margin-top: 4rem;
-    padding-top: 1rem;
-    background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller_mobile_.jpg'}');
-    height: 60vh;
-    width: 100%;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    font-family: 'Libre Franklin', sans-serif;
-    margin-bottom: 2rem;
+  font-family: 'Libre Franklin', sans-serif;
+  margin-top: 4rem;
+  padding-top: 1rem;
+  background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller_mobile_.jpg'}');
+  height: 60vh;
+  width: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Libre Franklin', sans-serif;
+  margin-bottom: 2rem;
 
+  div:first-of-type {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-transform: uppercase;
+    position: relative;
 
-    div:first-of-type {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-transform: uppercase;
-        position: relative;
-     
-        
-        p, h1{
-            color: #504f4f; 
-            margin: 0 auto;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-   
+    p,
+    h1 {
+      color: #504f4f;
+      margin: 0 auto;
+      text-align: center;
+      margin: 0;
+      padding: 0;
     }
+  }
 
-    @media screen and (min-width: 730px) {
+  @media screen and (min-width: 730px) {
     background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller_tabblet_mobile.jpg'}');
 
-        div:first-of-type{
-            width: 55%;
-            position: relative;
-            top: 40%;
-            left: 0%;
+    div:first-of-type {
+      width: 55%;
+      position: relative;
+      top: 40%;
+      left: 0%;
 
-            p{
-                font-size: 20px;
-            }
+      p {
+        font-size: 20px;
+      }
 
-            h1{
-                font-size: 60px;
-            }
-        }
-    } 
+      h1 {
+        font-size: 60px;
+      }
+    }
+  }
 
-    @media screen and (min-width: 1200px) {
-        height: 100vh;
+  @media screen and (min-width: 1200px) {
+    height: 100vh;
     background-image: url('${process.env.PUBLIC_URL + '/images/josh-miller-83DnGfaWV24-unsplash.jpg'}');
 
+    div:first-of-type {
+      width: 40%;
+      position: relative;
+      top: 40%;
+      left: 5%;
 
-        div:first-of-type{
-            width: 40%;
-            position: relative;
-            top: 40%;
-            left: 5%;
+      p {
+        font-size: 20px;
+      }
 
-            p{
-                font-size: 20px;
-            }
-
-            h1{
-                font-size: 75px;
-            }
-        }
-    }  
-
-    
-`
+      h1 {
+        font-size: 75px;
+      }
+    }
+  }
+`;
 const Hero1 = styled.div`
-    margin-top: 2rem;
-    padding-top: 1rem;
-    margin-bottom: 2rem;
-    background-image: url('${process.env.PUBLIC_URL + '/images/triwa-melted-guns-watch-02.jpg'}');
-    height: 30.8vh;
-    width: 100%;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    
+  margin-top: 2rem;
+  padding-top: 1rem;
+  margin-bottom: 2rem;
+  background-image: url('${process.env.PUBLIC_URL + '/images/triwa-melted-guns-watch-02.jpg'}');
+  height: 30.8vh;
+  width: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 
-    @media screen and (min-width: 768px) {
-        height: 40vh;
-    }
-    @media screen and (min-width: 1200px) {
-        height: 100vh;
-    }
-    @media screen and (min-width: 1900px) {
-        height: 100vh;
-    }
-`
+  @media screen and (min-width: 768px) {
+    height: 40vh;
+  }
+  @media screen and (min-width: 1200px) {
+    height: 100vh;
+  }
+  @media screen and (min-width: 1900px) {
+    height: 100vh;
+  }
+`;
 
 const Ocean = styled.div`
-    margin-top: 2rem;
-    padding-top: 1rem;
-    margin-bottom: 2rem;
-    background-image: url('${process.env.PUBLIC_URL + '/images/dive.jfif'}');
-    height: 30.8vh;
-    width: 100%;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  margin-bottom: 2rem;
+  background-image: url('${process.env.PUBLIC_URL + '/images/dive.jfif'}');
+  height: 30.8vh;
+  width: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
 
-    @media screen and (min-width: 768px) {
-        height: 40vh;
-    }
-    @media screen and (min-width: 1200px) {
-        height: 100vh;
-    }
-    @media screen and (min-width: 1900px) {
-        height: 100vh;
-    }
-`
+  @media screen and (min-width: 768px) {
+    height: 40vh;
+  }
+  @media screen and (min-width: 1200px) {
+    height: 100vh;
+  }
+  @media screen and (min-width: 1900px) {
+    height: 100vh;
+  }
+`;
 
-export default Home
+export default Home;

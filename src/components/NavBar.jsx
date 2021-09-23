@@ -5,22 +5,43 @@ import Burger from './Burger'
 import { Link } from "react-router-dom";
 import CartIcon from './CartIcon';
 import WishListIcon from './WishListIcon';
+import { DarkModeIcon } from './DarkModeIcon';
 
 
 
-
-function NavBar({ setShowWhichPopup, isCartOpen, setIsCartOpen }) {
-    return (
-        <Nav>
-            <Burger/>
+function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, wishListUpdate, isLoggedIn, setIsLoggedIn }) {
+  const styles = {
+    backgroundColor: theme ? "white" : "black",
+    color: theme ? "black" : "white",
+  }
+  return (
+        <Nav style={styles}>
+            <Burger 
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            />
             <LogoContainer>
                 <Link to="/"><img src={logo} alt="Store logo"  /></Link>
             </LogoContainer>
             <LogoContainer>
-                <WishListIcon />
+                <DarkModeIcon
+                   theme={theme} 
+                   setTheme={setTheme} 
+                 />
             </LogoContainer>
             <LogoContainer>
-              <CartIcon setShowWhichPopup={setShowWhichPopup} open={isCartOpen} setOpen={setIsCartOpen} />
+                <WishListIcon
+                   setTriggerCartUpdate={setTriggerCartUpdate} 
+                   wishListUpdate={wishListUpdate} 
+                 />
+            </LogoContainer>
+            <LogoContainer>
+              <CartIcon 
+                setShowWhichPopup={setShowWhichPopup} 
+                open={isCartOpen} 
+                setOpen={setIsCartOpen} 
+                triggerCartUpdate={triggerCartUpdate} 
+              />
             </LogoContainer>
       </Nav>
     )
@@ -51,7 +72,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 
-img{
+a img{
     width: 100px;
 }
 

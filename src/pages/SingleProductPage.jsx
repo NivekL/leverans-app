@@ -1,176 +1,222 @@
-import React, {useEffect, useState} from 'react'
-import styled from 'styled-components'
-import {motion} from 'framer-motion'
+import React, { useEffect, useState, useContext } from 'react';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { addToCart } from '../helperFunctions/cartDBfunctions';
+import { displayCost } from '../helperFunctions/IntPrice';
+import { UserContext, ThemeContext } from '../App';
 
-function SingleProductPage({match}) {
-    const [info, setInfo] = useState({});
+function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
+  const [info, setInfo] = useState({});
+  const {userCartId} = useContext(UserContext);
+  const theme = useContext(ThemeContext);
 
-    useEffect(() => {
-        fetchInfo();
-    }, []);
+  const button = {
+    borderStyle: theme ? "none" : "solid"
+  }
+  const styles = {
+    color: theme ? "black" : "white",
+    borderStyle: theme ? "solid" : "solid",
+    borderColor: theme ? "black" : "white",
+  }
 
-    const fetchInfo = async () => {
-        try {
-            const response = await fetch(`/api/watches/` + match.params.id);
-            if (!response.ok) {
-                throw new Error('HTTP Error! status: ' + response.status);
-            }
-            const data = await response.json();
-            console.log(data);
-            setInfo(data[0]);
-        } catch (error) {
-            console.log(error);
-        }
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+
+  const fetchInfo = async () => {
+    try {
+      const response = await fetch(`/api/watches/` + match.params.id);
+      if (!response.ok) {
+        throw new Error('HTTP Error! status: ' + response.status);
+      }
+      const data = await response.json();
+      console.log(data[0]);
+      setInfo(data[0]);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    return (
-        <MainWrapper className="mainWrapper" 
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            transition={{delay: 0.3}}
+  const postWish = async () => {
+    let response = await fetch('/api/wishlist/add/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(info),
+    });
+    console.log(response.ok);
+    if (Boolean(response)) {
+      setWishListUpdate(Date.now);
+    } else {
+      console.error('Error regarding the response of addToCart, response looks like this:\n' + response);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    let response = await addToCart(match.params.id, userCartId);
+    if (Boolean(response['Additions made'])) {
+      setTriggerCartUpdate(Date.now);
+    } else {
+      console.error('Error regarding the response of addToCart, response looks like this:\n' + response);
+    }
+  };
+
+  return (
+    <MainWrapper className="mainWrapper" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+      <ImageContainer>
+        <motion.img
+          className="watchImage"
+          src={process.env.PUBLIC_URL + '/images/' + info.image}
+          alt="Watch"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ ease: 'easeInOut', duration: 0.8 }}
+        />
+      </ImageContainer>
+      <InfoMainContainer>
+        <InfoContainer>
+          <InnerInfo>
+            <h2 className="watchName">{info.name}</h2>
+          </InnerInfo>
+          <PriceContainer>
+            <p className="price">{displayCost(info.price)}</p>
+          </PriceContainer>
+        </InfoContainer>
+
+        <DescriptionContainer>
+          <h2 className="descriptionTitle">Beskrivning</h2>
+          <p className="descriptionText">{info.description}</p>
+        </DescriptionContainer>
+
+        <AddToCart
+          onClick={handleAddToCart}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.3 }}
+          style={button}
         >
-            <ImageContainer>
-                <motion.img className="watchImage" src={process.env.PUBLIC_URL + '/images/' + info.image} alt="Watch" 
-                    initial={{y: 20, opacity: 0}}
-                    animate={{y: 0, opacity: 1}}
-                    transition={{ease: "easeInOut", duration: 0.8}}
-                />
-            </ImageContainer>
-            <InfoMainContainer>
-                <InfoContainer>
-                    <InnerInfo>
-                        <h2 className="watchName">{info.name}</h2>
-                    </InnerInfo>
-                    <PriceContainer>
-                        <p className="price">{info.price} kr</p>
-                    </PriceContainer>
-                </InfoContainer>
-
-                <DescriptionContainer>
-                    <h2 className="descriptionTitle">Beskrivning</h2>
-                    <p className="descriptionText">{info.description}</p>
-                </DescriptionContainer>
-
-
-                <AddToCart
-                    initial={{y: 20, opacity: 0}}
-                    animate={{y: 0, opacity: 1}}
-                    transition={{ease: "easeInOut", duration: 0.5, delay: 0.3}}
-                >
-                    Lägg till i varukorg
-                </AddToCart>
-            </InfoMainContainer>
-        </MainWrapper>
-    )
+          Lägg till i varukorg
+        </AddToCart>
+        <AddSave onClick={postWish} style={styles}>Spara Artikel</AddSave>
+      </InfoMainContainer>
+    </MainWrapper>
+  );
 }
 
-const MainWrapper = styled(motion.div) `
-    display: flex;
-    flex-direction: column;
+const MainWrapper = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  margin: 64px auto 0;
+
+  @media screen and (min-width: 1024px) {
+    flex-direction: row;
+    width: 100%;
+    max-width: 1640px;
     margin: 64px auto 0;
+  }
+`;
 
-    @media screen and (min-width: 1024px) {
-         {
-            flex-direction: row;
-            width: 100%;
-            max-width: 1640px;
-            margin: 64px auto 0;
-        }
-    }
-`
+const ImageContainer = styled.div`
+  .watchImage {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 
-const ImageContainer = styled.div `
+  @media screen and (min-width: 1024px) {
+    flex-basis: 50%;
+  }
+`;
 
-    .watchImage {
-        max-width: 100%;
-        height: auto;
-        display: block;
-    }
+const InfoMainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-    @media screen and (min-width: 1024px) {
-        {
-            flex-basis: 50%;
-       }
-   }
-`
+  @media screen and (min-width: 1024px) {
+    flex-basis: 50%;
+  }
+`;
 
-const InfoMainContainer = styled.div `
-    display: flex;
+const InfoContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 20px;
+
+  @media screen and (min-width: 1024px) {
     flex-direction: column;
-    justify-content: center;
+  }
+`;
 
-    @media screen and (min-width: 1024px) {
-        {
-            flex-basis: 50%;
-       }
-   }
-    
-`
-
-const InfoContainer = styled.div `
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 20px;
-`
-
-const InnerInfo = styled.div `
-    .watchName {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-    }
-
-    @media screen and (min-width: 768px) {
-        .watchName {
-            font-size: 18px;
-        }
-   }
-`
-
-const PriceContainer = styled.div `
-
-    .price {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-    }
-
-    @media screen and (min-width: 768px) {
-        .price {
-            font-size: 18px;
-        }
-   }
-`
-
-const DescriptionContainer = styled.div `
-    padding: 0 20px;
-    margin-bottom: 50px;
-
-    .descriptionTitle, .descriptionText {
-        font-family: 'Montserrat', sans-serif;
-    }
-
-    .descriptionTitle, .descriptionText {
-        font-size: 14px;
-    }    
-`
-
-const AddToCart = styled(motion.button) `
-    height: 50px;
-    font-family: 'Libre Franklin', sans-serif;
-    border: none;
-    width: 90%;
-    text-align: center;
-    text-decoration: none;
-    background-color: #000;
-    color: #fff;
-    font-weight: 400;
-    margin: 10px auto;
+const InnerInfo = styled.div`
+  .watchName {
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    line-height: 21px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
-    position: relative;
-`
+  }
 
-export default SingleProductPage
+  @media screen and (min-width: 768px) {
+    .watchName {
+      font-size: 18px;
+    }
+  }
+`;
+
+const PriceContainer = styled.div`
+  .price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .price {
+      font-size: 16px;
+      margin-top: 15px;
+    }
+  }
+`;
+
+const DescriptionContainer = styled.div`
+  padding: 0 20px;
+  margin-bottom: 50px;
+
+  .descriptionTitle,
+  .descriptionText {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .descriptionTitle,
+  .descriptionText {
+    font-size: 14px;
+  }
+`;
+
+const AddToCart = styled(motion.button)`
+  height: 50px;
+  font-family: 'Libre Franklin', sans-serif;
+  border: none;
+  width: 94%;
+  text-align: center;
+  text-decoration: none;
+  background-color: #000;
+  color: #fff;
+  font-weight: 400;
+  margin: 10px auto;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  position: relative;
+  cursor: pointer;
+`;
+
+const AddSave = styled(AddToCart)`
+  width: 200px;
+  background: transparent;
+  border: 1px solid #000;
+  color: #000;
+`;
+
+export default SingleProductPage;

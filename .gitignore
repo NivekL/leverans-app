@@ -6,7 +6,9 @@
 .pnp.js
 
 # Database
+/dbtesting
 db/*
+backend/wishList.json
 
 # testing
 /coverage

@@ -2,24 +2,24 @@ import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import React,  { useState } from 'react';
 import Cart from './cart/Cart';
 import styled from 'styled-components';
-import CartIconItemsInCart from './CartIconItemsInCart';
+import NotificationBubbleQuantity from './NotificationBubbleQuantity';
 
-function CartIcon({ setShowWhichPopup, open, setOpen }) {
-    // const [open, setOpen] = useState(false);
+function CartIcon({ setShowWhichPopup, open, setOpen, triggerCartUpdate }) {
     const [itemsInCartQuantity, setItemsInCartQuantity] = useState(0);
 
     return (
         <React.Fragment>
             <IconContainer open={open} onClick={() => setOpen(!open)} style={{cursor: "pointer"}}>
                  <ShoppingCartOutlinedIcon fontSize="large" style={{fill: "#504f4f"}} />
-                 <CartIconItemsInCart itemsInCartQuantity={itemsInCartQuantity} />
+                 <NotificationBubbleQuantity dynamicQuantityState={itemsInCartQuantity} />
             </IconContainer>
 
             <Cart 
                 open={open} 
                 setOpen={setOpen} 
                 setItemsInCartQuantity={setItemsInCartQuantity}
-                setShowWhichPopup={setShowWhichPopup}     
+                setShowWhichPopup={setShowWhichPopup}
+                triggerCartUpdate={triggerCartUpdate}
             />
         </React.Fragment>
     )
