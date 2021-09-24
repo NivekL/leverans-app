@@ -5,9 +5,9 @@ import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { displayCost } from '../helperFunctions/IntPrice';
 import { UserContext, ThemeContext } from '../App';
 
-function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
+function SingleProductPage({ match, setTriggerCartUpdate }) {
   const [info, setInfo] = useState({});
-  const {userCartId} = useContext(UserContext);
+  const {userCartId, productsInwishlist, setProductsInwishlist} = useContext(UserContext);
   const theme = useContext(ThemeContext);
 
   const button = {
@@ -37,21 +37,13 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
     }
   };
 
-  const postWish = async () => {
-    let response = await fetch('/api/wishlist/add/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(info),
-    });
-    console.log(response.ok);
-    if (Boolean(response)) {
-      setWishListUpdate(Date.now);
+  const addToWishList = () => {
+    if (productsInwishlist.includes(info)) {
+      return console.log("duplicate value");
     } else {
-      console.error('Error regarding the response of addToCart, response looks like this:\n' + response);
+      setProductsInwishlist([...productsInwishlist, info]);
     }
-  };
+  }
 
   const handleAddToCart = async () => {
     let response = await addToCart(match.params.id, userCartId);
@@ -98,7 +90,7 @@ function SingleProductPage({ match, setTriggerCartUpdate, setWishListUpdate }) {
         >
           Lägg till i varukorg
         </AddToCart>
-        <AddSave onClick={postWish} style={styles}>Spara Artikel</AddSave>
+        <AddSave onClick={addToWishList} style={styles}>Spara Artikel</AddSave>
       </InfoMainContainer>
     </MainWrapper>
   );

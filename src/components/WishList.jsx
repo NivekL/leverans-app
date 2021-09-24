@@ -4,11 +4,11 @@ import { Close } from '@material-ui/icons';
 import WishListProductRow from './WishListProductRow';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
-import { ThemeContext } from '../App';
+import { ThemeContext, UserContext } from '../App';
 
 
-function WishList({ open, setOpen, setTriggerCartUpdate, wishListUpdate }) {
-    const [productsInwishlist, setProductsInwishlist] = useState([]);
+function WishList({ open, setOpen, setTriggerCartUpdate }) {
+    const {productsInwishlist, setProductsInwishlist} = useContext(UserContext);
     const [cost, setCosts] = useState({});
     
     
@@ -17,24 +17,7 @@ function WishList({ open, setOpen, setTriggerCartUpdate, wishListUpdate }) {
         backgroundColor: theme ? "white" : "black",
         color: theme ? "black" : "white",
     }
-
-
-    useEffect(() => {
-        fetchArticles();
-    }, [wishListUpdate]);
-
-
-    const fetchArticles = async () => {
-        try {
-            const response = await fetch("/api/wishlist");
-            const data = await response.json();
-            setProductsInwishlist(data);
-            console.log(data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
+    
     //Räkna ut totaler
     useEffect(() => {
             let subTotalCost = 0;
@@ -75,17 +58,9 @@ function WishList({ open, setOpen, setTriggerCartUpdate, wishListUpdate }) {
         }
     }
     const deleteArticle = async (itemId) => {
-        try {
-            await fetch('/api/wishlist/delete/' + itemId, {
-                method: 'DELETE',
-            });
             console.log(itemId);
             let  wishlistData = productsInwishlist.filter(v => itemId !== v.id);
             setProductsInwishlist([...wishlistData]);
-            
-        } catch (e) {
-            throw new Error(e);
-        }
     }
     // Remove one watch from the list
     const handleTrashcanButton = async (itemId) => {
@@ -93,15 +68,8 @@ function WishList({ open, setOpen, setTriggerCartUpdate, wishListUpdate }) {
     }
     
     // Remove everything in the list
-    const handleClearAll = async () => {
-        try {
-            await fetch('/api/wishlist/clearall/', {
-                method: 'DELETE',
-            });
-            setProductsInwishlist([]);  
-        } catch (e) {
-            throw new Error(e);
-        }
+    const handleClearAll = () => {
+        setProductsInwishlist([]);  
     }
     // Add to cart
     const handleAddToCartButton = async (artId) => {

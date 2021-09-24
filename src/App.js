@@ -14,27 +14,33 @@ import Footer from './components/Footer';
 import Popups from './components/Popups';
 import { ErrorPage } from './components/ErrorPage';
 import React, { useState, createContext } from 'react';
+import RenderWishList from './components/RenderWishList'
 
 export const UserContext = React.createContext({
   userName: '',
   setUserName: () => {},
   userCartId: 0,
   setUserCartId: () => {},
+  productsInwishlist: [],
+  setProductInwishlist: () => {},
 });
 
 export const ThemeContext = createContext({});
 
 function App() {
+
+  const isElectron = navigator.userAgent.includes('Electron');
+
   const [userName, setUserName] = useState('');
   const [userCartId, setUserCartId] = useState(0);
-  const userContextValue = {userName, setUserName, userCartId, setUserCartId};
+  const [productsInwishlist, setProductsInwishlist] = useState([]);
+  const userContextValue = {userName, setUserName, userCartId, setUserCartId, productsInwishlist, setProductsInwishlist};
 
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
-  const [wishListUpdate, setWishListUpdate] = useState(0);
   const [theme, setTheme] = useState(true);
 
   const styles = {
@@ -56,7 +62,6 @@ function App() {
             setShowWhichPopup={setShowWhichPopup} 
             isCartOpen={isCartOpen} 
             setIsCartOpen={setIsCartOpen}
-            wishListUpdate={wishListUpdate}
             triggerCartUpdate={triggerCartUpdate}
             setTriggerCartUpdate={setTriggerCartUpdate} 
             isLoggedIn={isLoggedIn}
@@ -85,7 +90,6 @@ function App() {
                 <Route path="/:category/:id/:name" render={props => (
                   <SingleProductPage {...props} 
                   setTriggerCartUpdate={setTriggerCartUpdate} 
-                  setWishListUpdate={setWishListUpdate} 
                   />
                   )} />
                 <Route path="*">
@@ -93,6 +97,7 @@ function App() {
                 </Route>
               </Switch>
             </div>
+            {isElectron && <RenderWishList />}
 
             <Footer />
           </UserContext.Provider>

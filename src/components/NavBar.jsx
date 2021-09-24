@@ -9,7 +9,7 @@ import { DarkModeIcon } from './DarkModeIcon';
 
 
 
-function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, wishListUpdate, isLoggedIn, setIsLoggedIn }) {
+function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, isLoggedIn, setIsLoggedIn }) {
   const styles = {
     backgroundColor: theme ? "white" : "black",
     color: theme ? "black" : "white",
@@ -32,7 +32,6 @@ function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen,
             <LogoContainer>
                 <WishListIcon
                    setTriggerCartUpdate={setTriggerCartUpdate} 
-                   wishListUpdate={wishListUpdate} 
                  />
             </LogoContainer>
             <LogoContainer>
