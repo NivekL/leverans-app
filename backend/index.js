@@ -68,6 +68,21 @@ app.get('/api/watches/:id', (req, res) => {;
     res.json(result);
   });
 
+// get a bulk of watches
+app.get('/api/watches/bulk/:bulk', (req, res) => {
+    // bulk = 1+2+3+4+10
+    let bulk = req.params.bulk;
+    bulk = bulk.split('+');
+
+    let stmt = dbWatches.prepare(`
+        SELECT *
+        FROM products
+        WHERE id IN (${bulk.join()})
+    `);
+    let result = stmt.all();
+    res.json(result);
+});
+
   // 1.0 Get all users
 app.get('/api/registration', (req, res) => {;
     let stmt = dbWatches.prepare(`

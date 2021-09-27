@@ -47,30 +47,41 @@ function WishList({ open, setOpen, setTriggerCartUpdate }) {
                     ) {
                         filePath += '.' + fileExtensionToUse;
                     }
+                    let saveArray = [];
+                    productsInwishlist.map(v => {
+                        saveArray.push(v.id);
+                    })
                     // save text as json
                     fs.writeFileSync(
                         filePath,
-                        JSON.stringify({ productsInwishlist }),
+                        JSON.stringify({saveArray}),
                         'utf-8'
                     );
                     setProductsInwishlist([]);
                 }
             }
             if (choice === 'Load a wish list') {
-                try {
-                    let filePaths = dialog.showOpenDialogSync({
-                    properties: ['openFile'],
-                    options: { filters: { extensions: ['.json'] } }
-                    });
-                    // your logic and something with fs and path eventually to load
-                    let jsonData = fs.readFileSync(filePaths[0], 'utf8');
-                    let wishlistImported = JSON.parse(jsonData);
-                    // add imported wishlist to productsInWishlist
-                    let tempWishlist = [...productsInwishlist, ...wishlistImported.productsInwishlist];
-                    setProductsInwishlist(getUniqueArray(tempWishlist, 'id'));
-                } catch (error) {
-                    // if someone cancels the load dialog
-                }
+                (async () => {
+                    try {
+                        let filePaths = dialog.showOpenDialogSync({
+                        properties: ['openFile'],
+                        options: { filters: { extensions: ['.json'] } }
+                        });
+                        // your logic and something with fs and path eventually to load
+                        let jsonData = fs.readFileSync(filePaths[0], 'utf8');
+                        let wishlistImported = JSON.parse(jsonData);
+                        let bulkParams = wishlistImported.saveArray.join('+');
+
+                        //fetch products                        
+                        let productData = await (await fetch(`/api/watches/bulk/${bulkParams}`)).json();
+
+                        // add imported wishlist to productsInWishlist
+                        let tempWishlist = [...productsInwishlist, ...productData];
+                        setProductsInwishlist(getUniqueArray(tempWishlist, 'id'));
+                    } catch (error) {
+                        // if someone cancels the load dialog
+                    }
+                })();
             }
         });
         return () => ipcRenderer.removeAllListeners('menuChoice');
