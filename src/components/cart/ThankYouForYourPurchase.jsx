@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { Close, DoneSharp } from '@material-ui/icons';
+import { ThemeContext } from '../../App';
 
 function ThankYouForYourPurchase({ setShowWhichPopup, setIsCartOpen }) {
+    const theme = useContext(ThemeContext);
+    const styles = {
+    backgroundColor: theme ? "white" : "#202124",
+    color: theme ? "#202124" : "white",
+  }
     const iconInnerEl = useRef(null);
     const [iconInnerElWidth, setIconInnerElWidth] = useState(0);
     const [windowSize, setWindowSize] = useState([0, 0]);
@@ -33,7 +39,7 @@ function ThankYouForYourPurchase({ setShowWhichPopup, setIsCartOpen }) {
     }
 
     return (
-        <ReturnDiv>
+        <ReturnDiv style={styles}>
             <TopBar>
                 <DivLR>
                     <Close onClick={handleCloseAction} style={{cursor: "pointer"}}/>
