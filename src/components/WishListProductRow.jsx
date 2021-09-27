@@ -20,10 +20,10 @@ function WishListProductRow({ product, index, displayCost, productsInwishlist, h
         return displayCost(item.price);
     }
 
-    const shortenText = (text, maxlength) => {
-        if (text.length < maxlength) return text;
-        return text.substring(0,maxlength).concat('...');
-    }
+    // const shortenText = (text, maxlength) => {
+    //     if (text.length < maxlength) return text;
+    //     return text.substring(0,maxlength).concat('...');
+    // }
 
     const insertLine = (items, index) => {
         if (items.length > 1) {
@@ -42,12 +42,9 @@ function WishListProductRow({ product, index, displayCost, productsInwishlist, h
                 </span>
                 <ProductInfo>
                     <ProductRow1>
-                        <p className="boldText">{shortenText(product.name, 20)}</p>
-                        <p className="boldText">{itemPrice(product)} SEK</p>
+                        <p className="boldText">{product.name}</p>
+                        <p className="boldText">{itemPrice(product)}</p>
                     </ProductRow1>
-                    <ProductRow2>
-                        <p>{shortenText(product.description, 40)}</p>
-                    </ProductRow2>
                     <ProductRow3>
                         <span><FontAwesomeIcon icon={faTrashAlt} onClick={handleDelete} /></span>
                         <span> <AddShoppingCartIcon fontSize="small" onClick={handleAddToCart}/></span>
@@ -81,13 +78,11 @@ const ProductRow1 = styled.div`
     display: flex;
     justify-content: space-between;
 `
-const ProductRow2 = styled.div`
-    flex-basis: 50%;
-`
 const ProductRow3 = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 60px;
     table {
         border-collapse: collapse;
     }
@@ -104,6 +99,7 @@ const ProductRow3 = styled.div`
     }
     span{
         cursor: pointer;
+        font-size: 18px;
     }
 `
 const Line = styled.div`

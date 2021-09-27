@@ -14,6 +14,8 @@ function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen,
     backgroundColor: theme ? "white" : "black",
     color: theme ? "black" : "white",
   }
+  const isElectron = navigator.userAgent.includes('Electron');
+  
   return (
         <Nav style={styles}>
             <Burger 
@@ -29,11 +31,14 @@ function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen,
                    setTheme={setTheme} 
                  />
             </LogoContainer>
+            {isElectron ? 
             <LogoContainer>
-                <WishListIcon
-                   setTriggerCartUpdate={setTriggerCartUpdate} 
-                 />
+            <WishListIcon
+                setTriggerCartUpdate={setTriggerCartUpdate} 
+                />
             </LogoContainer>
+            : null
+            }
             <LogoContainer>
               <CartIcon 
                 setShowWhichPopup={setShowWhichPopup} 

@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { ThemeContext, UserContext } from '../App';
 
 export default function RenderWishList() {
-
+  const {productsInwishlist, setProductsInwishlist} = useContext(UserContext);
   // Use ipcRenderer + remote that can connect to Electron
   // methods only available on the Node side otherwise
   const { ipcRenderer } = window.require('electron');
@@ -20,10 +21,27 @@ export default function RenderWishList() {
 
   useEffect(() => {
     ipcRenderer.on('menuChoice', (ipcEvent, choice) => {
+      let fileExtensionToUse = 'json';
       if (choice === 'Save current wish list') {
         let filePath = dialog.showSaveDialogSync({
           properties: ['createDirectory']
         });
+        if (filePath) {
+          // add extension if missing
+          if (
+            filePath.slice(-fileExtensionToUse.length - 1) !==
+            '.' + fileExtensionToUse
+          ) {
+            filePath += '.' + fileExtensionToUse;
+          }
+          // save text as json
+          let watches = setProductsInwishlist(productsInwishlist);
+          fs.writeFileSync(
+            filePath,
+            JSON.stringify({ watches }),
+            'utf-8'
+          );
+        }
         // your logic and something with fs and path eventually to save
       }
       if (choice === 'Load a wish list') {

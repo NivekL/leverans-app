@@ -1,15 +1,28 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import styled from 'styled-components';
 import { Close } from '@material-ui/icons';
 import WishListProductRow from './WishListProductRow';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import { ThemeContext, UserContext } from '../App';
+import { displayCost } from '../helperFunctions/IntPrice';
+import { getUniqueArray } from '../helperFunctions/getUniqueArray';
 
 
 function WishList({ open, setOpen, setTriggerCartUpdate }) {
     const {productsInwishlist, setProductsInwishlist} = useContext(UserContext);
-    const [cost, setCosts] = useState({});
+
+    // Use ipcRenderer + remote that can connect to Electron
+    // methods only available on the Node side otherwise
+    const require = window.require;
+    const { ipcRenderer } = window.require('electron');
+    const remote = window.require('@electron/remote');
+    
+    // Use dialog via remote
+    const { dialog } = remote;
+    
+    // Use the fs and paths modules from node
+    const fs = require('fs');
     
     
     const theme = useContext(ThemeContext);
@@ -17,48 +30,53 @@ function WishList({ open, setOpen, setTriggerCartUpdate }) {
         backgroundColor: theme ? "white" : "black",
         color: theme ? "black" : "white",
     }
-    
-    //Räkna ut totaler
+
+    //electron
     useEffect(() => {
-            let subTotalCost = 0;
-            let shippingCost = 0;
-            let totalCost = 0;
-            let percentageVAT = 25;
-            let calcVAT = 0;
-            for (let product of productsInwishlist) {
-                subTotalCost += product.quantity * product.price;
-            }
-            totalCost = subTotalCost + shippingCost;
-            calcVAT = totalCost * (percentageVAT / 100);
-            setCosts({
-                'subTotalCost': subTotalCost,
-                'shippingCost': shippingCost,
-                'totalCost': totalCost,
-                'calcVAT': calcVAT
-            })
-    }, [productsInwishlist])
-
-
-    const displayCost = (cost) => {
-        if (cost === undefined) {
-            return;
-        }
-        let costStr = cost.toString();
-        let dotPos = costStr.indexOf('.');
-        if (dotPos < 0) {
-            return costStr + '.00';
-        } else {
-            return costStr.split('.').map((v, i) => {
-                if (i === 1) {
-                    return v.padEnd(2, '0');
-                } else {
-                    return v;
+        ipcRenderer.on('menuChoice', (ipcEvent, choice) => {
+            let fileExtensionToUse = 'json';
+            if (choice === 'Save current wish list') {
+                let filePath = dialog.showSaveDialogSync({
+                properties: ['createDirectory']
+                });
+                if (filePath) {
+                    // add extension if missing
+                    if (
+                        filePath.slice(-fileExtensionToUse.length - 1) !==
+                        '.' + fileExtensionToUse
+                    ) {
+                        filePath += '.' + fileExtensionToUse;
+                    }
+                    // save text as json
+                    fs.writeFileSync(
+                        filePath,
+                        JSON.stringify({ productsInwishlist }),
+                        'utf-8'
+                    );
+                    setProductsInwishlist([]);
                 }
-            }).join('.');
-        }
-    }
+            }
+            if (choice === 'Load a wish list') {
+                try {
+                    let filePaths = dialog.showOpenDialogSync({
+                    properties: ['openFile'],
+                    options: { filters: { extensions: ['.json'] } }
+                    });
+                    // your logic and something with fs and path eventually to load
+                    let jsonData = fs.readFileSync(filePaths[0], 'utf8');
+                    let wishlistImported = JSON.parse(jsonData);
+                    // add imported wishlist to productsInWishlist
+                    let tempWishlist = [...productsInwishlist, ...wishlistImported.productsInwishlist];
+                    setProductsInwishlist(getUniqueArray(tempWishlist, 'id'));
+                } catch (error) {
+                    // if someone cancels the load dialog
+                }
+            }
+        });
+        return () => ipcRenderer.removeAllListeners('menuChoice');
+    },[productsInwishlist]);
+
     const deleteArticle = async (itemId) => {
-            console.log(itemId);
             let  wishlistData = productsInwishlist.filter(v => itemId !== v.id);
             setProductsInwishlist([...wishlistData]);
     }

@@ -14,7 +14,6 @@ import Footer from './components/Footer';
 import Popups from './components/Popups';
 import { ErrorPage } from './components/ErrorPage';
 import React, { useState, createContext } from 'react';
-import RenderWishList from './components/RenderWishList'
 
 export const UserContext = React.createContext({
   userName: '',
@@ -29,7 +28,6 @@ export const ThemeContext = createContext({});
 
 function App() {
 
-  const isElectron = navigator.userAgent.includes('Electron');
 
   const [userName, setUserName] = useState('');
   const [userCartId, setUserCartId] = useState(0);
@@ -97,7 +95,6 @@ function App() {
                 </Route>
               </Switch>
             </div>
-            {isElectron && <RenderWishList />}
 
             <Footer />
           </UserContext.Provider>

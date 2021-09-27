@@ -4,11 +4,14 @@ import { motion } from 'framer-motion';
 import { addToCart } from '../helperFunctions/cartDBfunctions';
 import { displayCost } from '../helperFunctions/IntPrice';
 import { UserContext, ThemeContext } from '../App';
+import { getUniqueArray } from '../helperFunctions/getUniqueArray';
 
 function SingleProductPage({ match, setTriggerCartUpdate }) {
   const [info, setInfo] = useState({});
   const {userCartId, productsInwishlist, setProductsInwishlist} = useContext(UserContext);
   const theme = useContext(ThemeContext);
+
+  const isElectron = navigator.userAgent.includes('Electron');
 
   const button = {
     borderStyle: theme ? "none" : "solid"
@@ -38,11 +41,10 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
   };
 
   const addToWishList = () => {
-    if (productsInwishlist.includes(info)) {
-      return console.log("duplicate value");
-    } else {
-      setProductsInwishlist([...productsInwishlist, info]);
-    }
+    let tempArray = [...productsInwishlist, info];
+    let uniqueArr = getUniqueArray(tempArray, 'id');
+   
+    setProductsInwishlist(uniqueArr);
   }
 
   const handleAddToCart = async () => {
@@ -90,7 +92,11 @@ function SingleProductPage({ match, setTriggerCartUpdate }) {
         >
           Lägg till i varukorg
         </AddToCart>
-        <AddSave onClick={addToWishList} style={styles}>Spara Artikel</AddSave>
+        {
+          isElectron ?
+            <AddSave onClick={addToWishList} style={styles}>Spara Artikel</AddSave>
+          : null
+        }
       </InfoMainContainer>
     </MainWrapper>
   );
