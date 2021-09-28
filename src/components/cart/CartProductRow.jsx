@@ -27,11 +27,11 @@ function CartProductRow({ product, index, productsInCart, displayCost, handleQua
     <div>
       <ProductDiv>
         <span>
-          <img src={process.env.PUBLIC_URL + '/images/' + product.image} alt={product.name} />
+          {/* <img src={process.env.PUBLIC_URL + '/images/' + product.image} alt={product.name} /> */}
         </span>
         <ProductInfo>
           <ProductRow1>
-            <p className="boldText ellipsis1Line">{product.name}</p>
+            <p data-testid="prodName" className="boldText ellipsis1Line">hejhej</p>
             <p className="boldText">{itemPrice(product)}</p>
           </ProductRow1>
           <ProductRow2>

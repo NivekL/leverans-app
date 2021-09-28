@@ -35,7 +35,7 @@
     "backend": "npx nodemon backend/index",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "node ./node_modules/mocha/bin/mocha",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:4000",
