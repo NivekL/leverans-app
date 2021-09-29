@@ -29,9 +29,9 @@ export default Burger
 const StyledBurger = styled.div`
   width: 1.2rem;
   height: 1.5rem;
-  position: fixed;
+  /* position: fixed;
   top: 20px;
-  left: 20px;
+  left: 20px; */
   z-index: 20;
   display: flex;
   justify-content: space-around;
