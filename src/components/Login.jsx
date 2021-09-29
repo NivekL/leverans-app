@@ -102,6 +102,10 @@ const FormContainer = styled.div`
   flex-direction: column;
   margin-left: 2rem;
   max-width: 19rem;
+
+  @media screen and (max-width: 450px) {
+    margin-left: 0;
+  }
 `;
 
 const Form = styled.form`
@@ -134,6 +138,10 @@ const InputCont = styled.div`
     margin-bottom: 3px;
     width: 9.5rem;
   }
+  @media screen and (max-width: 420px) {
+    margin-bottom: 3px;
+    width: 15rem;
+  }
 `;
 
 const LoginButton = styled.button`
@@ -153,6 +161,10 @@ const LoginButton = styled.button`
   &:hover {
     background-color: #292929;
     color: whitesmoke;
+  }
+
+  @media screen and (max-width: 420px) {
+    width: 14.6rem;
   }
 `;
 
