@@ -15,7 +15,7 @@ import Popups from './components/Popups';
 import { ErrorPage } from './components/ErrorPage';
 import React, { useState, createContext } from 'react';
 import {isMobile} from 'react-device-detect';
-import LoginSignUp from './components/LoginSignUp';
+import UserLogin from './components/UserLogin';
 
 export const UserContext = React.createContext({
   userName: '',
@@ -52,9 +52,9 @@ function App() {
     <Router>
       <ThemeContext.Provider value={theme}>
       <div className="App" style={styles}>
-      {
-        (isLoggedIn)
-          ? <UserContext.Provider value={userContextValue}>
+       <UserContext.Provider value={userContextValue}>
+        {isLoggedIn || !isMobile ?
+         <>
           <Popups 
             showWhichPopup={showWhichPopup} 
             setShowWhichPopup={setShowWhichPopup} 
@@ -100,58 +100,12 @@ function App() {
               </Switch>
             </div>
             <Footer />
-          </UserContext.Provider> 
-          : (isMobile ? 
-          <LoginSignUp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} /> : 
-          <UserContext.Provider value={userContextValue}>
-          <Popups 
-            showWhichPopup={showWhichPopup} 
-            setShowWhichPopup={setShowWhichPopup} 
-            setIsCartOpen={setIsCartOpen}
-          />
-          <NavBar 
-            setShowWhichPopup={setShowWhichPopup} 
-            isCartOpen={isCartOpen} 
-            setIsCartOpen={setIsCartOpen}
-            triggerCartUpdate={triggerCartUpdate}
-            setTriggerCartUpdate={setTriggerCartUpdate} 
-            isLoggedIn={isLoggedIn}
-            setIsLoggedIn={setIsLoggedIn}
-            theme={theme}
-            setTheme={setTheme}
-          />
-            <div className="content">
-              <Switch>
-                <Route exact path="/">
-                  <Home />
-                </Route>
-
-                <Route path="/LondonClassic">
-                  <LondonClassic />
-                </Route>
-
-                <Route path="/StMoritzSport">
-                  <StMoritzSport />
-                </Route>
-
-                <Route path="/DubaiLuxury">
-                  <DubaiLuxury />
-                </Route>
-
-                <Route path="/:category/:id/:name" render={props => (
-                  <SingleProductPage {...props} 
-                  setTriggerCartUpdate={setTriggerCartUpdate} 
-                  />
-                  )} />
-                <Route path="*">
-                  <ErrorPage />
-                </Route>
-              </Switch>
-            </div>
-            <Footer />
-          </UserContext.Provider>
-          )
+            </>
+            :  
+            <UserLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           }
+            
+          </UserContext.Provider> 
        </div>
        </ThemeContext.Provider>
     </Router>
