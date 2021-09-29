@@ -2,11 +2,21 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../App';
 import { cartCheckoutDB } from '../helperFunctions/cartDBfunctions';
+import { ThemeContext } from '../App';
 
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
   const [user_name, setUser_name] = useState('');
   const [password, setPassword] = useState('');
   const { setUserName, setUserCartId } = useContext(UserContext);
+
+  const theme = useContext(ThemeContext);
+  const styles = {
+    backgroundColor: theme ? 'white' : '#202124',
+    color: theme ? 'black' : 'white',
+  };
+  const para = {
+    color: theme ? 'black' : 'white',
+  };
 
   function Success() {
     setIsLoggedIn(!isLoggedIn);
@@ -56,7 +66,7 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
   };
 
   return (
-    <FormContainer>
+    <FormContainer style={styles}>
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
@@ -66,7 +76,9 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
             <input placeholder="Lösenord" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </InputCont>
         </FormInputContainer>
-        <LoginButton type="submit">logga in</LoginButton>
+        <LoginButton type="submit" style={para}>
+          logga in
+        </LoginButton>
       </Form>
 
       <RegisterContainer>
