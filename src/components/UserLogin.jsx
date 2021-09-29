@@ -18,6 +18,9 @@ function UserLogin({ isLoggedIn, setIsLoggedIn }) {
 export default UserLogin;
 
 const UserContainer = styled.div`
+  @media screen and (min-width: 768px) {
+    width: 55%;
+  }
   width: 100%;
   height: 13rem;
   border-left: 1px solid #c9c9c9;
