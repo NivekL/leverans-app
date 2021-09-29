@@ -113,7 +113,6 @@ function App() {
             setShowWhichPopup={setShowWhichPopup} 
             isCartOpen={isCartOpen} 
             setIsCartOpen={setIsCartOpen}
-            wishListUpdate={wishListUpdate}
             triggerCartUpdate={triggerCartUpdate}
             setTriggerCartUpdate={setTriggerCartUpdate} 
             isLoggedIn={isLoggedIn}
@@ -142,7 +141,6 @@ function App() {
                 <Route path="/:category/:id/:name" render={props => (
                   <SingleProductPage {...props} 
                   setTriggerCartUpdate={setTriggerCartUpdate} 
-                  setWishListUpdate={setWishListUpdate} 
                   />
                   )} />
                 <Route path="*">
