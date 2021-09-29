@@ -31,8 +31,8 @@ export default CartIcon
 
 // Style --------------------
 const IconContainer = styled.div`
-      position: fixed;
+      /* position: fixed;
   top: 15px;
-  right: 20px;
+  right: 20px; */
   z-index: 20;
 `

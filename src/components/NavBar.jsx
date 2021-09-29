@@ -19,35 +19,41 @@ function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen,
   
   return (
         <Nav style={styles}>
-            <Burger 
-            isLoggedIn={isLoggedIn}
-            setIsLoggedIn={setIsLoggedIn}
-            />
-            <LogoContainer>
+            <FlexChildIconsContainer>
+              <Burger
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
+              />
+            </FlexChildIconsContainer>
+            <LogoContainer className="store-logo-navbar">
                 <Link to="/"><img src={logo} alt="Store logo"  /></Link>
             </LogoContainer>
-            <LogoContainer>
-                <DarkModeIcon
-                   theme={theme} 
-                   setTheme={setTheme} 
-                 />
-            </LogoContainer>
-            {isElectron ? 
-            <LogoContainer>
-            <WishListIcon
-                setTriggerCartUpdate={setTriggerCartUpdate} 
-                />
-            </LogoContainer>
-            : null
-            }
-            <LogoContainer>
-              <CartIcon 
-                setShowWhichPopup={setShowWhichPopup} 
-                open={isCartOpen} 
-                setOpen={setIsCartOpen} 
-                triggerCartUpdate={triggerCartUpdate} 
-              />
-            </LogoContainer>
+            <FlexChildIconsContainer>
+              <NavBarContentRight>
+                <IconContainer>
+                    <DarkModeIcon
+                       theme={theme}
+                       setTheme={setTheme}
+                     />
+                </IconContainer>
+                {isElectron ?
+                <IconContainer>
+                <WishListIcon
+                    setTriggerCartUpdate={setTriggerCartUpdate}
+                    />
+                </IconContainer>
+                : null
+                }
+                <IconContainer>
+                  <CartIcon
+                    setShowWhichPopup={setShowWhichPopup}
+                    open={isCartOpen}
+                    setOpen={setIsCartOpen}
+                    triggerCartUpdate={triggerCartUpdate}
+                  />
+                </IconContainer>
+              </NavBarContentRight>
+            </FlexChildIconsContainer>
       </Nav>
     )
 }
@@ -68,17 +74,21 @@ const Nav = styled.nav`
   padding: 0 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: #ffffff;
+`
 
+const FlexChildIconsContainer = styled.div`
+  width: 100%;
+`
+const NavBarContentRight = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 
 const LogoContainer =  styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-
 a img{
-    width: 100px;
+  width: 100px;;
 }
-
 `
+const IconContainer =  styled.div``
