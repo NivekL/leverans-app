@@ -60,10 +60,10 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
-            <input type="text" name="username" placeholder="användarnamn" value={user_name} onChange={(e) => setUser_name(e.target.value)} />
+            <input placeholder="användarnamn" type="text" name="username" value={user_name} onChange={(e) => setUser_name(e.target.value)} />
           </InputCont>
           <InputCont>
-            <input type="password" name="password" placeholder="lösenord" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input placeholder="Lösenord" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </InputCont>
         </FormInputContainer>
         <LoginButton type="submit">logga in</LoginButton>
