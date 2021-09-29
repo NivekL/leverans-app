@@ -8,7 +8,7 @@ function DownNav({ open, setOpen, isLoggedIn, setIsLoggedIn }) {
 
   const theme = useContext(ThemeContext);
   const styles = {
-    backgroundColor: theme ? "white" : "black",
+    backgroundColor: theme ? "white" : "#202124",
     color: theme ? "black" : "white",
   }
   const para = {

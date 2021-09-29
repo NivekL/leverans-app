@@ -11,8 +11,9 @@ import { DarkModeIcon } from './DarkModeIcon';
 
 function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, isLoggedIn, setIsLoggedIn }) {
   const styles = {
-    backgroundColor: theme ? "white" : "black",
+    backgroundColor: theme ? "white" : "#202124",
     color: theme ? "black" : "white",
+    borderBottom: theme ? "2px solid white" : "2px solid black"
   }
   const isElectron = navigator.userAgent.includes('Electron');
   

@@ -3,15 +3,14 @@ import styled from 'styled-components';
 import { UserContext } from '../App';
 import { cartCheckoutDB } from '../helperFunctions/cartDBfunctions';
 
-
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
-  const [user_name, setUser_name] = useState("");
-  const [password, setPassword] = useState("");
-  const {setUserName, setUserCartId} = useContext(UserContext);
+  const [user_name, setUser_name] = useState('');
+  const [password, setPassword] = useState('');
+  const { setUserName, setUserCartId } = useContext(UserContext);
 
   function Success() {
-    setIsLoggedIn(!isLoggedIn)
-    console.log("Success.");
+    setIsLoggedIn(!isLoggedIn);
+    console.log('Success.');
   }
 
   const handleSubmit = async (e) => {
@@ -25,30 +24,30 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
     if (response.loginSuccess) {
       let cartIdLocalSt = window.localStorage.getItem('cartId');
       if (cartIdLocalSt) {
-          try {
-            let patchReq = {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                'cartIdLocalSt': cartIdLocalSt,
-                'cartIdPersonal': response.userCartId
-              })
-            }
-            await fetch('/api/cart/movetopersonalcart', patchReq);
-          } catch (error) {
-            console.error('Error on cart-patch to /api/cart/movetopersonalcart\n' + error);
-          }
-          try {
-            await cartCheckoutDB();
-            window.localStorage.removeItem('cartId');
-          } catch (error) {
-            console.error('Error on cartCheckoutDB\n' + error);
-          }
+        try {
+          let patchReq = {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              cartIdLocalSt: cartIdLocalSt,
+              cartIdPersonal: response.userCartId,
+            }),
+          };
+          await fetch('/api/cart/movetopersonalcart', patchReq);
+        } catch (error) {
+          console.error('Error on cart-patch to /api/cart/movetopersonalcart\n' + error);
+        }
+        try {
+          await cartCheckoutDB();
+          window.localStorage.removeItem('cartId');
+        } catch (error) {
+          console.error('Error on cartCheckoutDB\n' + error);
+        }
       }
       Success();
-      
+
       setUserName(response.user_name);
       setUserCartId(response.userCartId);
     } else {
@@ -61,15 +60,13 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
-            <input type="text" name="username" value={user_name}  onChange={(e) => setUser_name(e.target.value)} />
+            <input placeholder="användarnamn" type="text" name="username" value={user_name} onChange={(e) => setUser_name(e.target.value)} />
           </InputCont>
           <InputCont>
-            <input type="password" name="password" value={password}  onChange={(e) => setPassword(e.target.value)} />
+            <input placeholder="Lösenord" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </InputCont>
         </FormInputContainer>
-        <LoginButton type="submit">
-          logga in
-        </LoginButton>
+        <LoginButton type="submit">logga in</LoginButton>
       </Form>
 
       <RegisterContainer>
@@ -82,7 +79,7 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
       </RegisterContainer>
     </FormContainer>
   );
-}
+};
 
 export default Login;
 
@@ -110,11 +107,21 @@ const Form = styled.form`
 const FormInputContainer = styled.div`
   display: flex;
   margin-bottom: 10px;
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const InputCont = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 600px) {
+    margin-bottom: 3px;
+    width: 9.5rem;
+  }
 `;
 
 const LoginButton = styled.button`
@@ -161,5 +168,12 @@ const RegisterContainer = styled.div`
   }
   div {
     display: flex;
+  }
+
+  @media screen and (max-width: 600px) {
+    p,
+    a {
+      font-size: 0.6rem;
+    }
   }
 `;

@@ -28,8 +28,8 @@ function Home() {
   const theme = useContext(ThemeContext);
 
   const styles = {
-    backgroundColor: theme ? "white" : "black",
-    color: theme ? "black" : "white",
+    backgroundColor: theme ? "white" : "#202124",
+    color: theme ? "#202124" : "white",
   }
   const card = {
     backgroundColor: theme ? "whitesmoke" : "	#303030",

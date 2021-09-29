@@ -27,7 +27,7 @@ function WishList({ open, setOpen, setTriggerCartUpdate }) {
     
     const theme = useContext(ThemeContext);
     const styles = {
-        backgroundColor: theme ? "white" : "black",
+        backgroundColor: theme ? "white" : "#202124",
         color: theme ? "black" : "white",
     }
 
