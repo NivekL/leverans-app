@@ -68,6 +68,21 @@ app.get('/api/watches/:id', (req, res) => {;
     res.json(result);
   });
 
+// get a bulk of watches
+app.get('/api/watches/bulk/:bulk', (req, res) => {
+    // bulk = 1+2+3+4+10
+    let bulk = req.params.bulk;
+    bulk = bulk.split('+');
+
+    let stmt = dbWatches.prepare(`
+        SELECT *
+        FROM products
+        WHERE id IN (${bulk.join()})
+    `);
+    let result = stmt.all();
+    res.json(result);
+});
+
   // 1.0 Get all users
 app.get('/api/registration', (req, res) => {;
     let stmt = dbWatches.prepare(`
@@ -351,60 +366,6 @@ app.delete('/api/cart/:cartid/cartcheckoutdb', (req, res) => {
     res.json({"cartItems": result, "carts": result2});
 })
 //=================
-
-let wishList = path.join(__dirname, "wishList.json");
-
-// Write data into wishlist.json file
-const saveListData = (data) => {
-    const uniqueId = new Set();
-    const duplicateCheck = data.some(element => uniqueId.size === uniqueId.add(element.id).size);
-    if(duplicateCheck) {
-        return console.log("duplicate value");
-    } else {
-        const stringifyData = JSON.stringify(data, null, 2);
-        fs.writeFileSync(wishList, stringifyData);
-    }
-};
-// Read data from wishlist.json file
-const getListData = () => {
-    const jsonData = fs.readFileSync(wishList, 'utf8');
-    return JSON.parse(jsonData);
-};
-
-app.post('/api/wishlist/add', (req, res) => {
-    try {
-        if(!fs.existsSync(wishList)) {
-            saveListData([req.body]);
-        } else {
-            const currentData = getListData();
-            const newData = currentData.push();
-            currentData[newData] = req.body;
-            saveListData(currentData);
-        }
-        res.send({success: true, msg: 'added article'});
-    } catch (e) {
-        console.log(e)
-    }
-});
-
-app.get('/api/wishlist', (req, res) => {
-    res.send(getListData());
-  });
-
-app.delete('/api/wishlist/delete/:id', (req, res) => {
-    const { id } = req.params;
-    const currentData = getListData();
-    const wishListArticle = currentData.findIndex(article => article.id == id);
-
-    currentData.splice(wishListArticle, 1);
-    saveListData(currentData);
-    return res.send("delete data");
-   });
-
-app.delete('/api/wishlist/clearall/', (req,res) => {
-    fs.unlinkSync(wishList);
-    res.send("deleted wishlist");
-})
 
 //================
 

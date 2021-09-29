@@ -22,21 +22,25 @@ export const UserContext = React.createContext({
   setUserName: () => {},
   userCartId: 0,
   setUserCartId: () => {},
+  productsInwishlist: [],
+  setProductInwishlist: () => {},
 });
 
 export const ThemeContext = createContext({});
 
 function App() {
+
+
   const [userName, setUserName] = useState('');
   const [userCartId, setUserCartId] = useState(0);
-  const userContextValue = {userName, setUserName, userCartId, setUserCartId};
+  const [productsInwishlist, setProductsInwishlist] = useState([]);
+  const userContextValue = {userName, setUserName, userCartId, setUserCartId, productsInwishlist, setProductsInwishlist};
 
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
-  const [wishListUpdate, setWishListUpdate] = useState(0);
   const [theme, setTheme] = useState(true);
 
   const styles = {
@@ -60,7 +64,6 @@ function App() {
             setShowWhichPopup={setShowWhichPopup} 
             isCartOpen={isCartOpen} 
             setIsCartOpen={setIsCartOpen}
-            wishListUpdate={wishListUpdate}
             triggerCartUpdate={triggerCartUpdate}
             setTriggerCartUpdate={setTriggerCartUpdate} 
             isLoggedIn={isLoggedIn}
@@ -89,7 +92,6 @@ function App() {
                 <Route path="/:category/:id/:name" render={props => (
                   <SingleProductPage {...props} 
                   setTriggerCartUpdate={setTriggerCartUpdate} 
-                  setWishListUpdate={setWishListUpdate} 
                   />
                   )} />
                 <Route path="*">

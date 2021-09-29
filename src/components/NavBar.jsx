@@ -9,12 +9,14 @@ import { DarkModeIcon } from './DarkModeIcon';
 
 
 
-function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, wishListUpdate, isLoggedIn, setIsLoggedIn }) {
+function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen, triggerCartUpdate, setTriggerCartUpdate, isLoggedIn, setIsLoggedIn }) {
   const styles = {
     backgroundColor: theme ? "white" : "#202124",
     color: theme ? "black" : "white",
     borderBottom: theme ? "2px solid white" : "2px solid black"
   }
+  const isElectron = navigator.userAgent.includes('Electron');
+  
   return (
         <Nav style={styles}>
             <Burger 
@@ -30,12 +32,14 @@ function NavBar({ theme, setTheme, setShowWhichPopup, isCartOpen, setIsCartOpen,
                    setTheme={setTheme} 
                  />
             </LogoContainer>
+            {isElectron ? 
             <LogoContainer>
-                <WishListIcon
-                   setTriggerCartUpdate={setTriggerCartUpdate} 
-                   wishListUpdate={wishListUpdate} 
-                 />
+            <WishListIcon
+                setTriggerCartUpdate={setTriggerCartUpdate} 
+                />
             </LogoContainer>
+            : null
+            }
             <LogoContainer>
               <CartIcon 
                 setShowWhichPopup={setShowWhichPopup} 
