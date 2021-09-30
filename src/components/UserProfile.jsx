@@ -14,6 +14,7 @@ function UserProfile({ isLoggedIn, setIsLoggedIn }) {
         <LogOutButton onClick={() => {
           setIsLoggedIn(!isLoggedIn);
           setUserCartId(0);
+          localStorage.removeItem('loggedInUserId');
         }}>Logga ut</LogOutButton>
       </UserContainer>
     </>

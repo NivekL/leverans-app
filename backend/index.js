@@ -165,9 +165,48 @@ app.get('/api/registration/:user_name/:password', async (req, res) => {
     });
     // console.log('Login response object:');
     // console.log(user[0]);
-    let validPassword = await bcryptjs.compare(passwordDecoded, user[0].password);
-  
-    return res.json({ loginSuccess: validPassword, user_name: user[0].user_name, userCartId: user[0].cartId });
+    let validPassword;
+    try {
+        validPassword = await bcryptjs.compare(passwordDecoded, user[0].password);
+    } catch (error) {
+        console.error(error);
+    }
+    let cryptedUserId;
+    try {
+        cryptedUserId = await cryptSomething(user[0].id.toString());
+    } catch (error) {
+        console.error(error);
+    }
+
+    res.json({ loginSuccess: validPassword, user_name: user[0].user_name, userCartId: user[0].cartId, cryptedUserId: cryptedUserId });
+    });
+
+    // get a user
+app.get('/api/registration/getoneuser/hash/:hash', async (req, res) => {
+    let userIdDecoded = decodeURIComponent(req.params.hash);
+    
+    let stmt = dbWatches.prepare(`
+        SELECT *
+        FROM registration
+    `);
+    let result = stmt.all();
+
+    let matchedUser;
+    try {
+        for (let user of result) {
+            let validId = await bcryptjs.compare(user.id.toString(), userIdDecoded);
+            if (validId) {
+                matchedUser = user;
+                break;
+            }
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+    const {user_name, cartId} = matchedUser;
+
+    res.json({userName: user_name, cartId: cartId});
     });
 
 // ......BCRYPT
