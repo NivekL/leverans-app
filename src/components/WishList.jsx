@@ -10,7 +10,7 @@ import { getUniqueArray } from '../helperFunctions/getUniqueArray';
 
 
 function WishList({ open, setOpen, setTriggerCartUpdate }) {
-    const {productsInwishlist, setProductsInwishlist} = useContext(UserContext);
+    const {userCartId, productsInwishlist, setProductsInwishlist} = useContext(UserContext);
 
     // Use ipcRenderer + remote that can connect to Electron
     // methods only available on the Node side otherwise
@@ -102,7 +102,7 @@ function WishList({ open, setOpen, setTriggerCartUpdate }) {
     }
     // Add to cart
     const handleAddToCartButton = async (artId) => {
-        let response = await addToCart(artId);
+        let response = await addToCart(artId, userCartId);
         if (Boolean(response["Additions made"])) {
             setTriggerCartUpdate(Date.now);
             deleteArticle(artId);
