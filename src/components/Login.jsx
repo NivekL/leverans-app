@@ -19,24 +19,27 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
   };
 
   useEffect(() => {
-    const loggedInAlready = localStorage.getItem('loggedInUserId');
-    if (!loggedInAlready) {
-      return;
-    } else {
-      // setIsLoggedIn(true);
-      //fetch med hashade user ID't
-      (async () => {
+    const abortCtrl = new AbortController();
+    const opts = { signal: abortCtrl.signal };
+    console.log('isLoggedIn: ' + isLoggedIn);
+    (async () => {
+      const loggedInAlready = localStorage.getItem('loggedInUserId');
+      if (!loggedInAlready) {
+        return;
+      } else {
+        //fetch med hashade user ID't
         try {
           let encodedId = encodeURIComponent(loggedInAlready);
-          let loggedInUser = await (await fetch(`/api/registration/getoneuser/${encodedId}`)).json();
-          console.log(loggedInUser);
-          // setUserName(response.user_name);
-          // setUserCartId(response.userCartId);
+          let loggedInUser = await (await fetch(`/api/registration/getoneuser/hash/${encodedId}`, opts)).json();
+          setUserName(loggedInUser.userName);
+          setUserCartId(loggedInUser.cartId);
+          setIsLoggedIn(true);
         } catch (error) {
           console.error(error);
         }
-      })();
-    }
+      }
+    })(opts)
+    return () => abortCtrl.abort();
   }, []);
 
   function Success() {
