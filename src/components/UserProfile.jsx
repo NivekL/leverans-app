@@ -7,6 +7,7 @@ function UserProfile({ isLoggedIn, setIsLoggedIn }) {
 
   return (
     <>
+    <UserContainer>
       <h3>Hej, {userName}</h3>
         <LogOutButton onClick={() => {
           setIsLoggedIn(!isLoggedIn);
