@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../App';
 import { cartCheckoutDB } from '../helperFunctions/cartDBfunctions';
@@ -17,6 +17,27 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
   const para = {
     color: theme ? 'black' : 'white',
   };
+
+  useEffect(() => {
+    const loggedInAlready = localStorage.getItem('loggedInUserId');
+    if (!loggedInAlready) {
+      return;
+    } else {
+      // setIsLoggedIn(true);
+      //fetch med hashade user ID't
+      (async () => {
+        try {
+          let encodedId = encodeURIComponent(loggedInAlready);
+          let loggedInUser = await (await fetch(`/api/registration/getoneuser/${encodedId}`)).json();
+          console.log(loggedInUser);
+          // setUserName(response.user_name);
+          // setUserCartId(response.userCartId);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
+  }, []);
 
   function Success() {
     setIsLoggedIn(!isLoggedIn);
@@ -60,6 +81,8 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
 
       setUserName(response.user_name);
       setUserCartId(response.userCartId);
+      localStorage.setItem('loggedInUserId', response.cryptedUserId);
+
     } else {
       return; //byt ut mot att skicka errormeddelande
     }

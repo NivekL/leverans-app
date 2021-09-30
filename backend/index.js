@@ -166,8 +166,34 @@ app.get('/api/registration/:user_name/:password', async (req, res) => {
     // console.log('Login response object:');
     // console.log(user[0]);
     let validPassword = await bcryptjs.compare(passwordDecoded, user[0].password);
-  
-    return res.json({ loginSuccess: validPassword, user_name: user[0].user_name, userCartId: user[0].cartId });
+    
+    const cryptedUserId = await cryptSomething(user[0].id.toString());
+
+    return res.json({ loginSuccess: validPassword, user_name: user[0].user_name, userCartId: user[0].cartId, cryptedUserId: cryptedUserId });
+    });
+
+    // get a user
+app.get('/api/registration/getoneuser/:hash', async (req, res) => {
+    let userIdDecoded = decodeURIComponent(req.params.hash);
+    console.log('userIdDecoded: ' + userIdDecoded);
+    
+    let stmt = dbWatches.prepare(`
+        SELECT *
+        FROM registration
+    `);
+    let result = stmt.all();
+
+    let matchedUser;
+
+    for (let user of result) {
+        let validId = await bcryptjs.compare(userIdDecoded, user.id);
+        if (validId) {
+            matchedUser = user;
+            break;
+        }
+    }
+
+    return res.json({ matchedUser });
     });
 
 // ......BCRYPT

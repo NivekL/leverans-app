@@ -16,6 +16,7 @@ import { ErrorPage } from './components/ErrorPage';
 import React, { useState, createContext } from 'react';
 import {isMobile} from 'react-device-detect';
 import UserLogin from './components/UserLogin';
+import { useEffect } from 'react';
 
 export const UserContext = React.createContext({
   userName: '',
