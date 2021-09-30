@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { UserContext } from '../App';
 import { cartCheckoutDB } from '../helperFunctions/cartDBfunctions';
 import { ThemeContext } from '../App';
+import {isMobile} from 'react-device-detect';
 
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
   const [user_name, setUser_name] = useState('');
@@ -21,24 +22,25 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
   useEffect(() => {
     const abortCtrl = new AbortController();
     const opts = { signal: abortCtrl.signal };
-    console.log('isLoggedIn: ' + isLoggedIn);
-    (async () => {
-      const loggedInAlready = localStorage.getItem('loggedInUserId');
-      if (!loggedInAlready) {
-        return;
-      } else {
-        //fetch med hashade user ID't
-        try {
-          let encodedId = encodeURIComponent(loggedInAlready);
-          let loggedInUser = await (await fetch(`/api/registration/getoneuser/hash/${encodedId}`, opts)).json();
-          setUserName(loggedInUser.userName);
-          setUserCartId(loggedInUser.cartId);
-          setIsLoggedIn(true);
-        } catch (error) {
-          console.error(error);
+    if (isMobile) {
+      (async () => {
+        const loggedInAlready = localStorage.getItem('loggedInUserId');
+        if (!loggedInAlready) {
+          return;
+        } else {
+          //fetch med hashade user ID't
+          try {
+            let encodedId = encodeURIComponent(loggedInAlready);
+            let loggedInUser = await (await fetch(`/api/registration/getoneuser/hash/${encodedId}`, opts)).json();
+            setUserName(loggedInUser.userName);
+            setUserCartId(loggedInUser.cartId);
+            setIsLoggedIn(true);
+          } catch (error) {
+            console.error(error);
+          }
         }
-      }
-    })(opts)
+      })(opts)
+    }
     return () => abortCtrl.abort();
   }, []);
 
@@ -84,7 +86,9 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
 
       setUserName(response.user_name);
       setUserCartId(response.userCartId);
-      localStorage.setItem('loggedInUserId', response.cryptedUserId);
+      if (isMobile) {
+        localStorage.setItem('loggedInUserId', response.cryptedUserId);
+      }
 
     } else {
       return; //byt ut mot att skicka errormeddelande
