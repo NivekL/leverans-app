@@ -20,6 +20,26 @@ app.use(express.json());
 const dbPathWatches = path.join(__dirname, '../dbtesting/watches.db');
 const dbWatches = new sqlDriver(dbPathWatches);
 
+// Bcrypt functions
+const cryptSomething = async (plainId) => {
+    const saltRounds = 10;
+    try {
+        const hash = await bcryptjs.hash(plainId, saltRounds);
+        return hash;
+    } catch (error) {
+        console.error(error);
+    }
+}
+const decryptSomething = async (plainId, hash) => {
+    try {
+        const match = await bcryptjs.compare(plainId, hash);
+        return match;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+
 //Get all watches
 app.get('/api/watches', (req, res) => {
     let statement = dbWatches.prepare(`
@@ -155,23 +175,6 @@ app.get('/api/registration/:user_name/:password', async (req, res) => {
 
 
 //===== Cart ======
-const cryptCartId = async (plainId) => {
-    const saltRounds = 10;
-    try {
-        const hash = await bcryptjs.hash(plainId, saltRounds);
-        return hash;
-    } catch (error) {
-        console.error(error);
-    }
-}
-const decryptCartId = async (plainId, hash) => {
-    try {
-        const match = await bcryptjs.compare(plainId, hash);
-        return match;
-    } catch(error) {
-        console.error(error);
-    }
-}
 const getUncryptedCartId = (cryptedId) => {
     let getIdStmt = dbWatches.prepare(`
         SELECT *
@@ -228,7 +231,7 @@ app.post('/api/cart/new', (req, res) => {
     // Crypt the cartId, add the crypt ID in DB
     (async () => {
         try {
-            const cryptedCartId = await cryptCartId(info.lastInsertRowid.toString());
+            const cryptedCartId = await cryptSomething(info.lastInsertRowid.toString());
 
             let stmt2 = dbWatches.prepare(`
                 UPDATE carts
