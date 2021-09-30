@@ -81,9 +81,11 @@ export default CartProductRow;
 const ProductDiv = styled.div`
   display: flex;
   flex-direction: row;
-  height: 80px;
+  height: auto;
   img {
-    height: 100%;
+    height: auto;
+    width: 100px;
+
   }
   .ellipsis1Line {
     overflow: hidden;

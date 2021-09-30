@@ -8,15 +8,14 @@ function UserProfile({ isLoggedIn, setIsLoggedIn }) {
   return (
     <>
       <h3>Hej, {userName}</h3>
-      <UserContainer>
-        <LogOutButton
-          onClick={() => {
-            setIsLoggedIn(!isLoggedIn);
-            setUserCartId(0);
-          }}
-        >
-          Logga ut
-        </LogOutButton>
+        <LogOutButton onClick={() => {
+          setIsLoggedIn(!isLoggedIn);
+          setUserCartId(0);
+          if (localStorage.getItem('loggedInUserId')) {
+            localStorage.removeItem('loggedInUserId');
+          }
+        }}>Logga ut</LogOutButton>
+
       </UserContainer>
     </>
   );

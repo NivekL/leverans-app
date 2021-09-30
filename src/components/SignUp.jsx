@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
+import { ThemeContext } from '../App';
 
 export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
-  const [user_name, setUser_name] = useState("");
-  const [password, setPassword] = useState("");
+  const [user_name, setUser_name] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const theme = useContext(ThemeContext);
+  const styles = {
+    backgroundColor: theme ? 'white' : '#202124',
+    color: theme ? 'black' : 'white',
+  };
+  const para = {
+    color: theme ? 'black' : 'white',
+  };
 
   function handleResponse(response) {
     return response.json().then((json) => {
@@ -20,16 +30,16 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
   }
 
   function Success() {
-    setErrorMessage("Användare skapad.");
+    setErrorMessage('Användare skapad.');
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = { user_name, password };
 
-    fetch("/api/registration/add", {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
+    fetch('/api/registration/add', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
       body: JSON.stringify(user),
     })
       .then(handleResponse)
@@ -40,7 +50,7 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
   };
 
   return (
-    <FormContainer>
+    <FormContainer style={styles}>
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
@@ -70,7 +80,7 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
             />
           </InputCont>
         </FormInputContainer>
-        {<SignUpBtn>registrera</SignUpBtn>}
+        {<SignUpBtn style={para}>registrera</SignUpBtn>}
         {errorMessage}
       </Form>
 
@@ -95,6 +105,10 @@ const FormContainer = styled.div`
   flex-direction: column;
   margin-left: 2rem;
   max-width: 19rem;
+
+  @media screen and (max-width: 450px) {
+    margin-left: 0;
+  }
 `;
 
 const Form = styled.form`
@@ -112,17 +126,31 @@ const Form = styled.form`
 const FormInputContainer = styled.div`
   display: flex;
   margin-bottom: 10px;
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const InputCont = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 600px) {
+    margin-bottom: 3px;
+    width: 9.5rem;
+  }
+  @media screen and (max-width: 420px) {
+    margin-bottom: 3px;
+    width: 15rem;
+  }
 `;
 
 const SignUpBtn = styled.button`
   height: 45px;
   width: 146px;
-  font-family: "Libre Franklin", sans-serif;
+  font-family: 'Libre Franklin', sans-serif;
   border: 2px solid #292929;
   text-align: center;
   background-color: transparent;
@@ -137,11 +165,15 @@ const SignUpBtn = styled.button`
     background-color: #292929;
     color: whitesmoke;
   }
+
+  @media screen and (max-width: 420px) {
+    width: 14.6rem;
+  }
 `;
 const Success = styled.button`
   height: 45px;
   width: 150px;
-  font-family: "Libre Franklin", sans-serif;
+  font-family: 'Libre Franklin', sans-serif;
   border: 2px solid #292929;
   text-align: center;
   background-color: transparent;
@@ -157,7 +189,7 @@ const RegisterContainer = styled.div`
   flex-direction: column;
 
   p {
-    font-family: "Libre Franklin", sans-serif;
+    font-family: 'Libre Franklin', sans-serif;
     font-size: 0.8rem;
     margin-right: 6px;
   }
@@ -165,7 +197,7 @@ const RegisterContainer = styled.div`
   a {
     font-size: 0.8rem;
     color: #4e5da3;
-    font-family: "Montserrat";
+    font-family: 'Montserrat';
     text-decoration: none;
     letter-spacing: 1px;
     margin-bottom: 13px;
@@ -176,5 +208,12 @@ const RegisterContainer = styled.div`
   }
   div {
     display: flex;
+  }
+
+  @media screen and (max-width: 600px) {
+    p,
+    a {
+      font-size: 0.6rem;
+    }
   }
 `;

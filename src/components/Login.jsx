@@ -1,17 +1,52 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../App';
 import { cartCheckoutDB } from '../helperFunctions/cartDBfunctions';
-
+import { ThemeContext } from '../App';
+import {isMobile} from 'react-device-detect';
 
 export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }) => {
-  const [user_name, setUser_name] = useState("");
-  const [password, setPassword] = useState("");
-  const {setUserName, setUserCartId} = useContext(UserContext);
+  const [user_name, setUser_name] = useState('');
+  const [password, setPassword] = useState('');
+  const { setUserName, setUserCartId } = useContext(UserContext);
+
+  const theme = useContext(ThemeContext);
+  const styles = {
+    backgroundColor: theme ? 'white' : '#202124',
+    color: theme ? 'black' : 'white',
+  };
+  const para = {
+    color: theme ? 'black' : 'white',
+  };
+
+  useEffect(() => {
+    const abortCtrl = new AbortController();
+    const opts = { signal: abortCtrl.signal };
+    if (isMobile) {
+      (async () => {
+        const loggedInAlready = localStorage.getItem('loggedInUserId');
+        if (!loggedInAlready) {
+          return;
+        } else {
+          //fetch med hashade user ID't
+          try {
+            let encodedId = encodeURIComponent(loggedInAlready);
+            let loggedInUser = await (await fetch(`/api/registration/getoneuser/hash/${encodedId}`, opts)).json();
+            setUserName(loggedInUser.userName);
+            setUserCartId(loggedInUser.cartId);
+            setIsLoggedIn(true);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      })(opts)
+    }
+    return () => abortCtrl.abort();
+  }, []);
 
   function Success() {
-    setIsLoggedIn(!isLoggedIn)
-    console.log("Success.");
+    setIsLoggedIn(!isLoggedIn);
+    console.log('Success.');
   }
 
   const handleSubmit = async (e) => {
@@ -25,49 +60,53 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
     if (response.loginSuccess) {
       let cartIdLocalSt = window.localStorage.getItem('cartId');
       if (cartIdLocalSt) {
-          try {
-            let patchReq = {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                'cartIdLocalSt': cartIdLocalSt,
-                'cartIdPersonal': response.userCartId
-              })
-            }
-            await fetch('/api/cart/movetopersonalcart', patchReq);
-          } catch (error) {
-            console.error('Error on cart-patch to /api/cart/movetopersonalcart\n' + error);
-          }
-          try {
-            await cartCheckoutDB();
-            window.localStorage.removeItem('cartId');
-          } catch (error) {
-            console.error('Error on cartCheckoutDB\n' + error);
-          }
+        try {
+          let patchReq = {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              cartIdLocalSt: cartIdLocalSt,
+              cartIdPersonal: response.userCartId,
+            }),
+          };
+          await fetch('/api/cart/movetopersonalcart', patchReq);
+        } catch (error) {
+          console.error('Error on cart-patch to /api/cart/movetopersonalcart\n' + error);
+        }
+        try {
+          await cartCheckoutDB();
+          window.localStorage.removeItem('cartId');
+        } catch (error) {
+          console.error('Error on cartCheckoutDB\n' + error);
+        }
       }
       Success();
-      
+
       setUserName(response.user_name);
       setUserCartId(response.userCartId);
+      if (isMobile) {
+        localStorage.setItem('loggedInUserId', response.cryptedUserId);
+      }
+
     } else {
       return; //byt ut mot att skicka errormeddelande
     }
   };
 
   return (
-    <FormContainer>
+    <FormContainer style={styles}>
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
-            <input type="text" name="username" value={user_name}  onChange={(e) => setUser_name(e.target.value)} />
+            <input placeholder="användarnamn" type="text" name="username" value={user_name} onChange={(e) => setUser_name(e.target.value)} />
           </InputCont>
           <InputCont>
-            <input type="password" name="password" value={password}  onChange={(e) => setPassword(e.target.value)} />
+            <input placeholder="Lösenord" type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </InputCont>
         </FormInputContainer>
-        <LoginButton type="submit">
+        <LoginButton type="submit" style={para}>
           logga in
         </LoginButton>
       </Form>
@@ -82,7 +121,7 @@ export const Login = ({ toggleLogIn, setToggleLogIn, isLoggedIn, setIsLoggedIn }
       </RegisterContainer>
     </FormContainer>
   );
-}
+};
 
 export default Login;
 
@@ -93,6 +132,10 @@ const FormContainer = styled.div`
   flex-direction: column;
   margin-left: 2rem;
   max-width: 19rem;
+
+  @media screen and (max-width: 450px) {
+    margin-left: 0;
+  }
 `;
 
 const Form = styled.form`
@@ -110,11 +153,25 @@ const Form = styled.form`
 const FormInputContainer = styled.div`
   display: flex;
   margin-bottom: 10px;
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const InputCont = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 600px) {
+    margin-bottom: 3px;
+    width: 9.5rem;
+  }
+  @media screen and (max-width: 420px) {
+    margin-bottom: 3px;
+    width: 15rem;
+  }
 `;
 
 const LoginButton = styled.button`
@@ -134,6 +191,10 @@ const LoginButton = styled.button`
   &:hover {
     background-color: #292929;
     color: whitesmoke;
+  }
+
+  @media screen and (max-width: 420px) {
+    width: 14.6rem;
   }
 `;
 
@@ -161,5 +222,12 @@ const RegisterContainer = styled.div`
   }
   div {
     display: flex;
+  }
+
+  @media screen and (max-width: 600px) {
+    p,
+    a {
+      font-size: 0.6rem;
+    }
   }
 `;

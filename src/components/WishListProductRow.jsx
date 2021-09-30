@@ -4,35 +4,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
-
 function WishListProductRow({ product, index, displayCost, productsInwishlist, handleTrashcanButton, handleAddToCartButton }) {
+  const handleDelete = () => {
+    handleTrashcanButton(product.id);
+  };
 
+  const handleAddToCart = () => {
+    handleAddToCartButton(product.id);
+  };
 
-    const handleDelete = () => {
-        handleTrashcanButton(product.id);
+  const itemPrice = (item) => {
+    return displayCost(item.price);
+  };
+
+  const insertLine = (items, index) => {
+    if (items.length > 1) {
+      if (index === items.length - 1) {
+        return;
+      }
+      return <Line></Line>;
     }
-
-    const handleAddToCart = () => {
-        handleAddToCartButton(product.id);
-    }
-
-    const itemPrice = (item) => {
-        return displayCost(item.price);
-    }
-
-    const shortenText = (text, maxlength) => {
-        if (text.length < maxlength) return text;
-        return text.substring(0,maxlength).concat('...');
-    }
-
-    const insertLine = (items, index) => {
-        if (items.length > 1) {
-            if (index === items.length - 1) {
-                return;
-            }
-            return <Line></Line>;
-        }
-    }
+  };
 
     return (
         <div>
@@ -42,12 +34,9 @@ function WishListProductRow({ product, index, displayCost, productsInwishlist, h
                 </span>
                 <ProductInfo>
                     <ProductRow1>
-                        <p className="boldText">{shortenText(product.name, 20)}</p>
-                        <p className="boldText">{itemPrice(product)} SEK</p>
+                        <p className="boldText">{product.name}</p>
+                        <p className="boldText">{itemPrice(product)}</p>
                     </ProductRow1>
-                    <ProductRow2>
-                        <p>{shortenText(product.description, 40)}</p>
-                    </ProductRow2>
                     <ProductRow3>
                         <span><FontAwesomeIcon icon={faTrashAlt} onClick={handleDelete} /></span>
                         <span> <AddShoppingCartIcon fontSize="small" onClick={handleAddToCart}/></span>
@@ -59,35 +48,32 @@ function WishListProductRow({ product, index, displayCost, productsInwishlist, h
     )
 }
 
-export default WishListProductRow
-
+export default WishListProductRow;
 
 const ProductDiv = styled.div`
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  img {
     height: auto;
-    img {
-        height: 150px;
-        width: auto;
-    }
-`
+    width: 100px;
+  }
+`;
 const ProductInfo = styled.div`
-    margin-top: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-`
+  margin-top: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`;
 const ProductRow1 = styled.div`
     display: flex;
     justify-content: space-between;
-`
-const ProductRow2 = styled.div`
-    flex-basis: 50%;
 `
 const ProductRow3 = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 60px;
     table {
         border-collapse: collapse;
     }
@@ -104,9 +90,10 @@ const ProductRow3 = styled.div`
     }
     span{
         cursor: pointer;
+        font-size: 18px;
     }
 `
 const Line = styled.div`
-    border-bottom: 1px solid #EFEFEF;
-    margin: 20px 0;
-`
+  border-bottom: 1px solid #efefef;
+  margin: 20px 0;
+`;

@@ -17,9 +17,9 @@ export const DarkModeIcon = ({theme, setTheme}) => {
 
 // Style --------------------
 const IconContainer = styled.div`
-      position: fixed;
+      /* position: fixed;
   top: 15px;
-  right: 110px;
+  right: 110px; */
   z-index: 20;
 
 

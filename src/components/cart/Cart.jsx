@@ -20,7 +20,7 @@ function Cart({ open, setOpen, setItemsInCartQuantity, setShowWhichPopup, trigge
   const {userCartId} = useContext(UserContext);
   
   const styles = {
-    backgroundColor: theme ? "white" : "black",
+    backgroundColor: theme ? "white" : "#202124",
     color: theme ? "black" : "white",
   }
 
