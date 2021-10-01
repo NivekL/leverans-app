@@ -17,7 +17,7 @@ app.use(express.static(buildDir));
 app.use(express.json());
 
 //----------- REST API Watches
-const dbPathWatches = path.join(__dirname, '../dbtesting/watches.db');
+const dbPathWatches = path.join(__dirname, '../db/watches.db');
 const dbWatches = new sqlDriver(dbPathWatches);
 
 // Bcrypt functions
@@ -411,6 +411,9 @@ app.delete('/api/cart/:cartid/cartcheckoutdb', (req, res) => {
 
 //================
 
+app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
 const port = 4000;
 app.listen(port, () => console.log('Listening on port ' + port));
