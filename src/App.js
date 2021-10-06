@@ -15,28 +15,33 @@ import Popups from './components/Popups';
 import { ErrorPage } from './components/ErrorPage';
 import React, { useState, createContext } from 'react';
 import {isMobile} from 'react-device-detect';
-import LoginSignUp from './components/LoginSignUp';
+import UserLogin from './components/UserLogin';
+import { useEffect } from 'react';
 
 export const UserContext = React.createContext({
   userName: '',
   setUserName: () => {},
   userCartId: 0,
   setUserCartId: () => {},
+  productsInwishlist: [],
+  setProductInwishlist: () => {},
 });
 
 export const ThemeContext = createContext({});
 
 function App() {
+
+
   const [userName, setUserName] = useState('');
   const [userCartId, setUserCartId] = useState(0);
-  const userContextValue = {userName, setUserName, userCartId, setUserCartId};
+  const [productsInwishlist, setProductsInwishlist] = useState([]);
+  const userContextValue = {userName, setUserName, userCartId, setUserCartId, productsInwishlist, setProductsInwishlist};
 
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showWhichPopup, setShowWhichPopup] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [triggerCartUpdate, setTriggerCartUpdate] = useState(0);
-  const [wishListUpdate, setWishListUpdate] = useState(0);
   const [theme, setTheme] = useState(true);
 
   const styles = {
@@ -48,9 +53,9 @@ function App() {
     <Router>
       <ThemeContext.Provider value={theme}>
       <div className="App" style={styles}>
-      {
-        (isLoggedIn)
-          ? <UserContext.Provider value={userContextValue}>
+       <UserContext.Provider value={userContextValue}>
+        {isLoggedIn || !isMobile ?
+         <>
           <Popups 
             showWhichPopup={showWhichPopup} 
             setShowWhichPopup={setShowWhichPopup} 
@@ -60,7 +65,6 @@ function App() {
             setShowWhichPopup={setShowWhichPopup} 
             isCartOpen={isCartOpen} 
             setIsCartOpen={setIsCartOpen}
-            wishListUpdate={wishListUpdate}
             triggerCartUpdate={triggerCartUpdate}
             setTriggerCartUpdate={setTriggerCartUpdate} 
             isLoggedIn={isLoggedIn}
@@ -89,7 +93,6 @@ function App() {
                 <Route path="/:category/:id/:name" render={props => (
                   <SingleProductPage {...props} 
                   setTriggerCartUpdate={setTriggerCartUpdate} 
-                  setWishListUpdate={setWishListUpdate} 
                   />
                   )} />
                 <Route path="*">
@@ -98,60 +101,12 @@ function App() {
               </Switch>
             </div>
             <Footer />
-          </UserContext.Provider> 
-          : (isMobile ? 
-          <LoginSignUp isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} /> : 
-          <UserContext.Provider value={userContextValue}>
-          <Popups 
-            showWhichPopup={showWhichPopup} 
-            setShowWhichPopup={setShowWhichPopup} 
-            setIsCartOpen={setIsCartOpen}
-          />
-          <NavBar 
-            setShowWhichPopup={setShowWhichPopup} 
-            isCartOpen={isCartOpen} 
-            setIsCartOpen={setIsCartOpen}
-            wishListUpdate={wishListUpdate}
-            triggerCartUpdate={triggerCartUpdate}
-            setTriggerCartUpdate={setTriggerCartUpdate} 
-            isLoggedIn={isLoggedIn}
-            setIsLoggedIn={setIsLoggedIn}
-            theme={theme}
-            setTheme={setTheme}
-          />
-            <div className="content">
-              <Switch>
-                <Route exact path="/">
-                  <Home />
-                </Route>
-
-                <Route path="/LondonClassic">
-                  <LondonClassic />
-                </Route>
-
-                <Route path="/StMoritzSport">
-                  <StMoritzSport />
-                </Route>
-
-                <Route path="/DubaiLuxury">
-                  <DubaiLuxury />
-                </Route>
-
-                <Route path="/:category/:id/:name" render={props => (
-                  <SingleProductPage {...props} 
-                  setTriggerCartUpdate={setTriggerCartUpdate} 
-                  setWishListUpdate={setWishListUpdate} 
-                  />
-                  )} />
-                <Route path="*">
-                  <ErrorPage />
-                </Route>
-              </Switch>
-            </div>
-            <Footer />
-          </UserContext.Provider>
-          )
+            </>
+            :  
+            <UserLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           }
+            
+          </UserContext.Provider> 
        </div>
        </ThemeContext.Provider>
     </Router>

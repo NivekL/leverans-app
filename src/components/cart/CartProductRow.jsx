@@ -85,6 +85,7 @@ const ProductDiv = styled.div`
   img {
     height: auto;
     width: 100px;
+
   }
   .ellipsis1Line {
     overflow: hidden;

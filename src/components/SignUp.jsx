@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import { ThemeContext } from '../App';
 
 export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
   const [user_name, setUser_name] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const theme = useContext(ThemeContext);
+  const styles = {
+    backgroundColor: theme ? 'white' : '#202124',
+    color: theme ? 'black' : 'white',
+  };
+  const para = {
+    color: theme ? 'black' : 'white',
+  };
 
   function handleResponse(response) {
     return response.json().then((json) => {
@@ -40,7 +50,7 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
   };
 
   return (
-    <FormContainer>
+    <FormContainer style={styles}>
       <Form onSubmit={handleSubmit}>
         <FormInputContainer>
           <InputCont>
@@ -70,7 +80,7 @@ export const SignUp = ({ toggleLogIn, setToggleLogIn }) => {
             />
           </InputCont>
         </FormInputContainer>
-        {<SignUpBtn>registrera</SignUpBtn>}
+        {<SignUpBtn style={para}>registrera</SignUpBtn>}
         {errorMessage}
       </Form>
 
@@ -95,6 +105,10 @@ const FormContainer = styled.div`
   flex-direction: column;
   margin-left: 2rem;
   max-width: 19rem;
+
+  @media screen and (max-width: 450px) {
+    margin-left: 0;
+  }
 `;
 
 const Form = styled.form`
@@ -127,6 +141,10 @@ const InputCont = styled.div`
     margin-bottom: 3px;
     width: 9.5rem;
   }
+  @media screen and (max-width: 420px) {
+    margin-bottom: 3px;
+    width: 15rem;
+  }
 `;
 
 const SignUpBtn = styled.button`
@@ -146,6 +164,10 @@ const SignUpBtn = styled.button`
   &:hover {
     background-color: #292929;
     color: whitesmoke;
+  }
+
+  @media screen and (max-width: 420px) {
+    width: 14.6rem;
   }
 `;
 const Success = styled.button`

@@ -1,20 +1,22 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { UserContext } from '../App';
 
-
 function UserProfile({ isLoggedIn, setIsLoggedIn }) {
-  const {userName, setUserCartId} = useContext(UserContext);
+  const { userName, setUserCartId } = useContext(UserContext);
 
-  
   return (
     <>
-      <UserContainer>
+    <UserContainer>
       <h3>Hej, {userName}</h3>
         <LogOutButton onClick={() => {
           setIsLoggedIn(!isLoggedIn);
           setUserCartId(0);
+          if (localStorage.getItem('loggedInUserId')) {
+            localStorage.removeItem('loggedInUserId');
+          }
         }}>Logga ut</LogOutButton>
+
       </UserContainer>
     </>
   );
@@ -30,9 +32,6 @@ const UserContainer = styled.div`
   margin-left: 2rem;
   max-width: 19rem;
 
-  h3 {
-    margin-left: 0px;
-  }
   h4 {
     font-family: 'Libre Franklin', sans-serif;
     font-size: 0.8rem;
@@ -43,7 +42,7 @@ const UserContainer = styled.div`
 const LogOutButton = styled.button`
   height: 45px;
   width: 150px;
-  margin-top: 2rem;
+  margin-top: 4rem;
   font-family: 'Libre Franklin', sans-serif;
   border: 2px solid #292929;
   text-align: center;
