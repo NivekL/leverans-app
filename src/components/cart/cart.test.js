@@ -3,7 +3,7 @@ import { act, render, screen } from '@testing-library/react';
 import Cart from './Cart';
 import "@testing-library/jest-dom/extend-expect";
 
-it('renders', () => {
+it('renders', async () => {
     const UserContext = React.createContext({
         userName: '',
         setUserName: () => {},
@@ -17,8 +17,8 @@ it('renders', () => {
 
     act(() => {
         render(
-            <ThemeContext.Provider values={true}>
-                <UserContext.Provider values={{
+            <ThemeContext.Provider value={true}>
+                <UserContext.Provider value={{
                     userName: 'Namn', 
                     setUserName: () => {}, 
                     userCartId: 12, 
@@ -48,11 +48,11 @@ it('renders', () => {
                     setProductsInwishlist: () => {}
                 }}>
                     <Cart
-                    open={true}
-                    setOpen={() => {}}
-                    setItemsInCartQuantity={() => {}}
-                    setShowWhichPopup={() => {}}
-                    triggerCartUpdate={1}
+                        open={true}
+                        setOpen={() => {}}
+                        setItemsInCartQuantity={() => {}}
+                        setShowWhichPopup={() => {}}
+                        triggerCartUpdate={1}
                     />
                 </UserContext.Provider>
             </ThemeContext.Provider>
